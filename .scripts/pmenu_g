@@ -1,0 +1,17 @@
+#!/bin/bash
+
+## Created By Aditya Shakya
+
+MENU="$(rofi -sep "|" -dmenu -i -p 'System' -location 3 \
+  -yoffset 30 -xoffset -5 -width 15 \
+   -line-padding 4 -padding 20 -lines 4 \
+  -font "Fantasque Sans Mono 10" <<< "  Lock|   Suspend|   Shutdown| Logout|   Reboot| Switch")"
+            case "$MENU" in
+                *Lock) $HOME/.scripts/lock ;;
+                *Suspend)  $HOME/.scripts/lock  && systemctl suspend ;;
+                *Logout) i3exit logout ;;
+                *Reboot) i3exit reboot ;;
+                *Shutdown) i3exit shutdown ;;
+                *Switch) i3exit switch_user;;
+            esac
+

@@ -1,0 +1,50 @@
+
+
+
+alias vim=nvim
+
+
+
+alias data='cd $DATA'
+alias shrinkpdf='/home/shivam/.scripts/shrinkpdf.sh'
+alias yl='youtube-dl --output "$HOME/Videos/%(title)s.%(ext)s" -f 18'
+
+function ym(){
+  youtube-dl --output /run/media/shivam/Data/Music/"$2%(title)s.%(ext)s" \
+   --extract-audio \
+   --audio-format mp3 \
+   --add-metadata -x $1
+}
+function cheat(){
+	curl cheat.sh/$1
+}
+
+export DATA=/mnt/314414C203296959
+
+alias gog="git log  --abbrev-commit \
+  --name-status --color --graph
+  --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
+
+function apy() {
+ venv_name=$1
+ activation_path=$PWD/$venv_name/bin/activate
+ . $activation_path
+}
+
+alias dpy="deactivate"
+
+alias activate_nix="sudo sysctl kernel.unprivileged_userns_clone=1"
+
+function zshtheme(){
+  sed -i "s/ZSH_THEME=.*/ZSH_THEME=\"${1}\"/g" $HOME/.zshrc
+  source $HOME/.zshrc
+}
+alias hobby='cd $DATA/hobby'
+
+alias f='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
+
+alias ws='cd $DATA/workspace'
+alias wsd='cd $DATA/workspace-data'
+
+source $HOME/.config/sec.sh
+

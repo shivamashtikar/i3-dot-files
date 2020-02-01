@@ -1,0 +1,232 @@
+;-------------------------------------------------------------------------------;
+;								V A R I A B L E S								;
+;-------------------------------------------------------------------------------;
+[colors]
+background = #222d32
+white = #fff
+red = #f00
+black = #000
+blue = #02adff
+violet = #8e1eff
+;-------------------------------------------------------------------------------;
+;							        B A R S										;
+;-------------------------------------------------------------------------------;
+[bar/right]
+width = 100%
+height = 15
+fixed-center = false 
+
+background = ${colors.background}
+foreground = ${colors.white}
+font-0 = DejaVuSansMono Nerd Font:pixelsize=10;3
+font-1 = NotoSans Symbols2:pixelsize=10;3
+
+modules-left = i3 arrowi3
+modules-right =  arrowtitle title arrowkeyboard xkeyboard arrowvolume volume arrowcpu cpu arrowmemory memory arrowdate date
+
+tray-position = right
+tray-background = ${colors.background}
+tray-padding = 1
+;-------------------------------------------------------------------------------;
+;                    		D E C O R A T I O N S								;
+;-------------------------------------------------------------------------------;
+[module/arrowi3]
+type = custom/text
+content = ""
+content-font = 2
+content-foreground = ${colors.blue}
+content-background = ${colors.background}
+
+[module/arrowtitle]
+type = custom/text
+content = " "
+content-font = 2
+content-foreground = ${colors.black}
+content-background = ${colors.background}
+
+[module/arrowkeyboard]
+; grey to bg
+type = custom/text
+content = " "
+content-font = 2
+content-foreground = ${colors.violet}
+content-background = ${colors.black}
+
+[module/arrowvolume]
+type = custom/text
+content = " "
+content-font = 2
+content-foreground = #02bdff
+content-background = ${colors.violet}
+
+[module/arrowcpu]
+; grey to bg
+type = custom/text
+content = ""
+content-font = 2
+content-foreground = #029dff
+content-background = #02bdff
+
+[module/arrowmemory]
+; bg to grey
+type = custom/text
+content = " "
+content-font = 2
+content-foreground = #027dff
+content-background = #0f9dff
+
+[module/arrowdate]
+; grey to bg
+type = custom/text
+content = " "
+content-font = 2
+content-foreground = #024dff
+content-background = #027dff
+
+;-------------------------------------------------------------------------------;
+;								M O D U L E S				 					;
+;-------------------------------------------------------------------------------;
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = " "
+format-prefix-font = 1
+format-prefix-foreground = ${colors.white}
+format-prefix-background = ${colors.violet}
+
+label-layout = %layout%
+label-layout-font = 1
+label-layout-foreground = ${colors.white}
+label-layout-background = ${colors.violet}
+
+label-indicator-background = ${colors.violet}
+; label-indicator-underline = ${colors.blue}
+
+[module/i3index]
+type = internal/i3
+format = <label-state>
+
+label-focused = "%name%"
+label-focused-foreground = ${colors.background}
+
+label-visible = "%name%"
+label-visible-foreground = ${colors.background}
+
+[module/i3]
+type = internal/i3
+format = <label-state><label-mode>
+
+index-sort = false
+enable-click = true 
+enable-scroll = false
+ws-icon-0 = 10;0[]
+ws-icon-1 = 1;1  
+ws-icon-2 = 2;2 
+ws-icon-3 = 3;3  
+ws-icon-4 = 4;4 
+ws-icon-5 = 5;5 ♪
+ws-icon-6 = 6;6
+ws-icon-7 = 7;7
+ws-icon-8 = 8;8
+ws-icon-9 = 9;9
+ws-icon-default =
+
+pin-workspaces = true ; Only show workspaces on the same output as the bar
+
+label-mode = " %mode% "
+label-mode-background = ${colors.black}
+
+label-focused = %{F#02adff B#0B0F10}%{F-} %icon% %{B#02adff F#0B0F10}%{F-}
+label-focused-foreground = ${colors.white}
+label-focused-background = ${colors.black}
+
+label-visible = " %icon% "
+label-visible-foreground = ${colors.white}
+label-visible-background = ${colors.black}
+
+label-unfocused = " %icon% "
+label-unfocused-foreground = ${colors.black}
+label-unfocused-background = ${colors.blue}
+
+label-urgent = " %icon% "
+label-urgent-foreground = ${colors.red}
+label-urgent-background = ${colors.blue}
+
+label-separator-padding = 0
+label-separator-foreground = ${colors.red}
+label-separator-background = ${colors.background}
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix = "  "
+format-prefix-foreground = ${colors.black}
+format-prefix-background = #029dff
+label = %percentage%%
+label-foreground = ${colors.black}
+label-background = #029dff
+
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = "  "
+format-prefix-foreground = ${colors.black}
+format-prefix-background = #027dff
+label = %gb_used%
+label-foreground = ${colors.black}
+label-background = #027dff
+
+[module/date]
+type = internal/date
+interval = 1
+
+date = "  %d.%m.%y"
+time= "%H:%M:%S "
+
+label = %date% %time%
+label-foreground = ${colors.black}
+label-background = #024dff
+
+[module/volume]
+type = internal/volume
+
+; mapping = true
+format-volume = <ramp-volume><label-volume>
+
+label-volume = "%percentage%% "
+label-volume-foreground = ${colors.black}
+label-volume-background = #02bdff
+label-muted = " 🔇 "
+label-muted-foreground = ${colors.black}
+label-muted-background = #02bdff
+
+ramp-volume-0 = " 🔈 "
+ramp-volume-0-foreground = ${colors.black}
+ramp-volume-0-background = #02bdff
+ramp-volume-1 = " 🔈 "
+ramp-volume-1-foreground = ${colors.black}
+ramp-volume-1-background = #02bdff
+ramp-volume-2 = " 🔉 "
+ramp-volume-2-foreground = ${colors.black}
+ramp-volume-2-background = #02bdff
+ramp-volume-3 = " 🔊 "
+ramp-volume-3-foreground = ${colors.red}
+ramp-volume-3-background = #02bdff
+
+[settings]
+screenchange-reload = true
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+[module/title]
+type = internal/xwindow
+
+format-background = ${colors.black}
+format-foreground = ${colors.white}
+format-padding = 1
+
+label-maxlen = 60
+

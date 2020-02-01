@@ -1,0 +1,110 @@
+/**
+ * ROFI Color theme
+ * User: Wangz
+ * Copyright: Dave Davenport
+ */
+
+* {
+    background:             #3a3a3a80;
+    foreground:             #d8d8d8;
+    transparent:            #00000000;
+    yellow:                 #ffa131;
+    blue:                   #4169d5;
+    selected-normal-background: @blue;
+    message-color:          #505050;
+    font:                   "IBM Plex Mono 14";
+}
+#window {
+    background-color:       @background;
+    border:                 0;
+    border-radius:          4px; 
+    padding:                50px;
+    width:                  70%;
+    height:                 70%;
+}
+
+#mainbox {
+    background-color:       @transparent;
+    border:                 0;
+    padding:                0;
+    children: [ inputbar, message, listview ];
+}
+#message {
+    background-color:       @message-color;
+    padding: 0px 15px 0px;
+}
+#textbox {
+    background-color:       @transparent;
+    text-color: @foreground;
+}
+#listview {
+    background-color:       @transparent;
+    fixed-height: 0;
+    spacing:      5px ;
+    padding:      10px ;
+    scrollbar:              false;
+}
+#element {
+    background-color:       @transparent;
+    text-color:       @foreground;
+    border:  1px 0 0 0;
+    border-color: #606060;
+    padding: 3px 6px 3px ;
+
+}
+#element.normal.normal {
+    background-color: @normal-background;
+    text-color:       @foreground;
+}
+#element.selected.normal {
+    background-color: @selected-normal-background;
+    text-color:       @foreground;
+}
+#scrollbar {
+    width:        4px ;
+    border:       0;
+    handle-width: 8px ;
+    padding:      0;
+}
+#sidebar {
+    border:       2px 0px 0px ;
+    border-color: @separatorcolor;
+}
+#button.selected {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
+#inputbar {
+    background-color:       @transparent;
+    spacing:    0;
+    text-color: @foreground;
+    padding:    1px 0px 20px;
+}
+#case-indicator {
+    background-color:       @transparent;
+    spacing:    0;
+    text-color: @foreground;
+}
+#entry {
+    background-color:       @transparent;
+    spacing:    0;
+    text-color: @foreground;
+}
+#prompt, button{
+    background-color:       @transparent;
+    spacing:    0;
+    text-color: @foreground;
+}
+#inputbar {
+    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
+}
+#textbox-prompt-colon {
+    background-color:       @transparent;
+    expand:     false;
+    str:        ":";
+    margin:     0px 0.3em 0em 0em ;
+    text-color: @foreground;
+}
+
+/* vim:ft=css
+
