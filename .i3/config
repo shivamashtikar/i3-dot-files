@@ -8,8 +8,9 @@ set $shutdown sudo -A shutdown -h now
 set $reboot sudo -A reboot
 set $hibernate sudo -A systemctl suspend
 set $term --no-startup-id kitty
+set $FLOATING_TERM --no-startup-id kitty --class=floating_term
 set $uterm --no-startup-id urxvt
-set $WALLPAPER $HOME/.scripts/random-wallpaper.sh /mnt/06A2E0EBA2E0DFE3/images/wallpaper
+set $WALLPAPER --no-startup-id  nitrogen --set-zoom-fill --random /mnt/314414C203296959/images/wallpaper  --save
 #set $WALLPAPER --no-startup-id feh --randomize --bg-fill /run/media/shivam/Data/images/Wallbase /run/media/shivam/Data/images/wallpaper
 
 # set default desktop layout (default is tiling)
@@ -110,14 +111,12 @@ bindsym $mod+v                  exec $term -e vim
 bindsym $mod+c			exec $HOME/.scripts/cycle-workspace.py
 bindsym $mod+Shift+c			exec $HOME/.scripts/cycle-workspace.py second
 bindsym $mod+e			exec $HOME/.scripts/book-search.sh
-bindsym $mod+Shift+f    exec $HOME/.scripts/move-music.sh
-bindsym $mod+Shift+t			exec telegram-desktop
-bindsym $mod+u			[instance="terminator" title="Life"] scratchpad show
+bindsym $mod+Shift+f    exec --no-startup-id $(xprop -id $(xdo id -N "Polybar") | grep -q "Normal" && xdo hide -N "Polybar" || xdo show -N "Polybar") # for hiding polybar
+#bindsym $mod+Shift+t			exec telegram-desktop
+bindsym $mod+u      [class="floating_term"] scratchpad show
 bindsym $mod+n			[con_mark="music"] scratchpad show
 bindsym $mod+y      exec surf youtube.com
 bindsym $mod+Shift+semicolon		exec $HOME/.scripts/open_nix_projects.sh
-bindsym $mod+Shift+g  exec $HOME/.scripts/god-mode.sh
-bindsym $mod+Shift+n  exec $HOME/.bin/bin.sh
 #bindsym $mod+o			exec rofi -show drun -theme ~/.config/rofi/new.rasi
 
 # change wallpaper
@@ -248,9 +247,7 @@ for_window [class="Timeset-gui"] floating enable border normal
 #for_window [class="(?i)virtualbox"] floating enable border normal
 for_window [class="Xfburn"] floating enable
 for_window [class="Blueman-manager"] floating enable
-
-for_window [instance="terminator" title="Life" ] floating enable, move scratchpad, scratchpad show;
-for_window [instance="terminator" title="Life"  ] resize grow left 50, resize grow right 50, resize grow down 50, resize grow up 50, move scratchpad;
+for_window [class="floating_term"] floating enable, move scratchpad, scratchpad show;resize grow left 300, resize grow right 300, resize grow down 150, resize grow up 100, move scratchpad;
 
 
 # switch to workspace with urgent window automatically
@@ -336,7 +333,7 @@ exec_always --no-startup-id fix_xcursor
 exec --no-startup-id volumeicon
 #exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent
 #exec --no-startup-id redshift -P -O 3000
-exec --no-startup-id sleep 10 && terminator -l KJ -T "Life is beautifu" -p floating
+exec --no-startup-id sleep 10 && exec $FLOATING_TERM
 exec --no-startup-id safeeyes
 
 
@@ -438,7 +435,7 @@ smart_borders on
 set $mode_gaps Gaps: (o) outer, (i) inner
 set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
 set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
-#bindsym $mod+Shift+g mode "$mode_gaps"
+bindsym $mod+Shift+g mode "$mode_gaps"
 
 mode "$mode_gaps" {
         bindsym o      mode "$mode_gaps_outer"

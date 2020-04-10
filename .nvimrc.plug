@@ -46,4 +46,12 @@ Plug 'direnv/direnv.vim'
 " ranger vim
 Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
+
+"vim-markdown
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+
+"editorConfig
+Plug 'editorconfig/editorconfig-vim'
+
 call plug#end()

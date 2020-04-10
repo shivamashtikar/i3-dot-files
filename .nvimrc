@@ -20,7 +20,7 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-map <C-n> :NERDTreeToggle<CR>
+map <C-b> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 "let g:NERDTreeDirArrowExpandable = ''
 "let g:NERDTreeDirArrowCollapsible = ''
@@ -34,49 +34,34 @@ set incsearch
 set autowrite
 set hidden
 set mouse=a
-
-" Set compatibility to Vim only.
-set nocompatible
-
-" Helps force plug-ins to load correctly when it is turned back on below.
-filetype off
-
-" Turn on syntax highlighting.
-syntax on
-
-" For plug-ins to load correctly.
-filetype plugin indent on
-
-" Turn off modelines
-set modelines=0
-
-" Automatically wrap text that extends beyond the screen length.
-set wrap
+set nocompatible " Set compatibility to Vim only.
+filetype off " Helps force plug-ins to load correctly when it is turned back on below.
+syntax on " Turn on syntax highlighting.
+filetype plugin indent on " For plug-ins to load correctly.
+set modelines=0 " Turn off modelines
 
 " Vim's auto indentation feature does not work properly with text copied from outisde of Vim. Press the <F2> key to toggle paste mode on/off.
 nnoremap <F2> :set invpaste paste?<CR>
 imap <F2> <C-O>:set invpaste paste?<CR>
 set pastetoggle=<F2>
 
-" Uncomment below to set the max textwidth. Use a value corresponding to the width of your screen.
-" set textwidth=79
+set wrap " Automatically wrap text that extends beyond the screen length.
+set linebreak "Avoid wrapping a line in the middle of a word
+" set textwidth=79 " Uncomment below to set the max textwidth. Use a value corresponding to the width of your screen.
 set formatoptions=tcqrn1
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
 set noshiftround
+set scrolloff=5 " Display 5 lines above/below the cursor when scrolling with a mouse.
+set backspace=indent,eol,start " Fixes common backspace problems
+set ttyfast " Speed up scrolling in Vim
+set laststatus=2 " Status bar
+set cursorline "Highlight the line currently under cursor.
+set backupdir=~/.cache/vim " Directory to store backup files.h
+set confirm "Display a confirmation dialog when closing an unsaved file.
 
-" Display 5 lines above/below the cursor when scrolling with a mouse.
-set scrolloff=5
-" Fixes common backspace problems
-set backspace=indent,eol,start
-
-" Speed up scrolling in Vim
-set ttyfast
-
-" Status bar
-set laststatus=2
 
 " Display options
 set showmode
@@ -199,3 +184,23 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 " Ranger
 map <leader>f :Ranger<CR>
 
+" vim-markdown
+let g:vim_markdown_folding_disabled = 1 " dissable folding
+set conceallevel=2 " concealing text For example, conceal [link text](link url) as just link text.
+
+" UltiSnips
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+" **************** Competitve Coding *****************
+"
+"
+" Template
+autocmd BufNewFile *.cpp -r ~/template.cpp
+"" Compile/Run C++
+nnoremap gb :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r < %:r.in > %:r.out 2> %:r.err && printf "\n\n\n\n"<CR>
