@@ -11,8 +11,12 @@ Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" Colorschemes
 Plug 'fcpg/vim-fahrenheit'
 Plug 'fcpg/vim-orbital'
+Plug 'liuchengxu/space-vim-dark'
+
 Plug 'neovimhaskell/haskell-vim'
 Plug 'w0rp/ale'
 " Reverse the order of commits in a git interactive rebase
@@ -53,5 +57,14 @@ Plug 'plasticboy/vim-markdown'
 
 "editorConfig
 Plug 'editorconfig/editorconfig-vim'
+
+" denite
+Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
+
+" nerdCommenter
+Plug 'preservim/nerdcommenter'
+
+"Startify at the start screen in nvim
+Plug 'mhinz/vim-startify'
 
 call plug#end()
