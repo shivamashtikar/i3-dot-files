@@ -22,7 +22,6 @@ Plug 'w0rp/ale'
 " Reverse the order of commits in a git interactive rebase
 Plug 'salcode/vim-interactive-rebase-reverse'
 
-Plug 'philip-karlsson/bolt.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'jiangmiao/auto-pairs'
 
 Plug 'autozimu/LanguageClient-neovim', {
@@ -41,7 +40,7 @@ Plug 'neovimhaskell/haskell-vim'
 
 Plug 'alx741/vim-stylishask'
 
-Plug 'kien/ctrlp.vim'
+" Plug 'kien/ctrlp.vim'
 
 Plug 'ryanoasis/vim-devicons'
 
