@@ -293,11 +293,11 @@
   return printf('+%d ~%d -%d', a, m, r)
   endfunction
   set statusline+=%{GitStatus()}
-  let g:gitgutter_enabled = 0
+  let g:gitgutter_enabled = 1
+  let g:gitgutter_highlight_linenrs = 1
   nmap ]h <Plug>(GitGutterNextHunk)
   nmap [h <Plug>(GitGutterPrevHunk)
   nmap <Leader>hu <Plug>(GitGutterUndoHunk)
-  nmap <Leader>hv <Plug>(GitGutterPreviewHunk)
 
   " === Denite setup ==="
   " Use ripgrep for searching current directory for files
@@ -342,7 +342,7 @@
   let s:denite_options = {'default' : {
   " \ 'split': 'floating',
   \ 'start_filter': 1,
-  " \ 'auto_resize': 1,
+  \ 'auto_resize': 1,
   \ 'source_names': 'short',
   \ 'prompt': 'λ ',
   \ 'highlight_matched_char': 'QuickFixLine',
@@ -407,7 +407,7 @@ endfunction
 "   q or <Esc>  - Quit Denite window
 "   d           - Delete currenly selected file
 "   p           - Preview currently selected file
-"   <C-i> or i  - Switch to insert mode inside of filter prompt
+"   i  - Switch to insert mode inside of filter prompt
 "   <C-t>       - Open currently selected file in a new tab
 "   <C-v>       - Open currently selected file a vertical split
 "   <C-h>       - Open currently selected file in a horizontal split
@@ -457,3 +457,92 @@ endfunction
 " autocmd FileType tex,latex inoremap ,sm \small
 " autocmd FileType tex,latex inoremap ,l \large
 " autocmd FileType tex,latex inoremap ,h \huge
+
+" :LanguageClientStart
+" Default Language Server configuration
+let g:LanguageClient_autoStart=1
+let g:LanguageClient_autoStop=1
+let g:LanguageClient_serverCommands={}
+let g:LanguageClient_windowLogMessageLevel="Log"
+let g:LanguageClient_loggingLevel="INFO"
+let g:LanguageClient_trace="verbose"
+let g:LanguageClient_useVirtualText=1
+let g:LanguageClient_rootMarkers={}
+
+" Purescript specific configuration
+" let purescript_indent_if = 2
+" let purescript_indent_case = 2
+" let purescript_indent_let = 2
+" let purescript_indent_where = 2
+" let purescript_indent_do = 2
+set omnifunc=syntaxcomplete#Complete
+let g:psc_ide_syntastic_mode = 1
+
+if has('autocmd')
+    autocmd filetype purescript setlocal tabstop=2
+    autocmd filetype purescript setlocal shiftwidth=2
+    " autocmd filetype purescript setlocal colorcolumn=81
+    if executable("purescript-language-server") || executable("npx")
+        " See https://github.com/nwolverson/vscode-ide-purescript/blob/master/package.json#L80-L246 for list of properties to use
+        let config =
+            \ { 'autoStartPscIde': v:true
+            \ , 'pscIdePort': v:null
+            \ , 'autocompleteAddImport': v:true
+            \ , 'pursExe': 'purs'
+            \ , 'addNpmPath': v:true
+            \ }
+
+        let configWrapper =
+            \ { 'purescript': config
+            \ }
+
+        " Define the LanguageServer in the LanguageClient
+        if executable("purescript-language-server")
+            let g:LanguageClient_serverCommands.purescript = ['purescript-language-server', '--stdio', '--config', json_encode(configWrapper)]
+        else
+            let g:LanguageClient_serverCommands.purescript = ['npx', 'purescript-language-server', '--stdio', '--config', json_encode(configWrapper)]
+        endif
+
+        let g:LanguageClient_rootMarkers.purescript = ['bower.json', 'package.json']
+
+        autocmd filetype purescript setlocal omnifunc=LanguageClient#complete
+                " Keybindings for IDE like funtions
+        autocmd filetype purescript nm <buffer> <silent> <leader>a :call LanguageClient_textDocument_codeAction()<CR>
+        autocmd filetype purescript nm <buffer> <silent> <leader>i :call PaddImport(expand('<cword>'), v:null)<CR>
+        autocmd filetype purescript nm <buffer> <silent> <leader>g :call LanguageClient_textDocument_definition()<CR>
+        autocmd filetype purescript nm <buffer> <silent> <leader>h :call LanguageClient_textDocument_hover()<CR>
+        autocmd filetype purescript nm <buffer> <silent> <leader>l :call Pbuild()<CR>
+                " Functions for the rest of commands
+        function! PaddImport(name, module)
+            call LanguageClient_workspace_executeCommand(
+                \ 'purescript.addCompletionImport', [ a:name, a:module, v:null, 'file://' . expand('%:p') ],
+                \ { result -> s:PaddImportCallback(a:name, result) })
+        endfunction
+
+        function! Pstart()
+            call LanguageClient_workspace_executeCommand('purescript.startPscIde', [])
+        endfunction
+
+        function! Pend()
+            call LanguageClient_workspace_executeCommand('purescript.stopPscIde', [])
+        endfunction
+
+        function! Prestart()
+            call LanguageClient_workspace_executeCommand('purescript.restartPscIde', [])
+        endfunction
+
+        function! Pbuild()
+            call LanguageClient_workspace_executeCommand('purescript.build', [])
+        endfunction
+
+        function! Psearch(identifier)
+            call LanguageClient_workspace_executeCommand('purescript.search', [ a:identifier ], function("s:PsearchCallback"))
+        endfunction
+
+        function! PLSCommand(command, ...)
+            let l:args = get(a:, 1, [])
+            call LanguageClient_workspace_executeCommand(a:command, l:args, function("PlogCallback"))
+        endfunction
+
+    endif
+endif

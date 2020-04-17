@@ -30,7 +30,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 
 " (Optional) Multi-entry selection UI.
-Plug 'junegunn/fzf'
+" Plug 'junegunn/fzf'
 
 Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
 "Support for writing Nix expressions in vim
@@ -59,11 +59,16 @@ Plug 'editorconfig/editorconfig-vim'
 
 " denite
 Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'chemzqm/denite-git'
 
 " nerdCommenter
 Plug 'preservim/nerdcommenter'
 
 "Startify at the start screen in nvim
 Plug 'mhinz/vim-startify'
+
+"Purescript
+Plug 'purescript-contrib/purescript-vim'
+Plug 'frigoeu/psc-ide-vim'
 
 call plug#end()
