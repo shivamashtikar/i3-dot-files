@@ -15,7 +15,7 @@ Plug 'vim-airline/vim-airline-themes'
 " Colorschemes
 Plug 'fcpg/vim-fahrenheit'
 Plug 'fcpg/vim-orbital'
-Plug 'liuchengxu/space-vim-dark'
+Plug 'whatyouhide/vim-gotham'
 
 Plug 'neovimhaskell/haskell-vim'
 Plug 'w0rp/ale'
@@ -29,8 +29,6 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'do': 'bash install.sh',
     \ }
 
-" (Optional) Multi-entry selection UI.
-" Plug 'junegunn/fzf'
 
 Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
 "Support for writing Nix expressions in vim
@@ -40,7 +38,6 @@ Plug 'neovimhaskell/haskell-vim'
 
 Plug 'alx741/vim-stylishask'
 
-" Plug 'kien/ctrlp.vim'
 
 Plug 'ryanoasis/vim-devicons'
 

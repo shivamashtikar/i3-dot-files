@@ -1,290 +1,246 @@
-  let mapleader=";"
+let mapleader=";"
 
-  " Use system Clipboard
-  set clipboard+=unnamedplus
+" Use system Clipboard
+set clipboard+=unnamedplus
 
-  " Trailing whitespace on save
-  autocmd BufWritePre * %s/\s\+$//e
+" Trailing whitespace on save
+autocmd BufWritePre * %s/\s\+$//e
 
-  " Enable spell checking, s for spell check
-  map <leader>s :setlocal spell! spelllang=en_us<CR>
+" Enable spell checking, s for spell check
+map <leader>s :setlocal spell! spelllang=en_us<CR>
 
-  " Shortcut for split navigation
-  map <C-h> <C-w>h
-  map <C-j> <C-w>j
-  map <C-k> <C-w>k
-  map <C-l> <C-w>l
+" Shortcut for split navigation
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
 
-  " Shortcut split opening
-  nnoremap <leader>h :split<Space>
-  nnoremap <leader>v :vsplit<Space>
+" Shortcut split opening
+nnoremap <leader>h :split<Space>
+nnoremap <leader>v :vsplit<Space>
 
-  " Autocompletion
-  set wildmode=longest,list,full
+" Autocompletion commands
+set wildmode=longest,list,full
 
-  " Alias write and quit to Q
-  nnoremap <leader>q :q<CR>
-  nnoremap <leader>w :w<CR>
+" Clear the search with ,/
+nmap <silent> ,/ :nohlsearch<CR>
 
-  " Fix splitting
-  set splitbelow splitright
+" Alias write and quit to Q
+nnoremap <leader>q :q<CR>
+nnoremap <leader>w :w<CR>
 
-  " Shift + u for redo
-  noremap <S-u> <C-r>
+" Fix splitting
+set splitbelow splitright
 
-  " Use deoplete.
-  let g:deoplete#enable_at_startup = 1
+" Shift + u for redo
+noremap <S-u> <C-r>
 
-  let g:airline_theme='powerlineish'
-  let g:airline_powerline_fonts = 1
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
 
-  " ColorSchemes
-  " colorscheme fahrenheit
-  " colorscheme orbital
-  colorscheme space-vim-dark
-  set termguicolors
-  hi Comment cterm=italic
-  hi Comment guifg=#5C6370 ctermfg=59
+let g:airline_theme='gotham'
+let g:airline_powerline_fonts = 1
 
-  "NERDTree
-  let g:NERDTreeMinimalUI = 1
-  let g:NERDTreeShowHidden = 1
-  "let g:NERDTreeWinPos = 'rightbelow'
-  let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
-  let g:NERDTreeStatusline = ''
-  autocmd StdinReadPre * let s:std_in=1
-  autocmd VimEnter *
-           \   if argc() == 0 && !exists("s:std_in")
-           \ |   Startify
-           \ |   NERDTree
-           \ |   wincmd w
-           \ | elseif argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in")
-           \ |   Startify
-           \ |   exe 'NERDTree' argv()[0]
-           \ |   wincmd p
-           \ |   exe 'cd '.argv()[0]
-           \ | endif
-  map <C-b> :NERDTreeToggle<CR>
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-  "let g:NERDTreeDirArrowExpandable = ''
-  "let g:NERDTreeDirArrowCollapsible = ''
+" ColorSchemes
+" colorscheme fahrenheit
+" colorscheme orbital
+colorscheme gotham
+let g:gotham_airline_emphasised_insert = 0
+set termguicolors
 
-  " NerdCommenter
-  let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
-  let g:NERDCompactSexyComs = 1 " Use compact syntax for prettified multi-line comments
-  let g:NERDDefaultAlign = 'left' " Align line-wise comment delimiters flush left instead of following code indentation
-  let g:NERDAltDelims_java = 1 " Set a language to use its alternate delimiters by default
-  let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } } " Add your own custom formats or override the defaults
-  let g:NERDCommentEmptyLines = 1 " Allow commenting and inverting empty lines (useful when commenting a region)
-  let g:NERDTrimTrailingWhitespace = 1 " Enable trimming of trailing whitespace when uncommenting
-  let g:NERDToggleCheckAllLines = 1 " Enable NERDCommenterToggle to check all selected lines is commented or not
+" === NERDTree ===
+" Ctrl + b to toggle
+map <C-b> :NERDTreeToggle<CR>
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
+let g:NERDTreeStatusline = ''
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter *
+         \   if argc() == 0 && !exists("s:std_in")
+         \ |   Startify
+         \ |   NERDTree
+         \ |   wincmd w
+         \ | elseif argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in")
+         \ |   Startify
+         \ |   exe 'NERDTree' argv()[0]
+         \ |   wincmd p
+         \ |   exe 'cd '.argv()[0]
+         \ | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" === vim-devicons for NERDTree ===
+"
+let g:webdevicons_enable = 1
+let g:webdevicons_enable_nerdtree = 1
+let g:webdevicons_enable_unite = 1
+let g:webdevicons_enable_vimfiler = 1
+let g:webdevicons_enable_airline_tabline = 1
+let g:webdevicons_enable_airline_statusline = 1
+let g:webdevicons_enable_ctrlp = 1
+let g:webdevicons_enable_flagship_statusline = 1
+let g:WebDevIconsUnicodeDecorateFileNodes = 1
+let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
+let g:webdevicons_conceal_nerdtree_brackets = 1
+let g:WebDevIconsNerdTreeAfterGlyphPadding = '  '
+let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+let g:webdevicons_enable_denite = 1
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:DevIconsEnableFoldersOpenClose = 1
+let g:DevIconsEnableFolderPatternMatching = 1
+let g:DevIconsEnableFolderExtensionPatternMatching = 1
+let WebDevIconsUnicodeDecorateFolderNodesExactMatches = 1
 
-  " vim-devicons
-  let g:webdevicons_enable = 1
-  let g:webdevicons_enable_nerdtree = 1
-  let g:webdevicons_enable_unite = 1
-  let g:webdevicons_enable_vimfiler = 1
-  let g:webdevicons_enable_airline_tabline = 1
-  let g:webdevicons_enable_airline_statusline = 1
-  let g:webdevicons_enable_ctrlp = 1
-  let g:webdevicons_enable_flagship_statusline = 1
-  let g:WebDevIconsUnicodeDecorateFileNodes = 1
-  let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
-  let g:webdevicons_conceal_nerdtree_brackets = 1
-  let g:WebDevIconsNerdTreeAfterGlyphPadding = '  '
-  let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
-  let g:webdevicons_enable_denite = 1
-  let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-  let g:DevIconsEnableFoldersOpenClose = 1
-  let g:DevIconsEnableFolderPatternMatching = 1
-  let g:DevIconsEnableFolderExtensionPatternMatching = 1
-  let WebDevIconsUnicodeDecorateFolderNodesExactMatches = 1
-
-  set showcmd
-  set showmatch
-  set ignorecase
-  set smartcase
-  set incsearch
-  set autowrite
-  set hidden
-  set mouse=a
-  set nocompatible " Set compatibility to Vim only.
-  filetype off " Helps force plug-ins to load correctly when it is turned back on below.
-  syntax on " Turn on syntax highlighting.
-  filetype plugin indent on " For plug-ins to load correctly.
-  set modelines=0 " Turn off modelines
-
-  " Vim's auto indentation feature does not work properly with text copied from outisde of Vim. Press the <F2> key to toggle paste mode on/off.
-  nnoremap <F2> :set invpaste paste?<CR>
-  imap <F2> <C-O>:set invpaste paste?<CR>
-  set pastetoggle=<F2>
-
-  set wrap " Automatically wrap text that extends beyond the screen length.
-  set linebreak "Avoid wrapping a line in the middle of a word
-  " set textwidth=79 " Uncomment below to set the max textwidth. Use a value corresponding to the width of your screen.
-  set formatoptions=tcqrn1
-  set tabstop=2
-  set shiftwidth=2
-  set softtabstop=2
-  set expandtab
-  set noshiftround
-  set scrolloff=5 " Display 5 lines above/below the cursor when scrolling with a mouse.
-  set backspace=indent,eol,start " Fixes common backspace problems
-  set ttyfast " Speed up scrolling in Vim
-  set laststatus=2 " Status bar
-  set cursorline "Highlight the line currently under cursor.
-  set backupdir=~/.cache/vim " Directory to store backup files.h
-  set confirm "Display a confirmation dialog when closing an unsaved file.
-  set updatetime=250
+" === NerdCommenter ===
+" <leader> cc -> comment out the current line or text selected
+" <leader> cn -> Same as cc but forces nesting.
+" <leader> c <space> -> toggle the comment state of the selected line(s)
+" <leader> cu -> Uncomments the selected line(s).
+let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
+let g:NERDCompactSexyComs = 1 " Use compact syntax for prettified multi-line comments
+let g:NERDDefaultAlign = 'left' " Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDAltDelims_java = 1 " Set a language to use its alternate delimiters by default
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } } " Add your own custom formats or override the defaults
+let g:NERDCommentEmptyLines = 1 " Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDTrimTrailingWhitespace = 1 " Enable trimming of trailing whitespace when uncommenting
+let g:NERDToggleCheckAllLines = 1 " Enable NERDCommenterToggle to check all selected lines is commented or not
 
 
-  " Display options
-  set showmode
-  set showcmd
+set showcmd
+set showmatch
+set ignorecase
+set smartcase
+set incsearch
+set autowrite
+set hidden
+set mouse=a
+set nocompatible " Set compatibility to Vim only.
+filetype off " Helps force plug-ins to load correctly when it is turned back on below.
+" * syntax highlighting dissabled was causing bug in theme
+" syntax on " Turn on syntax highlighting.
+filetype plugin indent on " For plug-ins to load correctly.
+set modelines=0 " Turn off modelines
+" Vim's auto indentation feature does not work properly with text copied from outisde of Vim. Press the <F2> key to toggle paste mode on/off.
+nnoremap <F2> :set invpaste paste?<CR>
+imap <F2> <C-O>:set invpaste paste?<CR>
+set pastetoggle=<F2>
+set wrap " Automatically wrap text that extends beyond the screen length.
+set linebreak "Avoid wrapping a line in the middle of a word
+" set textwidth=79 " Uncomment to set the max textwidth. Use a value corresponding to the width of your screen.
+set formatoptions=tcqrn1
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+set noshiftround
+set scrolloff=5 " Display 5 lines above/below the cursor when scrolling with a mouse.
+set backspace=indent,eol,start " Fixes common backspace problems
+set ttyfast " Speed up scrolling in Vim
+set laststatus=2 " Status bar
+set cursorline "Highlight the line currently under cursor.
+set backupdir=~/.cache/vim " Directory to store backup files.h
+set confirm "Display a confirmation dialog when closing an unsaved file.
+set updatetime=250
 
-  " Highlight matching pairs of brackets. Use the '%' character to jump between them.
-  set matchpairs+=<:>
+" Display options
+set showmode
+set showcmd
 
-  " Display different types of white spaces.
-  set list
-  set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
+" Highlight matching pairs of brackets. Use the '%' character to jump between them.
+set matchpairs+=<:>
 
-  " Show line numbers
-  " Automatic toggling between line number modes
-  set number relativenumber
-  :augroup numbertoggle
-  :  autocmd!
-  :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-  :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-  :augroup END
+" Display different types of white spaces.
+set list
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
 
-
-  " Encoding
-  set encoding=utf-8
-
-  " Highlight matching search patterns
-  set hlsearch
-  " Enable incremental search
-  set incsearch
-  " Include matching uppercase words with lowercase search term
-  set ignorecase
-  " Include only uppercase words with uppercase search term
-  set smartcase
-
-  " Store info from no more than 100 files at a time, 9999 lines of text, 100kb of data. Useful for copying large amounts of data between files.
-  set viminfo='100,<9999,s100
-
-  " Map the <Space> key to toggle a selected fold opened/closed.
-  nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-  vnoremap <Space> zf
-
-  " Automatically save and load folds
-  "autocmd BufWinLeave *.* mkview
-  "autocmd BufWinEnter *.* silent loadview"
+" Show line numbers
+" Automatic toggling between line number modes
+set number relativenumber
+:augroup numbertoggle
+:  autocmd!
+:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+:augroup END
 
 
-  let g:ale_linters = {'haskell': ['hlint', 'ghc']}
-  let g:ale_haskell_ghc_options = '-fno-code -v0 -isrc'
+set encoding=utf-8 " Encoding
+set hlsearch " Highlight matching search patterns
+set incsearch " Enable incremental search
+set ignorecase " Include matching uppercase words with lowercase search term
+set smartcase " Include only uppercase words with uppercase search term
+set viminfo='100,<9999,s100 " Store info from no more than 100 files at a time, 9999 lines of text, 100kb of data. Useful for copying large amounts of data between files.
 
-  highlight clear ALEErrorSign
-  highlight clear ALEWarningSign
+" Map the <Space> key to toggle a selected fold opened/closed.
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
 
-  " Set this. Airline will handle the rest.
-  let g:airline#extensions#ale#enabled = 1
+let g:ale_linters = {'haskell': ['hlint', 'ghc']}
+let g:ale_haskell_ghc_options = '-fno-code -v0 -isrc'
+highlight clear ALEErrorSign
+highlight clear ALEWarningSign
+" Set this. Airline will handle the rest.
+let g:airline#extensions#ale#enabled = 1
 
 
-  function! LinterStatus() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-
-    return l:counts.total == 0 ? 'OK' : printf(
+function! LinterStatus() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? 'OK' : printf(
     \   '%dW %dE',
     \   all_non_errors,
     \   all_errors
     \)
-  endfunction
+endfunction
 
-  set statusline=%{LinterStatus()}
+set statusline=%{LinterStatus()}
 
-  "Clipboard
-  "-------------------------
-  " if has("xterm_clipboard")
-  "   vnoremap <C-c> "+y
-  "   inoremap <C-v> <Esc>"+p i
-  " elseif executable('xclip')
-  "   vnoremap <C-c> :!xclip -f -sel clip <CR>
-  "   inoremap <C-v> <Esc>:r!xclip -o -sel clip <CR>
-  " endif
+" Run HLint
+autocmd filetype haskell nnoremap <buffer> <C-h> :!hlint %<CR>
 
-  "Ctrl-O/P to open files
-  "-------------------------
-  "let g:ctrlp_map = '<c-p>'
-  "let g:ctrlp_cmd = ':CtrlP'
-  "let g:ctrlp_working_path_mode = 'ra'
-  "let g:ctrlp_lazy_update = 10
-  "nnoremap <C-o> :CtrlPBuffer<CR>
-  "inoremap <C-o> <Esc>:CtrlPBuffer<CR>
-
-
-
-  "Run HLint
-  " nnoremap <C-h> :!hlint %<CR>
-
-  "Ghcide
-  let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
-  let g:LanguageClient_serverCommands = {
+" Ghcide
+let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
+let g:LanguageClient_serverCommands = {
     \ 'haskell': ['ghcide', '--lsp'],
     \ }
+"Call language server
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" Or map each action separately
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+" nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
-  "Call language server
-  nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 
-  " Or map each action separately
-  nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-  nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-  nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+let g:airline#extensions#tabline#enabled = 1 " Enable the list of buffers
+let g:airline#extensions#tabline#fnamemod = ':t' " Show just the filename
 
+" Ranger
+map <leader>f :Ranger<CR>
 
+" vim-markdown
+let g:vim_markdown_folding_disabled = 1 " dissable folding
+set conceallevel=2 " concealing text For example, conceal [link text](link url) as just link text.
 
-  let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
-  let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
-  let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
-  let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
-  let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
-  let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
-  let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+" UltiSnips
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsEditSplit="vertical" " If you want :UltiSnipsEdit to split your window.
 
-  " Enable the list of buffers
-  let g:airline#extensions#tabline#enabled = 1
-
-  " Show just the filename
-  let g:airline#extensions#tabline#fnamemod = ':t'
-
-  " Ranger
-  map <leader>f :Ranger<CR>
-
-  " vim-markdown
-  let g:vim_markdown_folding_disabled = 1 " dissable folding
-  set conceallevel=2 " concealing text For example, conceal [link text](link url) as just link text.
-
-  " UltiSnips
-  " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-  let g:UltiSnipsExpandTrigger="<tab>"
-  let g:UltiSnipsJumpForwardTrigger="<c-b>"
-  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-  " If you want :UltiSnipsEdit to split your window.
-  let g:UltiSnipsEditSplit="vertical"
-
-  " **************** Competitve Coding *****************
-  "
-  "
-  " Template
-  autocmd BufNewFile *.cpp -r ~/.templates/template.cpp
-  "" Compile/Run C++
-  nnoremap gb :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r < %:r.in > %:r.out 2> %:r.err && printf "\n\n\n\n"<CR>
+" **************** Competitve Coding *****************
+"
+"
+" Template [C++]
+autocmd BufNewFile *.cpp -r ~/.templates/template.cpp
+"" Compile/Run [C++]
+autocmd filetype cpp nm <buffer> gb :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r < %:r.in > %:r.out 2> %:r.err && printf "\n\n\n\n"<CR>
 
 
   " GitGutter
@@ -434,7 +390,8 @@ function! s:denite_my_settings() abort
 endfunction
 
 
-" latex
+" --------------- Latex specific configuration ----------------------
+"
 " autocmd FileType tex,latex noremap <leader>d :w<CR>:!texify<Space>-cp<Space>%<CR>
 " autocmd FileType tex,latex inoremap ,c \{<++>}<CR><++><Esc>?{<CR>i
 " autocmd FileType tex,latex inoremap ,dc \documentclass{}<CR><CR><++><Esc>?}<CR>i
@@ -458,91 +415,33 @@ endfunction
 " autocmd FileType tex,latex inoremap ,l \large
 " autocmd FileType tex,latex inoremap ,h \huge
 
-" :LanguageClientStart
-" Default Language Server configuration
-let g:LanguageClient_autoStart=1
-let g:LanguageClient_autoStop=1
-let g:LanguageClient_serverCommands={}
-let g:LanguageClient_windowLogMessageLevel="Log"
-let g:LanguageClient_loggingLevel="INFO"
-let g:LanguageClient_trace="verbose"
-let g:LanguageClient_useVirtualText=1
-let g:LanguageClient_rootMarkers={}
 
-" Purescript specific configuration
-" let purescript_indent_if = 2
-" let purescript_indent_case = 2
-" let purescript_indent_let = 2
-" let purescript_indent_where = 2
-" let purescript_indent_do = 2
-set omnifunc=syntaxcomplete#Complete
+" --------------- Purescript specific configuration ----------------------
+"
 let g:psc_ide_syntastic_mode = 1
-
-if has('autocmd')
-    autocmd filetype purescript setlocal tabstop=2
-    autocmd filetype purescript setlocal shiftwidth=2
-    " autocmd filetype purescript setlocal colorcolumn=81
-    if executable("purescript-language-server") || executable("npx")
-        " See https://github.com/nwolverson/vscode-ide-purescript/blob/master/package.json#L80-L246 for list of properties to use
-        let config =
-            \ { 'autoStartPscIde': v:true
-            \ , 'pscIdePort': v:null
-            \ , 'autocompleteAddImport': v:true
-            \ , 'pursExe': 'purs'
-            \ , 'addNpmPath': v:true
-            \ }
-
-        let configWrapper =
-            \ { 'purescript': config
-            \ }
-
-        " Define the LanguageServer in the LanguageClient
-        if executable("purescript-language-server")
-            let g:LanguageClient_serverCommands.purescript = ['purescript-language-server', '--stdio', '--config', json_encode(configWrapper)]
-        else
-            let g:LanguageClient_serverCommands.purescript = ['npx', 'purescript-language-server', '--stdio', '--config', json_encode(configWrapper)]
-        endif
-
-        let g:LanguageClient_rootMarkers.purescript = ['bower.json', 'package.json']
-
-        autocmd filetype purescript setlocal omnifunc=LanguageClient#complete
-                " Keybindings for IDE like funtions
-        autocmd filetype purescript nm <buffer> <silent> <leader>a :call LanguageClient_textDocument_codeAction()<CR>
-        autocmd filetype purescript nm <buffer> <silent> <leader>i :call PaddImport(expand('<cword>'), v:null)<CR>
-        autocmd filetype purescript nm <buffer> <silent> <leader>g :call LanguageClient_textDocument_definition()<CR>
-        autocmd filetype purescript nm <buffer> <silent> <leader>h :call LanguageClient_textDocument_hover()<CR>
-        autocmd filetype purescript nm <buffer> <silent> <leader>l :call Pbuild()<CR>
-                " Functions for the rest of commands
-        function! PaddImport(name, module)
-            call LanguageClient_workspace_executeCommand(
-                \ 'purescript.addCompletionImport', [ a:name, a:module, v:null, 'file://' . expand('%:p') ],
-                \ { result -> s:PaddImportCallback(a:name, result) })
-        endfunction
-
-        function! Pstart()
-            call LanguageClient_workspace_executeCommand('purescript.startPscIde', [])
-        endfunction
-
-        function! Pend()
-            call LanguageClient_workspace_executeCommand('purescript.stopPscIde', [])
-        endfunction
-
-        function! Prestart()
-            call LanguageClient_workspace_executeCommand('purescript.restartPscIde', [])
-        endfunction
-
-        function! Pbuild()
-            call LanguageClient_workspace_executeCommand('purescript.build', [])
-        endfunction
-
-        function! Psearch(identifier)
-            call LanguageClient_workspace_executeCommand('purescript.search', [ a:identifier ], function("s:PsearchCallback"))
-        endfunction
-
-        function! PLSCommand(command, ...)
-            let l:args = get(a:, 1, [])
-            call LanguageClient_workspace_executeCommand(a:command, l:args, function("PlogCallback"))
-        endfunction
-
-    endif
-endif
+" List loaded modules.
+autocmd filetype purescript nm <buffer> <silent> ,L :Plist<CR>
+" Load externs, with optional |<bang>|, first reset loaded modules.
+autocmd filetype purescript nm <buffer> <silent> ,l :Pload!<CR>
+" Rebuild current buffer, with optional |<bang>| first reload the modules.
+autocmd filetype purescript nm <buffer> <silent> ,r :Prebuild!<CR>
+" Generate function template from a function signature on the current line.
+autocmd filetype purescript nm <buffer> <silent> ,f :PaddClause<CR>
+" Add type annotation to a function on the current line, e.g. if you use this command over the line
+autocmd filetype purescript nm <buffer> <silent> ,t :PaddType<CR>
+" Apply current line suggestion if there is any.
+autocmd filetype purescript nm <buffer> <silent> ,a :Papply<CR>
+"   With |<bang>| applies all suggestions.  Warning that have suggestion are indicated with 'V' in the quick fix list.
+autocmd filetype purescript nm <buffer> <silent> ,A :Papply!<CR>
+" Add case expression for give type, with optional |<bang>| it will also include type annotations, e.g. starting with
+autocmd filetype purescript nm <buffer> <silent> ,C :Pcase!<CR>
+" import the word under cursor
+autocmd filetype purescript nm <buffer> <silent> ,i :Pimport<CR>
+" qualified import
+autocmd filetype purescript nm <buffer> <silent> ,qa :PaddImportQualifications<CR>
+" Goto identifier
+autocmd filetype purescript nm <buffer> <silent> ,g :Pgoto<CR>
+" Search pursuit for the word under the cursor
+autocmd filetype purescript nm <buffer> <silent> ,p :Pursuit<CR>
+" Find type of the word under the cursor
+autocmd filetype purescript nm <buffer> <silent> ,T :Ptype<CR>
