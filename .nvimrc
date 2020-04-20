@@ -35,18 +35,36 @@ set splitbelow splitright
 " Shift + u for redo
 noremap <S-u> <C-r>
 
-" Use deoplete.
+" === Deoplete ===
+" Use deoplete at startup
 let g:deoplete#enable_at_startup = 1
+" deoplete-clang
+" # On GNU/Linux
+" $ sudo find / -name libclang.so
+" # On macOS
+" $ mdfind -name libclang.dylib
+let g:deoplete#sources#clang#libclang_path='/usr/lib/libclang.so'
+let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
 
-let g:airline_theme='gotham'
+let g:airline_theme='ayu_dark'
 let g:airline_powerline_fonts = 1
 
 " ColorSchemes
 " colorscheme fahrenheit
 " colorscheme orbital
-colorscheme gotham
-let g:gotham_airline_emphasised_insert = 0
+" colorscheme gotham
+" let g:gotham_airline_emphasised_insert = 0
+" colorscheme murphy
+let ayucolor="dark"   " for dark version of theme
+colorscheme ayu
 set termguicolors
+
+" === IndentLine ===
+" let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indentLine_char = '┊'
+let g:indentLine_first_char = '┊'
+let g:indentLine_showFirstIndentLevel = 1
+let g:indentLine_setColors = 0
 
 " === NERDTree ===
 " Ctrl + b to toggle
@@ -105,7 +123,6 @@ let g:NERDTrimTrailingWhitespace = 1 " Enable trimming of trailing whitespace wh
 let g:NERDToggleCheckAllLines = 1 " Enable NERDCommenterToggle to check all selected lines is commented or not
 
 
-set showcmd
 set showmatch
 set ignorecase
 set smartcase
@@ -173,6 +190,9 @@ set viminfo='100,<9999,s100 " Store info from no more than 100 files at a time, 
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
 
+" move among buffers with CTRL
+map <C-n> :bnext<CR>
+
 let g:ale_linters = {'haskell': ['hlint', 'ghc']}
 let g:ale_haskell_ghc_options = '-fno-code -v0 -isrc'
 highlight clear ALEErrorSign
@@ -195,7 +215,7 @@ endfunction
 set statusline=%{LinterStatus()}
 
 " Run HLint
-autocmd filetype haskell nnoremap <buffer> <C-h> :!hlint %<CR>
+autocmd filetype haskell nm <buffer> <silent> ,h :!hlint %<CR>
 
 " Ghcide
 let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
@@ -241,6 +261,7 @@ let g:UltiSnipsEditSplit="vertical" " If you want :UltiSnipsEdit to split your w
 autocmd BufNewFile *.cpp -r ~/.templates/template.cpp
 "" Compile/Run [C++]
 autocmd filetype cpp nm <buffer> gb :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r < %:r.in > %:r.out 2> %:r.err && printf "\n\n\n\n"<CR>
+autocmd filetype cpp nm <buffer> gc :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r  && printf "\n\n\n\n"<CR>
 
 
   " GitGutter
@@ -445,3 +466,20 @@ autocmd filetype purescript nm <buffer> <silent> ,g :Pgoto<CR>
 autocmd filetype purescript nm <buffer> <silent> ,p :Pursuit<CR>
 " Find type of the word under the cursor
 autocmd filetype purescript nm <buffer> <silent> ,T :Ptype<CR>
+
+
+" === vim-codefmt CodeFormater ===
+augroup autoformat_settings
+  autocmd FileType bzl AutoFormatBuffer buildifier
+  autocmd FileType c,cpp,proto,javascript AutoFormatBuffer clang-format
+  autocmd FileType dart AutoFormatBuffer dartfmt
+  autocmd FileType go AutoFormatBuffer gofmt
+  autocmd FileType gn AutoFormatBuffer gn
+  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
+  autocmd FileType java AutoFormatBuffer google-java-format
+  autocmd FileType python AutoFormatBuffer yapf
+  " Alternative: autocmd FileType python AutoFormatBuffer autopep8
+  autocmd FileType rust AutoFormatBuffer rustfmt
+  autocmd FileType vue AutoFormatBuffer prettier
+augroup END
+

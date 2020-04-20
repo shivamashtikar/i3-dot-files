@@ -1,5 +1,9 @@
 call plug#begin('~/.config/nvim/plugged')
+" Suggestions
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-clang'
+
+" Snipets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
@@ -16,6 +20,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'fcpg/vim-fahrenheit'
 Plug 'fcpg/vim-orbital'
 Plug 'whatyouhide/vim-gotham'
+Plug 'ayu-theme/ayu-vim'
+
+" Indentation
+Plug  'Yggdroot/indentLine'
 
 Plug 'neovimhaskell/haskell-vim'
 Plug 'w0rp/ale'
@@ -67,5 +75,12 @@ Plug 'mhinz/vim-startify'
 "Purescript
 Plug 'purescript-contrib/purescript-vim'
 Plug 'frigoeu/psc-ide-vim'
+
+" Codeformater
+" Add maktaba and codefmt to the runtimepath.
+" (The latter must be installed before it can be used.)
+Plug 'google/vim-maktaba'
+Plug 'google/vim-codefmt'
+Plug 'google/vim-glaive'
 
 call plug#end()
