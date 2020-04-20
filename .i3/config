@@ -111,7 +111,7 @@ bindsym $mod+v                  exec $term -e vim
 bindsym $mod+c			exec $HOME/.scripts/cycle-workspace.py
 bindsym $mod+Shift+c			exec $HOME/.scripts/cycle-workspace.py second
 bindsym $mod+e			exec $HOME/.scripts/book-search.sh
-bindsym $mod+Shift+f    exec --no-startup-id $(xprop -id $(xdo id -N "Polybar") | grep -q "Normal" && xdo hide -N "Polybar" || xdo show -N "Polybar") # for hiding polybar
+bindsym $mod+Shift+f    exec --no-startup-id polybar-msg cmd toggle
 #bindsym $mod+Shift+t			exec telegram-desktop
 bindsym $mod+u      [class="floating_term"] scratchpad show
 bindsym $mod+n			[con_mark="music"] scratchpad show

@@ -75,7 +75,7 @@ tray-foreground = #F
 ;wm-restack = i3
 
 ;override-redirect = true
-;enable-ipc = true
+enable-ipc = true
 
 ;scroll-up = bspwm-desknext
 ;scroll-down = bspwm-deskprev
@@ -131,7 +131,7 @@ tray-foreground = #F
 ;wm-restack = i3
 
 ;override-redirect = true
-;enable-ipc = true
+enable-ipc = true
 
 ;scroll-up = bspwm-desknext
 ;scroll-down = bspwm-deskprev
@@ -228,7 +228,7 @@ label-mode-background = ${colors.primary}
 label-focused = %icon% %index%
 label-focused-background = #f4c430
 label-focused-foreground = #ffffff
-label-focused-underline = 
+label-focused-underline =
 label-focused-padding = ${module/bspwm.label-focused-padding}
 
 ; unfocused = Inactive workspace on any monitor
@@ -317,7 +317,7 @@ ramp-coreload-7-foreground = #ff5555
 
 type = internal/memory
 format = <label> <bar-used>
-label =  %gb_swap_used% %{T5} %{T5-} %gb_used% 
+label =  %gb_swap_used% %{T5} %{T5-} %gb_used%
 label-foreground = ${colors.foreground}
 
 bar-used-width = 10
@@ -343,7 +343,7 @@ interval = 3.0
 format-connected =  <label-connected>
 ;format-connected-underline = ${colors.primary}
 ;label-connected = %essid% %upspeed:2% %downspeed:2%
-label-connected =  %downspeed:2% %upspeed:2% 
+label-connected =  %downspeed:2% %upspeed:2%
 format-disconnected =
 ;format-disconnected = <label-disconnected>
 ;format-disconnected-underline = ${self.format-connected-underline}
@@ -364,7 +364,7 @@ interface =
 interval = 3.0
 
 ;format-connected-underline = #55aa55
-format-connected-prefix =  
+format-connected-prefix = 
 format-connected-prefix-foreground = ${colors.foreground-alt}
 label-connected = %local_ip% %downspeed:9%
 
@@ -396,7 +396,7 @@ label-foreground = #000000
 type = internal/pulseaudio
 sink=alsa_output.pci-0000_00_1b.0.analog-stereo
 
-format-volume =<ramp-volume> <label-volume> 
+format-volume =<ramp-volume> <label-volume>
 ;format-volume-underline= ${colors.primary}
 label-volume = %percentage%%
 
@@ -406,7 +406,7 @@ ramp-volume-2 = 
 
 label-volume-foreground = ${root.foreground}
 label-muted = %{T5}%{T5-} muted
-label-muted-foreground =${colors.foreground} 
+label-muted-foreground =${colors.foreground}
 ;label-muted-underline= ${colors.primary}
 
 bar-volume-width = 10
@@ -567,7 +567,7 @@ label-song-ellipsis = true
 [module/clementine]
 type = custom/script
 interval = 5
-;format-prefix = " "  
+;format-prefix = " "
 format = <label>
 exec = ~/.scripts/get-music-status.sh
 ;format-underline =${colors.primary}
@@ -576,7 +576,7 @@ click-left=playerctl play-pause
 [module/rofi-power]
 type = custom/script
 interval = 5
-format-prefix = 
+format-prefix =
 format = <label>
 exec =echo ''
 
