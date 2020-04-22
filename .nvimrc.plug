@@ -3,6 +3,9 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-clang'
 
+" vim-which-key for bindings Suggestions
+Plug 'liuchengxu/vim-which-key'
+
 " Snipets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -21,7 +24,7 @@ Plug 'fcpg/vim-fahrenheit'
 Plug 'fcpg/vim-orbital'
 Plug 'whatyouhide/vim-gotham'
 Plug 'ayu-theme/ayu-vim'
-
+Plug 'NLKNguyen/papercolor-theme'
 " Indentation
 Plug  'Yggdroot/indentLine'
 
@@ -82,5 +85,8 @@ Plug 'frigoeu/psc-ide-vim'
 Plug 'google/vim-maktaba'
 Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
+
+" Log file hightlight
+Plug 'mtdl9/vim-log-highlighting'
 
 call plug#end()

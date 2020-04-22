@@ -1,4 +1,16 @@
 let mapleader=";"
+let maplocalleader = ","
+
+" Leader key to trigger vim-which-key
+" pass leader key to WhichKey
+call which_key#register(';', "g:leader_map")
+nnoremap <silent> <leader> :WhichKey ';'<CR>
+
+call which_key#register(',', "g:localleader_map")
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+set timeoutlen=500
+let g:leader_map = {}
+let g:localleader_map = {}
 
 " Use system Clipboard
 set clipboard+=unnamedplus
@@ -8,6 +20,7 @@ autocmd BufWritePre * %s/\s\+$//e
 
 " Enable spell checking, s for spell check
 map <leader>s :setlocal spell! spelllang=en_us<CR>
+let g:leader_map['s'] = 'toggle spell checking'
 
 " Shortcut for split navigation
 map <C-h> <C-w>h
@@ -18,19 +31,27 @@ map <C-l> <C-w>l
 " Shortcut split opening
 nnoremap <leader>h :split<Space>
 nnoremap <leader>v :vsplit<Space>
+let g:leader_map['h'] = 'Horizontal split'
+let g:leader_map['v'] = 'Vertical slit'
 
+" Fix splitting
+set splitbelow splitright
+
+" Path current directory and sub folders
+set path+=**
 " Autocompletion commands
 set wildmode=longest,list,full
 
 " Clear the search with ,/
-nmap <silent> ,/ :nohlsearch<CR>
+nmap <silent> <localleader>/ :nohlsearch<CR>
+let g:localleader_map['/'] = 'Clear search'
 
 " Alias write and quit to Q
-nnoremap <leader>q :q<CR>
+nnoremap <leader>q :Bclose<CR>
+let g:leader_map['q'] = 'Quit window'
 nnoremap <leader>w :w<CR>
+let g:leader_map['w'] = 'Write buffer'
 
-" Fix splitting
-set splitbelow splitright
 
 " Shift + u for redo
 noremap <S-u> <C-r>
@@ -46,7 +67,6 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#clang#libclang_path='/usr/lib/libclang.so'
 let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
 
-let g:airline_theme='ayu_dark'
 let g:airline_powerline_fonts = 1
 
 " ColorSchemes
@@ -55,9 +75,21 @@ let g:airline_powerline_fonts = 1
 " colorscheme gotham
 " let g:gotham_airline_emphasised_insert = 0
 " colorscheme murphy
-let ayucolor="dark"   " for dark version of theme
-colorscheme ayu
-set termguicolors
+" Ayu
+" let ayucolor="light"  " for light version of theme
+" set theme according based on day/night
+if 6 <= strftime("%H") && strftime("%H") < 19
+  " set background=light
+  set background=dark
+  colorscheme PaperColor
+  let g:airline_theme='papercolor'
+else
+  let ayucolor="mirage"   " for dark version of theme
+  let g:airline_theme='ayu_dark'
+  colorscheme ayu
+  set termguicolors
+endif
+
 
 " === IndentLine ===
 " let g:indentLine_char_list = ['|', '¦', '┆', '┊']
@@ -113,6 +145,7 @@ let WebDevIconsUnicodeDecorateFolderNodesExactMatches = 1
 " <leader> cn -> Same as cc but forces nesting.
 " <leader> c <space> -> toggle the comment state of the selected line(s)
 " <leader> cu -> Uncomments the selected line(s).
+let g:leader_map['c'] = {'name': '+NerdCommenter'}
 let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
 let g:NERDCompactSexyComs = 1 " Use compact syntax for prettified multi-line comments
 let g:NERDDefaultAlign = 'left' " Align line-wise comment delimiters flush left instead of following code indentation
@@ -123,11 +156,23 @@ let g:NERDTrimTrailingWhitespace = 1 " Enable trimming of trailing whitespace wh
 let g:NERDToggleCheckAllLines = 1 " Enable NERDCommenterToggle to check all selected lines is commented or not
 
 
+" Buffer management
+set autowrite
+set autoread
+" Triger `autoread` when files changes on disk
+" https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
+" https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+            \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+" Notification after file change
+" https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+autocmd FileChangedShellPost *
+  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+
 set showmatch
 set ignorecase
 set smartcase
 set incsearch
-set autowrite
 set hidden
 set mouse=a
 set nocompatible " Set compatibility to Vim only.
@@ -240,9 +285,6 @@ let g:haskell_backpack = 1                " to enable highlighting of backpack k
 let g:airline#extensions#tabline#enabled = 1 " Enable the list of buffers
 let g:airline#extensions#tabline#fnamemod = ':t' " Show just the filename
 
-" Ranger
-map <leader>f :Ranger<CR>
-
 " vim-markdown
 let g:vim_markdown_folding_disabled = 1 " dissable folding
 set conceallevel=2 " concealing text For example, conceal [link text](link url) as just link text.
@@ -264,27 +306,62 @@ autocmd filetype cpp nm <buffer> gb :w<CR>:!printf "\033c" && printf "==========
 autocmd filetype cpp nm <buffer> gc :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r  && printf "\n\n\n\n"<CR>
 
 
-  " GitGutter
-  function! GitStatus()
+" GitGutter
+function! GitStatus()
   let [a,m,r] = GitGutterGetHunkSummary()
   return printf('+%d ~%d -%d', a, m, r)
-  endfunction
-  set statusline+=%{GitStatus()}
-  let g:gitgutter_enabled = 1
-  let g:gitgutter_highlight_linenrs = 1
-  nmap ]h <Plug>(GitGutterNextHunk)
-  nmap [h <Plug>(GitGutterPrevHunk)
-  nmap <Leader>hu <Plug>(GitGutterUndoHunk)
+endfunction
+set statusline+=%{GitStatus()}
+let g:gitgutter_enabled = 1
+let g:gitgutter_highlight_linenrs = 1
+let g:gitgutter_map_keys = 0
+nmap <Leader>gn <Plug>(GitGutterNextHunk)
+nmap <Leader>gp <Plug>(GitGutterPrevHunk)
+nmap <Leader>gu <Plug>(GitGutterUndoHunk)
+nmap <leader>ghs <Plug>(GitGutterStageHunk)
+nmap <leader>ga :Git add %
+nmap <leader>gs :Git status
+nmap <leader>gc :Git commit
+nmap <leader>gr :Git rebase -i
+nmap <leader>gb :Git blame
+nmap <leader>gm :Git mergetool
+nmap <leader>gd :Gdiffsplit
+nmap <leader>gg :Git
+nmap <leader>ga :Git add %
+let g:leader_map['g'] = {
+  \ 'name':'+Git',
+  \ 'u' : 'Undo changes',
+  \ 'n' : 'Jump to next hunk',
+  \ 'p' : 'Jump to prev hunk',
+  \ 'hs' : 'Stage hunk',
+  \ }
 
-  " === Denite setup ==="
-  " Use ripgrep for searching current directory for files
-  " By default, ripgrep will respect rules in .gitignore
-  "   --files: Print each file that would be searched (but don't search)
-  "   --glob:  Include or exclues files for searching that match the given glob
-  "            (aka ignore .git files)
-  "
-  " Define mappings
-  try
+" === File management ===
+" Ranger && Denite
+let g:ranger_map_keys = 0
+nnoremap <leader>fr :Ranger<CR>
+nnoremap <leader>fb :Denite buffer<CR>
+nnoremap <leader>ff :DeniteProjectDir file/rec<CR>
+nnoremap <leader>fs :<C-u>Denite grep:. -no-empty<CR>
+nnoremap <leader>fj :<C-u>DeniteCursorWord grep:.<CR>
+let g:leader_map['f'] = {
+  \ 'name' : '+file',
+  \ 'r' : 'Open Ranger',
+  \ 'b' : 'View buffers',
+  \ 'f' : 'Browse files in cwd',
+  \ 's' : 'Search term occurences in cwd',
+  \ 'j' : 'Search term under cursor in cwd'
+  \ }
+
+" === Denite setup ==="
+" Use ripgrep for searching current directory for files
+" By default, ripgrep will respect rules in .gitignore
+"   --files: Print each file that would be searched (but don't search)
+"   --glob:  Include or exclues files for searching that match the given glob
+"            (aka ignore .git files)
+"
+" Define mappings
+try
 
   call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git'])
 
@@ -343,16 +420,6 @@ autocmd filetype cpp nm <buffer> gc :w<CR>:!printf "\033c" && printf "==========
   catch
   echo 'Denite not installed. It should work after running :PlugInstall'
   endtry
-
-  " === Denite shorcuts === "
-  "   C-o         - Browser currently open buffers
-  "   C-p - Browse list of files in current directory
-"   <leader>g - Search current directory for occurences of given term and close window if no results
-"   <leader>j - Search current directory for occurences of word under cursor
-noremap <C-o> :Denite buffer<CR>
-nmap <C-p> :DeniteProjectDir file/rec<CR>
-nnoremap <leader>g :<C-u>Denite grep:. -no-empty<CR>
-nnoremap <leader>j :<C-u>DeniteCursorWord grep:.<CR>
 
 " Define mappings while in 'filter' mode
 "   <C-i>         - Switch to normal mode inside of search results
@@ -413,28 +480,28 @@ endfunction
 
 " --------------- Latex specific configuration ----------------------
 "
-" autocmd FileType tex,latex noremap <leader>d :w<CR>:!texify<Space>-cp<Space>%<CR>
-" autocmd FileType tex,latex inoremap ,c \{<++>}<CR><++><Esc>?{<CR>i
-" autocmd FileType tex,latex inoremap ,dc \documentclass{}<CR><CR><++><Esc>?}<CR>i
-" autocmd FileType tex,latex inoremap ,up \usepackage{}<CR><CR><++><Esc>?}<CR>i
-" autocmd FileType tex,latex inoremap ,bd \begin{document}<CR><CR><CR><CR>\end{document}<Esc>kki
-" autocmd FileType tex,latex inoremap ,be \begin{}<CR><CR><CR><CR>\end{<++>}<Esc>?n{<CR>lli
-" autocmd FileType tex,latex inoremap ,ti \title{}<CR><CR><++><Esc>?}<CR>i
-" autocmd FileType tex,latex inoremap ,a \author{}<CR><CR><++><Esc>?}<CR>i
-" autocmd FileType tex,latex inoremap ,mt \maketitle<CR><CR>
-" autocmd FileType tex,latex inoremap ,s \section{}<CR><CR><++><Esc>?}<CR>i
-" autocmd FileType tex,latex inoremap ,ss \subsection{}<CR><CR><++><Esc>?}<CR>i
-" autocmd FileType tex,latex inoremap ,sss \subsubsection{}<CR><CR><++><Esc>?}<CR>i
-" autocmd FileType tex,latex inoremap ,rc \renewcommand{}{<++>}<CR><CR><++><Esc>?}{<CR>i
-" autocmd FileType tex,latex inoremap ,tf \titleformat{}{<++>}{<++>}{<++>}{<++>}<CR><CR><++><Esc>?{}<CR>li
-" autocmd FileType tex,latex inoremap ,lt {\LaTeX}<Space>
-" autocmd FileType tex,latex inoremap ,b \bfseries
-" autocmd FileType tex,latex inoremap ,t \tiny
-" autocmd FileType tex,latex inoremap ,sc \scriptsize
-" autocmd FileType tex,latex inoremap ,fn \footnotesize
-" autocmd FileType tex,latex inoremap ,sm \small
-" autocmd FileType tex,latex inoremap ,l \large
-" autocmd FileType tex,latex inoremap ,h \huge
+autocmd FileType tex,latex noremap <leader>d :w<CR>:!texify<Space>-cp<Space>%<CR>
+autocmd FileType tex,latex inoremap ,c \{<++>}<CR><++><Esc>?{<CR>i
+autocmd FileType tex,latex inoremap ,dc \documentclass{}<CR><CR><++><Esc>?}<CR>i
+autocmd FileType tex,latex inoremap ,up \usepackage{}<CR><CR><++><Esc>?}<CR>i
+autocmd FileType tex,latex inoremap ,bd \begin{document}<CR><CR><CR><CR>\end{document}<Esc>kki
+autocmd FileType tex,latex inoremap ,be \begin{}<CR><CR><CR><CR>\end{<++>}<Esc>?n{<CR>lli
+autocmd FileType tex,latex inoremap ,ti \title{}<CR><CR><++><Esc>?}<CR>i
+autocmd FileType tex,latex inoremap ,a \author{}<CR><CR><++><Esc>?}<CR>i
+autocmd FileType tex,latex inoremap ,mt \maketitle<CR><CR>
+autocmd FileType tex,latex inoremap ,s \section{}<CR><CR><++><Esc>?}<CR>i
+autocmd FileType tex,latex inoremap ,ss \subsection{}<CR><CR><++><Esc>?}<CR>i
+autocmd FileType tex,latex inoremap ,sss \subsubsection{}<CR><CR><++><Esc>?}<CR>i
+autocmd FileType tex,latex inoremap ,rc \renewcommand{}{<++>}<CR><CR><++><Esc>?}{<CR>i
+autocmd FileType tex,latex inoremap ,tf \titleformat{}{<++>}{<++>}{<++>}{<++>}<CR><CR><++><Esc>?{}<CR>li
+autocmd FileType tex,latex inoremap ,lt {\LaTeX}<Space>
+autocmd FileType tex,latex inoremap ,b \bfseries
+autocmd FileType tex,latex inoremap ,t \tiny
+autocmd FileType tex,latex inoremap ,sc \scriptsize
+autocmd FileType tex,latex inoremap ,fn \footnotesize
+autocmd FileType tex,latex inoremap ,sm \small
+autocmd FileType tex,latex inoremap ,l \large
+autocmd FileType tex,latex inoremap ,h \huge
 
 
 " --------------- Purescript specific configuration ----------------------
@@ -449,7 +516,7 @@ autocmd filetype purescript nm <buffer> <silent> ,r :Prebuild!<CR>
 " Generate function template from a function signature on the current line.
 autocmd filetype purescript nm <buffer> <silent> ,f :PaddClause<CR>
 " Add type annotation to a function on the current line, e.g. if you use this command over the line
-autocmd filetype purescript nm <buffer> <silent> ,t :PaddType<CR>
+autocmd filetype purescript nm <buffer> <silent> ,T :PaddType<CR>
 " Apply current line suggestion if there is any.
 autocmd filetype purescript nm <buffer> <silent> ,a :Papply<CR>
 "   With |<bang>| applies all suggestions.  Warning that have suggestion are indicated with 'V' in the quick fix list.
@@ -459,19 +526,19 @@ autocmd filetype purescript nm <buffer> <silent> ,C :Pcase!<CR>
 " import the word under cursor
 autocmd filetype purescript nm <buffer> <silent> ,i :Pimport<CR>
 " qualified import
-autocmd filetype purescript nm <buffer> <silent> ,qa :PaddImportQualifications<CR>
+autocmd filetype purescript nm <buffer> <silent> ,q :PaddImportQualifications<CR>
 " Goto identifier
 autocmd filetype purescript nm <buffer> <silent> ,g :Pgoto<CR>
 " Search pursuit for the word under the cursor
 autocmd filetype purescript nm <buffer> <silent> ,p :Pursuit<CR>
 " Find type of the word under the cursor
-autocmd filetype purescript nm <buffer> <silent> ,T :Ptype<CR>
-
+autocmd filetype purescript nm <buffer> <silent> ,t :Ptype<CR>
 
 " === vim-codefmt CodeFormater ===
 augroup autoformat_settings
   autocmd FileType bzl AutoFormatBuffer buildifier
-  autocmd FileType c,cpp,proto,javascript AutoFormatBuffer clang-format
+  autocmd FileType c,cpp,proto AutoFormatBuffer clang-format
+  autocmd FileType javascript AutoFormatBuffer prettier
   autocmd FileType dart AutoFormatBuffer dartfmt
   autocmd FileType go AutoFormatBuffer gofmt
   autocmd FileType gn AutoFormatBuffer gn
