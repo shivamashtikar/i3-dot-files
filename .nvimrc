@@ -47,8 +47,10 @@ nmap <silent> <localleader>/ :nohlsearch<CR>
 let g:localleader_map['/'] = 'Clear search'
 
 " Alias write and quit to Q
+nnoremap <leader><S-q> :q<CR>
+let g:leader_map['Q'] = 'Quit Window'
 nnoremap <leader>q :Bclose<CR>
-let g:leader_map['q'] = 'Quit window'
+let g:leader_map['q'] = 'Quit buffer'
 nnoremap <leader>w :w<CR>
 let g:leader_map['w'] = 'Write buffer'
 
@@ -78,18 +80,18 @@ let g:airline_powerline_fonts = 1
 " Ayu
 " let ayucolor="light"  " for light version of theme
 " set theme according based on day/night
-if 6 <= strftime("%H") && strftime("%H") < 19
+" if 6 <= strftime("%H") && strftime("%H") < 19
   " set background=light
   set background=dark
   colorscheme PaperColor
   let g:airline_theme='papercolor'
-else
-  let ayucolor="mirage"   " for dark version of theme
-  let g:airline_theme='ayu_dark'
-  colorscheme ayu
-  set termguicolors
-endif
-
+" else
+"   let ayucolor="mirage"   " for dark version of theme
+"   let g:airline_theme='ayu_dark'
+"   colorscheme ayu
+"   set termguicolors
+" endif
+"
 
 " === IndentLine ===
 " let g:indentLine_char_list = ['|', '¦', '┆', '┊']
@@ -97,6 +99,10 @@ let g:indentLine_char = '┊'
 let g:indentLine_first_char = '┊'
 let g:indentLine_showFirstIndentLevel = 1
 let g:indentLine_setColors = 0
+
+" === Stratify settings ===
+let g:startify_change_to_dir = 0
+let g:startify_change_to_vcs_root = 0
 
 " === NERDTree ===
 " Ctrl + b to toggle
@@ -318,9 +324,10 @@ let g:gitgutter_map_keys = 0
 nmap <Leader>gn <Plug>(GitGutterNextHunk)
 nmap <Leader>gp <Plug>(GitGutterPrevHunk)
 nmap <Leader>gu <Plug>(GitGutterUndoHunk)
-nmap <leader>ghs <Plug>(GitGutterStageHunk)
+nmap <leader>gs <Plug>(GitGutterStageHunk)
+nmap <leader>ghl :GitGutterLineHighlightsToggle<CR>
+nmap <leader>ghf :GitGutterFold<CR>
 nmap <leader>ga :Git add %
-nmap <leader>gs :Git status
 nmap <leader>gc :Git commit
 nmap <leader>gr :Git rebase -i
 nmap <leader>gb :Git blame
@@ -329,11 +336,8 @@ nmap <leader>gd :Gdiffsplit
 nmap <leader>gg :Git
 nmap <leader>ga :Git add %
 let g:leader_map['g'] = {
-  \ 'name':'+Git',
-  \ 'u' : 'Undo changes',
-  \ 'n' : 'Jump to next hunk',
-  \ 'p' : 'Jump to prev hunk',
-  \ 'hs' : 'Stage hunk',
+  \ 'name':'+git',
+  \ 'h' : { 'name' : '+highlight' }
   \ }
 
 " === File management ===
