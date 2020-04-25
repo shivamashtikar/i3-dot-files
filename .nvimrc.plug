@@ -78,7 +78,8 @@ Plug 'mhinz/vim-startify'
 
 "Purescript
 Plug 'purescript-contrib/purescript-vim'
-Plug 'frigoeu/psc-ide-vim'
+" Plug 'frigoeu/psc-ide-vim'
+Plug 'sriharshachilakapati/vimmer-ps'
 
 " Codeformater
 " Add maktaba and codefmt to the runtimepath.

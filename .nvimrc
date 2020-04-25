@@ -68,7 +68,9 @@ let g:deoplete#enable_at_startup = 1
 " $ mdfind -name libclang.dylib
 let g:deoplete#sources#clang#libclang_path='/usr/lib/libclang.so'
 let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
-
+" call deoplete#custom#option('sources', {
+" \ '_': ['ale'],
+" \})
 let g:airline_powerline_fonts = 1
 
 " ColorSchemes
@@ -80,18 +82,22 @@ let g:airline_powerline_fonts = 1
 " Ayu
 " let ayucolor="light"  " for light version of theme
 " set theme according based on day/night
-" if 6 <= strftime("%H") && strftime("%H") < 19
-  " set background=light
-  set background=dark
+if 6 <= strftime("%H") && strftime("%H") < 19
+  set background=light
+  " set background=dark
   colorscheme PaperColor
   let g:airline_theme='papercolor'
-" else
+else
 "   let ayucolor="mirage"   " for dark version of theme
 "   let g:airline_theme='ayu_dark'
 "   colorscheme ayu
 "   set termguicolors
-" endif
-"
+  " set background=light
+  set background=dark
+  colorscheme PaperColor
+  let g:airline_theme='papercolor'
+
+endif
 
 " === IndentLine ===
 " let g:indentLine_char_list = ['|', '¦', '┆', '┊']
@@ -243,8 +249,10 @@ vnoremap <Space> zf
 
 " move among buffers with CTRL
 map <C-n> :bnext<CR>
+map <C-p> :bprevious<CR>
 
-let g:ale_linters = {'haskell': ['hlint', 'ghc']}
+
+let g:ale_linters = {'haskell': ['hlint', 'ghc'], 'purescript': ['purty']}
 let g:ale_haskell_ghc_options = '-fno-code -v0 -isrc'
 highlight clear ALEErrorSign
 highlight clear ALEWarningSign
@@ -252,33 +260,35 @@ highlight clear ALEWarningSign
 let g:airline#extensions#ale#enabled = 1
 
 
-function! LinterStatus() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? 'OK' : printf(
-    \   '%dW %dE',
-    \   all_non_errors,
-    \   all_errors
-    \)
-endfunction
-
-set statusline=%{LinterStatus()}
+" function! LinterStatus() abort
+"   let l:counts = ale#statusline#Count(bufnr(''))
+"   let l:all_errors = l:counts.error + l:counts.style_error
+"   let l:all_non_errors = l:counts.total - l:all_errors
+"   return l:counts.total == 0 ? 'OK' : printf(
+"     \   '%dW %dE',
+"     \   all_non_errors,
+"     \   all_errors
+"     \)
+" endfunction
+"
+" set statusline=%{LinterStatus()}
 
 " Run HLint
 autocmd filetype haskell nm <buffer> <silent> ,h :!hlint %<CR>
+autocmd filetype purescript nm <buffer> <silent> ,h :!purty --write %<CR>
 
 " Ghcide
-let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
+let g:LanguageClient_rootMarkers = {}
+let g:LanguageClient_rootMarkers.haskell = ['*.cabal', 'stack.yaml']
 let g:LanguageClient_serverCommands = {
     \ 'haskell': ['ghcide', '--lsp'],
     \ }
 "Call language server
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 " Or map each action separately
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+" nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 " nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
@@ -328,13 +338,13 @@ nmap <leader>gs <Plug>(GitGutterStageHunk)
 nmap <leader>ghl :GitGutterLineHighlightsToggle<CR>
 nmap <leader>ghf :GitGutterFold<CR>
 nmap <leader>ga :Git add %
-nmap <leader>gc :Git commit
+nmap <leader>gc :Git commit<CR>
 nmap <leader>gr :Git rebase -i
-nmap <leader>gb :Git blame
-nmap <leader>gm :Git mergetool
-nmap <leader>gd :Gdiffsplit
-nmap <leader>gg :Git
-nmap <leader>ga :Git add %
+nmap <leader>gb :Git blame<CR>
+nmap <leader>gm :Git mergetool<CR>
+nmap <leader>gd :Gdiffsplit<CR>
+nmap <leader>gg :Git<CR>
+nmap <leader>ga :Git add %<CR>
 let g:leader_map['g'] = {
   \ 'name':'+git',
   \ 'h' : { 'name' : '+highlight' }
@@ -509,35 +519,45 @@ autocmd FileType tex,latex inoremap ,h \huge
 
 
 " --------------- Purescript specific configuration ----------------------
+" for 'frigoeu/psc-ide-vim' commented because it was consuming too much
+" resources
+" let g:psc_ide_syntastic_mode = 1
+" " List loaded modules.
+" autocmd filetype purescript nm <buffer> <silent> ,L :Plist<CR>
+" " Load externs, with optional |<bang>|, first reset loaded modules.
+" autocmd filetype purescript nm <buffer> <silent> ,l :Pload!<CR>
+" " Rebuild current buffer, with optional |<bang>| first reload the modules.
+" autocmd filetype purescript nm <buffer> <silent> ,r :Prebuild!<CR>
+" " Generate function template from a function signature on the current line.
+" autocmd filetype purescript nm <buffer> <silent> ,f :PaddClause<CR>
+" " Add type annotation to a function on the current line, e.g. if you use this command over the line
+" autocmd filetype purescript nm <buffer> <silent> ,T :PaddType<CR>
+" " Apply current line suggestion if there is any.
+" autocmd filetype purescript nm <buffer> <silent> ,a :Papply<CR>
+" "   With |<bang>| applies all suggestions.  Warning that have suggestion are indicated with 'V' in the quick fix list.
+" autocmd filetype purescript nm <buffer> <silent> ,A :Papply!<CR>
+" " Add case expression for give type, with optional |<bang>| it will also include type annotations, e.g. starting with
+" autocmd filetype purescript nm <buffer> <silent> ,C :Pcase!<CR>
+" " import the word under cursor
+" autocmd filetype purescript nm <buffer> <silent> ,i :Pimport<CR>
+" " qualified import
+" autocmd filetype purescript nm <buffer> <silent> ,q :PaddImportQualifications<CR>
+" " Goto identifier
+" autocmd filetype purescript nm <buffer> <silent> ,g :Pgoto<CR>
+" " Search pursuit for the word under the cursor
+" autocmd filetype purescript nm <buffer> <silent> ,p :Pursuit<CR>
+" " Find type of the word under the cursor
+" autocmd filetype purescript nm <buffer> <silent> ,t :Ptype<CR>
 "
-let g:psc_ide_syntastic_mode = 1
-" List loaded modules.
-autocmd filetype purescript nm <buffer> <silent> ,L :Plist<CR>
-" Load externs, with optional |<bang>|, first reset loaded modules.
-autocmd filetype purescript nm <buffer> <silent> ,l :Pload!<CR>
-" Rebuild current buffer, with optional |<bang>| first reload the modules.
-autocmd filetype purescript nm <buffer> <silent> ,r :Prebuild!<CR>
-" Generate function template from a function signature on the current line.
-autocmd filetype purescript nm <buffer> <silent> ,f :PaddClause<CR>
-" Add type annotation to a function on the current line, e.g. if you use this command over the line
-autocmd filetype purescript nm <buffer> <silent> ,T :PaddType<CR>
-" Apply current line suggestion if there is any.
-autocmd filetype purescript nm <buffer> <silent> ,a :Papply<CR>
-"   With |<bang>| applies all suggestions.  Warning that have suggestion are indicated with 'V' in the quick fix list.
-autocmd filetype purescript nm <buffer> <silent> ,A :Papply!<CR>
-" Add case expression for give type, with optional |<bang>| it will also include type annotations, e.g. starting with
-autocmd filetype purescript nm <buffer> <silent> ,C :Pcase!<CR>
-" import the word under cursor
-autocmd filetype purescript nm <buffer> <silent> ,i :Pimport<CR>
-" qualified import
-autocmd filetype purescript nm <buffer> <silent> ,q :PaddImportQualifications<CR>
-" Goto identifier
-autocmd filetype purescript nm <buffer> <silent> ,g :Pgoto<CR>
-" Search pursuit for the word under the cursor
-autocmd filetype purescript nm <buffer> <silent> ,p :Pursuit<CR>
-" Find type of the word under the cursor
-autocmd filetype purescript nm <buffer> <silent> ,t :Ptype<CR>
 
+let g:vimmerps_disable_mappings = 1
+autocmd Filetype purescript nm <buffer> <silent> <localleader>a :Papply<CR>
+autocmd Filetype purescript nm <buffer> <silent> <localleader>i :Pimport<CR>
+autocmd Filetype purescript nm <buffer> <silent> <localleader>g :call LanguageClient_textDocument_definition()<CR>
+autocmd Filetype purescript nm <buffer> <silent> <localleader>t :call LanguageClient_textDocument_hover()<CR>
+autocmd Filetype purescript nm <buffer> <silent> <localleader>l :Pbuild<CR>
+
+"
 " === vim-codefmt CodeFormater ===
 augroup autoformat_settings
   autocmd FileType bzl AutoFormatBuffer buildifier
@@ -549,8 +569,14 @@ augroup autoformat_settings
   autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
   autocmd FileType java AutoFormatBuffer google-java-format
   autocmd FileType python AutoFormatBuffer yapf
-  " Alternative: autocmd FileType python AutoFormatBuffer autopep8
   autocmd FileType rust AutoFormatBuffer rustfmt
   autocmd FileType vue AutoFormatBuffer prettier
+  " autocmd FileType purescript AutoFormatBuffer purty
 augroup END
 
+
+" === Quick Edit ===
+"
+let g:leader_map['e'] = {'name':'+quickOpen'}
+nmap <leader>en :edit $HOME/.nvimrc <CR>
+nmap <leader>ez :edit $HOME/.zshrc <CR>
