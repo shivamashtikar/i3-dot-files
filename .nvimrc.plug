@@ -30,7 +30,7 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug  'Yggdroot/indentLine'
 
 Plug 'neovimhaskell/haskell-vim'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 " Reverse the order of commits in a git interactive rebase
 Plug 'salcode/vim-interactive-rebase-reverse'
 
@@ -66,9 +66,9 @@ Plug 'plasticboy/vim-markdown'
 "editorConfig
 Plug 'editorconfig/editorconfig-vim'
 
-" denite
-Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'chemzqm/denite-git'
+" fuzzyFinders
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " nerdCommenter
 Plug 'preservim/nerdcommenter'
