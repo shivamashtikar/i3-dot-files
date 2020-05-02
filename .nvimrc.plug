@@ -91,4 +91,7 @@ Plug 'google/vim-glaive'
 " Log file hightlight
 Plug 'mtdl9/vim-log-highlighting'
 
+" color highlight
+Plug 'chrisbra/Colorizer'
+
 call plug#end()

@@ -101,6 +101,47 @@ vnoremap <Space> zf
 " move among buffers with CTRL
 map <C-n> :bnext<CR>
 
+" === Netrw ===
+" the default file manager present in Vim
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+let g:NetrwIsOpen=0
+augroup ProjectDrawer
+  autocmd!
+  autocmd VimEnter *
+         \   if argc() == 0 && !exists("s:std_in")
+         \ |   :Vexplore
+         \ |   let g:NetrwIsOpen=1
+         \ | elseif argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in")
+         \ |   rightb vnew | exec 'vertical resize '. string(&columns * 0.7)
+         " \ |   :Vexplore
+         \ |   let g:netrw_chgwin = winnr()
+         \ |   let g:NetrwIsOpen=1
+         \ | endif
+         \ | wincmd p
+augroup END
+
+function! ToggleNetrw()
+    if g:NetrwIsOpen
+        let i = bufnr("$")
+        while (i >= 1)
+            if (getbufvar(i, "&filetype") == "netrw")
+                silent exe "bwipeout " . i
+            endif
+            let i-=1
+        endwhile
+        let g:NetrwIsOpen=0
+    else
+        let g:NetrwIsOpen=1
+        silent Lexplore
+    endif
+endfunction
+map <C-b> :call ToggleNetrw() <CR>
+
+
 " === Status line ===
 set laststatus=2
 
@@ -122,18 +163,27 @@ function! ModeCurrent() abort
 endfunction
 " :h mode() to see all modes
 
+" Statusline with highlight groups (requires Powerline font, using Solarized theme)
 set statusline=
-set statusline+=%#PmenuSel#
-set statusline+=%0*\ %{ModeCurrent()}
-set statusline+=%#LineNr#
-set statusline+=\ %f
-set statusline+=%m\
-set statusline+=%=
-set statusline+=%#CursorColumn#
+set statusline+=%(%{&buflisted?bufnr('%'):''}\ \ %)
+set statusline+=%(%{ModeCurrent()}\ %)
+set statusline+=%< " Truncate line here
+set statusline+=%f\  " File path, as typed or relative to current directory
+set statusline+=%{&modified?'+\ ':''}
+set statusline+=%{&readonly?'\ ':''}
+set statusline+=%1*\  " Set highlight group to User1
+set statusline+=%= " Separation point between left and right aligned items
 set statusline+=\ %y
 set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
-set statusline+=\[%{&fileformat}\]
+set statusline+=%(\ %{(&bomb\|\|&fileencoding!~#'^$\\\|utf-8'?'\ '.&fileencoding.(&bomb?'-bom':''):'')
+  \.(&fileformat!=#(has('win32')?'dos':'unix')?'\ '.&fileformat:'')}%)
+set statusline+=%(\ \ %{&modifiable?(&expandtab?'et\ ':'noet\ ').&shiftwidth:''}%)
+set statusline+=\ %* " Restore normal highlight
 set statusline+=\ %p%%
 set statusline+=\ %l:%c
-
-
+"
+" Logic for customizing the User1 highlight group is the following
+" - if StatusLine colors are reverse, then User1 is not reverse and User1 fg = StatusLine fg
+hi StatusLine cterm=reverse gui=reverse ctermfg=14 ctermbg=8 guifg=#93a1a1 guibg=#002732
+hi StatusLineNC cterm=reverse gui=reverse ctermfg=11 ctermbg=0 guifg=#657b83 guibg=#073642
+hi User1 ctermfg=14 ctermbg=0 guifg=#93a1a1 guibg=#073642
