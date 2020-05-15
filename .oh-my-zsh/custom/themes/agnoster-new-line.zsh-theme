@@ -32,13 +32,15 @@
 ### Segment drawing
 # A few utility functions to make it easy and re-usable to draw segmented prompts
 
+
+THEME='light' # 'dark' or 'light'
 CURRENT_BG='NONE'
 
-case ${SOLARIZED_THEME:-dark} in
-    light) CURRENT_FG='white';;
-    *)     CURRENT_FG='black';;
-esac
-
+if [[ $THEME == "dark" ]]; then
+  CURRENT_FG='black'
+else
+  CURRENT_FG='white'
+fi
 # Special Powerline characters
 
 () {
@@ -80,7 +82,7 @@ prompt_end() {
     echo -n "%{%k%}"
   fi
   #echo -n "{%f%}"
-  #echo -n "ॐ%{%f%}"
+  echo -n "ॐ%{%f%}"
   CURRENT_BG=''
 }
 
@@ -101,7 +103,11 @@ prompt_newline() {
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    prompt_segment black default "%(!.%{%F{yellow}%}.)%n@%m"
+    if [[ $THEME == "dark" ]]; then
+      prompt_segment black default "%(!.%{%F{yellow}%}.)%n@%m"
+    else
+      prompt_segment white default "%(!.%{%F{green}%}.)%n@%m"
+    fi
   fi
 }
 
@@ -122,10 +128,18 @@ prompt_git() {
     repo_path=$(git rev-parse --git-dir 2>/dev/null)
     dirty=$(parse_git_dirty)
     ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
-    if [[ -n $dirty ]]; then
-      prompt_segment yellow black
+    if [[ $THEME == "dark" ]]; then
+       if [[ -n $dirty ]]; then
+        prompt_segment yellow black
+      else
+        prompt_segment green "$CURRENT_FG"
+      fi
     else
-      prompt_segment green $CURRENT_FG
+      if [[ -n $dirty ]]; then
+        prompt_segment magenta 015
+      else
+        prompt_segment 011 015
+      fi
     fi
 
     if [[ -e "${repo_path}/BISECT_LOG" ]]; then
@@ -183,11 +197,20 @@ prompt_hg() {
         st='±'
       elif [[ -n $(hg prompt "{status|modified}") ]]; then
         # if any modification
-        prompt_segment yellow black
+        if [[ $THEME == "dark" ]]; then
+          prompt_segment yellow black
+        else
+          prompt_segment magenta 015
+        fi
+
         st='±'
       else
         # if working copy is clean
-        prompt_segment green $CURRENT_FG
+        if [[ $THEME == "dark" ]]; then
+          prompt_segment green "$CURRENT_FG"
+        else
+          prompt_segment 011 015
+        fi
       fi
       echo -n $(hg prompt "☿ {rev}@{branch}") $st
     else
@@ -195,13 +218,13 @@ prompt_hg() {
       rev=$(hg id -n 2>/dev/null | sed 's/[^-0-9]//g')
       branch=$(hg id -b 2>/dev/null)
       if `hg st | grep -q "^\?"`; then
-        prompt_segment red black
+        prompt_segment red "$CURRENT_FG"
         st='±'
       elif `hg st | grep -q "^[MA]"`; then
-        prompt_segment yellow black
+        prompt_segment yellow "$CURRENT_FG"
         st='±'
       else
-        prompt_segment green $CURRENT_FG
+        prompt_segment green "$CURRENT_FG"
       fi
       echo -n "☿ $rev@$branch" $st
     fi
@@ -217,7 +240,7 @@ prompt_dir() {
 prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n $virtualenv_path && -z $VIRTUAL_ENV_DISABLE_PROMPT ]]; then
-    prompt_segment blue black "(`basename $virtualenv_path`)"
+    prompt_segment blue $CURRENT_FG "(`basename $virtualenv_path`)"
   fi
 }
 
@@ -232,7 +255,7 @@ prompt_status() {
   [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
 
-  [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
+  [[ -n "$symbols" ]] && prompt_segment $CURRENT_FG default "$symbols"
 }
 
 #AWS Profile:

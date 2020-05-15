@@ -1,6 +1,7 @@
 let mapleader=";"
 let maplocalleader = ","
 
+
 " Leader key to trigger vim-which-key
 " pass leader key to WhichKey
 call which_key#register(';', "g:leader_map")
@@ -19,14 +20,20 @@ set clipboard+=unnamedplus
 autocmd BufWritePre * %s/\s\+$//e
 
 " Enable spell checking, s for spell check
-map <leader>s :setlocal spell! spelllang=en_us<CR>
-let g:leader_map['s'] = 'toggle spell checking'
+" map <leader>s :setlocal spell! spelllang=en_us<CR>
+" let g:leader_map['s'] = 'toggle spell checking'
 
 " Shortcut for split navigation
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
+
+" Use alt + hjkl to resize windows
+nnoremap <M-j>    :resize -2<CR>
+nnoremap <M-k>    :resize +2<CR>
+nnoremap <M-h>    :vertical resize -2<CR>
+nnoremap <M-l>    :vertical resize +2<CR>
 
 " Shortcut split opening
 nnoremap <leader>h :split<Space>
@@ -73,31 +80,28 @@ let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
 " \})
 let g:airline_powerline_fonts = 1
 
-" ColorSchemes
-" colorscheme fahrenheit
-" colorscheme orbital
-" colorscheme gotham
-" let g:gotham_airline_emphasised_insert = 0
-" colorscheme murphy
-" Ayu
-" let ayucolor="light"  " for light version of theme
+" === QuickScope Configuration ===
+"
+" Trigger a highlight in the appropriate direction when pressing these keys:
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+augroup qs_colors
+  autocmd!
+  autocmd ColorScheme * highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
+  autocmd ColorScheme * highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
+augroup END
+
 " set theme according based on day/night
 if 6 <= strftime("%H") && strftime("%H") < 19
-  " set background=light
-  set background=dark
-  colorscheme PaperColor
-  let g:airline_theme='papercolor'
+  let ayucolor="mirage"   " for dark version of theme
 else
-"   let ayucolor="mirage"   " for dark version of theme
-"   let g:airline_theme='ayu_dark'
-"   colorscheme ayu
-"   set termguicolors
-  " set background=light
-  set background=dark
-  colorscheme PaperColor
-  let g:airline_theme='papercolor'
-
+  let ayucolor="mirage"  " for light version of theme
 endif
+
+" colorscheme ayu
+let g:airline_theme='light'
+colorscheme pyte
+set termguicolors
+lua require'colorizer'.setup()
 
 " === IndentLine ===
 " let g:indentLine_char_list = ['|', '¦', '┆', '┊']
@@ -113,7 +117,7 @@ let g:startify_change_to_vcs_root = 0
 " === NERDTree ===
 " Ctrl + b to toggle
 map <C-b> :NERDTreeToggle<CR>
-let g:NERDTreeMinimalUI = 1
+" let g:NERDTreeMinimalUI = 1
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
 let g:NERDTreeStatusline = ''
@@ -202,6 +206,10 @@ set formatoptions=tcqrn1
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
+" indent and retain selection in visual mode
+vnoremap > >gv
+vnoremap < <gv
+
 set expandtab
 set noshiftround
 set scrolloff=5 " Display 5 lines above/below the cursor when scrolling with a mouse.
@@ -245,9 +253,9 @@ set viminfo='100,<9999,s100 " Store info from no more than 100 files at a time, 
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
 
-" move among buffers with CTRL
-map <C-n> :bnext<CR>
+" move among buffers
 map <C-p> :bprevious<CR>
+map <C-n> :bnext<CR>
 
 
 " let g:ale_linters = {'haskell': ['hlint', 'ghc'], 'purescript': ['purty']}
@@ -382,6 +390,9 @@ let g:leader_map['f'] = {
 " --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 " --color: Search color options
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+""" Uncomment following if you want to see search result in floating window
+" let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
+" let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
 
 if has('nvim') && !exists('g:fzf_layout')
   autocmd! FileType fzf
@@ -477,3 +488,31 @@ augroup END
 let g:leader_map['e'] = {'name':'+quickOpen'}
 nmap <leader>en :edit $HOME/.nvimrc <CR>
 nmap <leader>ez :edit $HOME/.zshrc <CR>
+
+" === Utilities ===
+"
+nmap <leader>ut i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+let g:leader_map['u'] = {'name':'+Utilities',
+  \ 't': 'Add timeStamp'
+  \ }
+
+" === Session management ===
+"
+let g:sessions_dir = '~/vim-sessions'
+let g:leader_map['s'] = {'name':'+Session',
+  \ 's' : 'Save Session',
+  \ 'l' : 'Load Session',
+  \ 't' : 'Toggle Session' }
+exec 'nnoremap <Leader>ss :Obsession ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap <Leader>sl :so ' . g:sessions_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+nnoremap <Leader>st :Obsession<CR>
+let g:airline#extensions#obsession#enabled = 1
+let g:airline#extensions#obsession#indicator_text = "SESSION-ACTIVE"
+
+let g:startify_change_to_vcs_root = v:true
+let g:startify_session_dir = g:sessions_dir
+let g:startify_session_before_save = [
+  \ 'echo "Cleaning up before saving.."',
+  \ 'silent! NERDTreeTabsClose'
+  \ ]
+

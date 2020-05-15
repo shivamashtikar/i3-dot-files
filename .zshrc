@@ -107,17 +107,12 @@ source $HOME/.config/aliasrc
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-#export NVM_DIR="$HOME/.nvm"
-#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 npm set prefix ~/.npm
 export PATH="$HOME/.npm/bin:$PATH"
 export PATH="$HOME/node_modules/.bin:$PATH"
 
 
-
-PATH=$PATH:~/.cabal/bin:~/.psvm/current/bin
+export PATH=$PATH:~/.cabal/bin:~/.psvm/current/bin
 
 if [ -e /home/shivam/.nix-profile/etc/profile.d/nix.sh ]; then . /home/shivam/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
@@ -135,3 +130,11 @@ if [ -f '/home/shivam/google-cloud-sdk/path.zsh.inc' ]; then . '/home/shivam/goo
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/shivam/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/shivam/google-cloud-sdk/completion.zsh.inc'; fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# --files: List files that would be searched but do not search
+# --no-ignore: Do not respect .gitignore, etc...
+# --hidden: Search hidden files and folders
+# --follow: Follow symlinks
+# --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+export FZF_DEFAULT_COMMAND='rg --files --ignore-case --no-ignore --hidden --follow --glob "!.git/*"'

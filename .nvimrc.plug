@@ -26,6 +26,8 @@ Plug 'fcpg/vim-orbital'
 Plug 'whatyouhide/vim-gotham'
 Plug 'ayu-theme/ayu-vim'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'therubymug/vim-pyte'
+
 " Indentation
 Plug  'Yggdroot/indentLine'
 
@@ -92,6 +94,12 @@ Plug 'google/vim-glaive'
 Plug 'mtdl9/vim-log-highlighting'
 
 " color highlight
-Plug 'chrisbra/Colorizer'
+Plug 'norcalli/nvim-colorizer.lua'
+
+" session management
+Plug 'tpope/vim-obsession'
+
+" Quickscope for fast movement in line
+Plug 'unblevable/quick-scope'
 
 call plug#end()

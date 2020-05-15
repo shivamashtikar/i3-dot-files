@@ -59,6 +59,10 @@ match_lhs=""
   && match_lhs=$(dircolors --print-database)
 [[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] && use_color=true
 
+parse_git_branch() {
+ git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
 if ${use_color} ; then
   # Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
   if type -P dircolors >/dev/null ; then
@@ -70,9 +74,9 @@ if ${use_color} ; then
   fi
 
   if [[ ${EUID} == 0 ]] ; then
-    PS1='\[\033[01;31m\][\h\[\033[01;36m\]:\t\[\033[01;31m\]](\[\033[01;32m\]\w\[\033[01;31m\])\[\033[00m\]\n$ '
+    PS1='\[\033[01;31m\][\h\[\033[01;36m\]:\t\[\033[01;31m\]](\[\033[01;32m\]\w\[\033[01;31m\])$(parse_git_branch)\[\033[00m\]\n$ '
   else
-    PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\]:\t\[\033[01;32m\]](\[\033[01;33m\]\w\[\033[01;32m\])\[\033[00m\]\n$ '
+    PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\]:\t\[\033[01;32m\]](\[\033[01;33m\]\w\[\033[01;32m\])$(parse_git_branch)\[\033[00m\]\n$ '
     # PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\]:\w\[\033[01;32m\]](\t)\[\033[00m\]\n$ '
   fi
 
@@ -139,6 +143,8 @@ ex ()
   fi
 }
 
+alias ..='cd ..'
+alias md='mkdir -pv'
 complete -cf sudo
 
 # Set up Vim-style tab completion
