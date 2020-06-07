@@ -102,4 +102,11 @@ Plug 'tpope/vim-obsession'
 " Quickscope for fast movement in line
 Plug 'unblevable/quick-scope'
 
+" Zen mode
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+
+" TODO list
+Plug 'aserebryakov/vim-todo-lists'
+
 call plug#end()

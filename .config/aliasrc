@@ -44,7 +44,48 @@ alias hobby='cd $DATA/hobby'
 alias f='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
 
 alias ws='cd $DATA/workspace'
+alias wsu='cd $DATA/workspace/ui-team'
 alias wsd='cd $DATA/workspace-data'
 
+
 source $HOME/.config/sec.sh
+
+# in order to sync packages, run this
+# sudo pacman -Fy # <- only run this once
+# following aliases will help in searching through packages and then installing it
+alias pac_search="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk \"{print \$2}\")' | xargs -ro sudo pacman -S"
+alias yay_search="yay -Slq | fzf -m --preview 'cat <(yay -Si {1}) <(yay -Fl {1} | awk \"{print \$2}\")' | xargs -ro  yay -S"
+
+# Jumps to project directory, arg can be child of workspace directory
+function work(){
+  if [[ -n $1 ]]
+  then
+    WORKDIR="$DATA/workspace/$1"
+  else
+    WORKDIR="$DATA/workspace"
+  fi
+
+  dir=$(ls -d $WORKDIR/* | \
+          fzf -m --preview="ls -ld {1}" --preview-window=down:3)
+  cd $dir
+}
+
+# opens process list with fzf and kills selected process
+function fkill() {
+  pid=$(ps -ef | \
+    sed 1d | \
+    fzf -m --preview="ps -p {2}" --preview-window=down:3 | \
+    awk '{print $2}')
+
+  if [ "x$pid" != "x" ]
+  then
+    kill -"${1:-9}" "$pid"
+  fi
+}
+
+function reload(){
+  kitty @ set-colors -a $HOME/.config/kitty/theme.conf
+  clear
+  source ~/.zshrc
+}
 

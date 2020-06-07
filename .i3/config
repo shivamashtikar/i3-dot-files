@@ -8,7 +8,7 @@ set $shutdown sudo -A shutdown -h now
 set $reboot sudo -A reboot
 set $hibernate sudo -A systemctl suspend
 set $term --no-startup-id kitty
-set $FLOATING_TERM --no-startup-id kitty --class=floating_term
+set $FLOATING_TERM kitty --class=floating_term
 set $uterm --no-startup-id urxvt
 set $WALLPAPER --no-startup-id  nitrogen --set-zoom-fill --random /mnt/314414C203296959/images/wallpaper  --save
 #set $WALLPAPER --no-startup-id feh --randomize --bg-fill /run/media/shivam/Data/images/Wallbase /run/media/shivam/Data/images/wallpaper
@@ -33,8 +33,8 @@ hide_edge_borders none
 #bindsym $mod+n border normal
 
 # redshift night mode
-#bindsym $mod+Shift+n 	exec --no-startup-id redshift -x
-#bindsym $mod+n 		exec --no-startup-id redshift -P -O 3000
+#bindsym $mod+Shift+n   exec --no-startup-id redshift -x
+#bindsym $mod+n     exec --no-startup-id redshift -P -O 3000
 
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -84,10 +84,10 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # resize focused window
-bindsym $mod+Shift+y		resize shrink width 5 px or 5 ppt
-bindsym $mod+Shift+u		resize grow height 5 px or 5 ppt
-bindsym $mod+Shift+i		resize shrink height 5 px or 5 ppt
-bindsym $mod+Shift+o		resize grow width 5 px or 5 ppt
+bindsym $mod+Shift+y    resize shrink width 5 px or 5 ppt
+bindsym $mod+Shift+u    resize grow height 5 px or 5 ppt
+bindsym $mod+Shift+i    resize shrink height 5 px or 5 ppt
+bindsym $mod+Shift+o    resize grow width 5 px or 5 ppt
 
 # workspace back and forth (with/without active container)
 workspace_auto_back_and_forth yes
@@ -100,24 +100,25 @@ bindsym $mod+Shift+b move container to workspace back_and_forth; workspace back_
 #bindsym $mod+q split toggle
 
 # open applications
-bindsym $mod+w			exec --no-startup-id firefox
-bindsym $mod+p			exec --no-startup-id pcmanfm
-bindsym $mod+Shift+p			exec --no-startup-id $HOME/.scripts/passmenu
-bindsym $mod+r 			exec $term -e ranger
+bindsym $mod+w      exec --no-startup-id firefox
+bindsym $mod+q      exec --no-startup-id $HOME/.scripts/quicklinks.sh
+bindsym $mod+p      exec --no-startup-id pcmanfm
+bindsym $mod+Shift+p      exec --no-startup-id $HOME/.scripts/passmenu
+bindsym $mod+r      exec $term -e ranger
 bindsym $mod+Shift+r      exec $HOME/.scripts/rotate_layout.py --times 1 --no-multimonitor  0
 bindsym $mod+i                  exec $term -e htop
 bindsym $mod+m                  exec --no-startup-id sayonara
 bindsym $mod+v                  exec $term -e vim
-bindsym $mod+c			exec $HOME/.scripts/cycle-workspace.py
-bindsym $mod+Shift+c			exec $HOME/.scripts/cycle-workspace.py second
-bindsym $mod+e			exec $HOME/.scripts/book-search.sh
-bindsym $mod+Shift+f    exec --no-startup-id polybar-msg cmd toggle
-#bindsym $mod+Shift+t			exec telegram-desktop
+bindsym $mod+c      exec $HOME/.scripts/cycle-workspace.py
+bindsym $mod+Shift+c      exec $HOME/.scripts/cycle-workspace.py second
+bindsym $mod+e      exec $HOME/.scripts/book-search.sh
+bindsym $mod+Shift+f    exec --no-startup-id $(xprop -id $(xdo id -N "Polybar") | grep -q "Normal" && xdo hide -N "Polybar" || xdo show -N "Polybar") # for hiding polybar
+#bindsym $mod+Shift+t     exec telegram-desktop
 bindsym $mod+u      [class="floating_term"] scratchpad show
-bindsym $mod+n			[con_mark="music"] scratchpad show
+bindsym $mod+n      [con_mark="music"] scratchpad show
 bindsym $mod+y      exec surf youtube.com
-bindsym $mod+Shift+semicolon		exec $HOME/.scripts/open_nix_projects.sh
-#bindsym $mod+o			exec rofi -show drun -theme ~/.config/rofi/new.rasi
+bindsym $mod+Shift+semicolon    exec $HOME/.scripts/open_nix_projects.sh
+#bindsym $mod+o     exec rofi -show drun -theme ~/.config/rofi/new.rasi
 
 # change wallpaper
 bindsym $mod+Shift+w  exec $WALLPAPER
@@ -126,10 +127,10 @@ bindsym $mod+Shift+w  exec $WALLPAPER
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s		gaps inner current plus 5
-bindsym $mod+a 		gaps inner current minus 5
+bindsym $mod+s    gaps inner current plus 5
+bindsym $mod+a    gaps inner current minus 5
 #bindsym $mod+s layout stacking
-bindsym $mod+t 	layout tabbed
+bindsym $mod+t  layout tabbed
 bindsym $mod+g layout toggle split
 
 # toggle tiling / floating
@@ -171,42 +172,42 @@ set $ws9 9
 set $ws10 10
 
 # switch to workspace
-bindsym $mod+1 		workspace $ws1
-bindsym $mod+2 		workspace $ws2
-bindsym $mod+3 		workspace $ws3
-bindsym $mod+4 		workspace $ws4
-bindsym $mod+5		workspace $ws5
-bindsym $mod+6 		workspace $ws6
-bindsym $mod+7 		workspace $ws7
-bindsym $mod+8 		workspace $ws8
-bindsym $mod+9		workspace $ws9
-bindsym $mod+0		workspace $ws10
+bindsym $mod+1    workspace $ws1
+bindsym $mod+2    workspace $ws2
+bindsym $mod+3    workspace $ws3
+bindsym $mod+4    workspace $ws4
+bindsym $mod+5    workspace $ws5
+bindsym $mod+6    workspace $ws6
+bindsym $mod+7    workspace $ws7
+bindsym $mod+8    workspace $ws8
+bindsym $mod+9    workspace $ws9
+bindsym $mod+0    workspace $ws10
 
 #
 # Move focused container to workspace
-bindsym $mod+Ctrl+1 	move container to workspace $ws1
-bindsym $mod+Ctrl+2 	move container to workspace $ws2
-bindsym $mod+Ctrl+3 	move container to workspace $ws3
-bindsym $mod+Ctrl+4 	move container to workspace $ws4
-bindsym $mod+Ctrl+5 	move container to workspace $ws5
-bindsym $mod+Ctrl+6 	move container to workspace $ws6
-bindsym $mod+Ctrl+7 	move container to workspace $ws7
-bindsym $mod+Ctrl+8 	move container to workspace $ws8
-bindsym $mod+Ctrl+9	move container to workspace $ws9
-bindsym $mod+Ctrl+0	move container to workspace $ws10
+bindsym $mod+Ctrl+1   move container to workspace $ws1
+bindsym $mod+Ctrl+2   move container to workspace $ws2
+bindsym $mod+Ctrl+3   move container to workspace $ws3
+bindsym $mod+Ctrl+4   move container to workspace $ws4
+bindsym $mod+Ctrl+5   move container to workspace $ws5
+bindsym $mod+Ctrl+6   move container to workspace $ws6
+bindsym $mod+Ctrl+7   move container to workspace $ws7
+bindsym $mod+Ctrl+8   move container to workspace $ws8
+bindsym $mod+Ctrl+9 move container to workspace $ws9
+bindsym $mod+Ctrl+0 move container to workspace $ws10
 
 
 # Move to workspace with focused container
-bindsym $mod+Shift+1 	move container to workspace $ws1; workspace $ws1
-bindsym $mod+Shift+2 	move container to workspace $ws2; workspace $ws2
-bindsym $mod+Shift+3 	move container to workspace $ws3; workspace $ws3
-bindsym $mod+Shift+4 	move container to workspace $ws4; workspace $ws4
-bindsym $mod+Shift+5 	move container to workspace $ws5; workspace $ws5
-bindsym $mod+Shift+6 	move container to workspace $ws6; workspace $ws6
-bindsym $mod+Shift+7 	move container to workspace $ws7; workspace $ws7
-bindsym $mod+Shift+8 	move container to workspace $ws8; workspace $ws8
-bindsym $mod+Shift+9	move container to workspace $ws9; workspace $ws9
-bindsym $mod+Shift+0	move container to workspace $ws10; workspace $ws10
+bindsym $mod+Shift+1  move container to workspace $ws1; workspace $ws1
+bindsym $mod+Shift+2  move container to workspace $ws2; workspace $ws2
+bindsym $mod+Shift+3  move container to workspace $ws3; workspace $ws3
+bindsym $mod+Shift+4  move container to workspace $ws4; workspace $ws4
+bindsym $mod+Shift+5  move container to workspace $ws5; workspace $ws5
+bindsym $mod+Shift+6  move container to workspace $ws6; workspace $ws6
+bindsym $mod+Shift+7  move container to workspace $ws7; workspace $ws7
+bindsym $mod+Shift+8  move container to workspace $ws8; workspace $ws8
+bindsym $mod+Shift+9  move container to workspace $ws9; workspace $ws9
+bindsym $mod+Shift+0  move container to workspace $ws10; workspace $ws10
 
 # Open applications on specific workspaces
 # assign [class="Thunderbird"] $ws1
@@ -333,7 +334,7 @@ exec_always --no-startup-id fix_xcursor
 exec --no-startup-id volumeicon
 #exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent
 #exec --no-startup-id redshift -P -O 3000
-exec --no-startup-id sleep 10 && exec $FLOATING_TERM
+exec --no-startup-id $FLOATING_TERM
 exec --no-startup-id safeeyes
 
 
@@ -370,18 +371,18 @@ set_from_resource $term_color15    color15
 
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
 bar {
-	i3bar_command $HOME/.config/polybar/launch.sh
-	status_command i3status
-	position top
+  i3bar_command $HOME/.config/polybar/launch.sh
+  status_command i3status
+  position top
 
 ## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
-#	tray_output primary
-#	tray_output eDP1
+# tray_output primary
+# tray_output eDP1
 
-	bindsym button4 nop
-	bindsym button5 nop
+  bindsym button4 nop
+  bindsym button5 nop
 #   font xft:URWGothic-Book 11
-	strip_workspace_numbers yes
+  strip_workspace_numbers yes
 
     colors {
         background #222D31
@@ -469,32 +470,32 @@ mode "$mode_gaps_outer" {
 }
 
 # #---Workspace Bindings---# #
-bindsym $mod+Home		workspace $ws1
-bindsym $mod+Shift+Home		move container to workspace $ws1
-bindsym $mod+End		workspace $ws10
-bindsym $mod+Shift+End		move container to workspace $ws10
-bindsym $mod+Prior		workspace prev
-bindsym $mod+Shift+Prior	move container to workspace prev
-bindsym $mod+Next		workspace next
-bindsym $mod+Shift+Next		move container to workspace next
-#bindsym $mod+Tab		workspace back_and_forth
+bindsym $mod+Home   workspace $ws1
+bindsym $mod+Shift+Home   move container to workspace $ws1
+bindsym $mod+End    workspace $ws10
+bindsym $mod+Shift+End    move container to workspace $ws10
+bindsym $mod+Prior    workspace prev
+bindsym $mod+Shift+Prior  move container to workspace prev
+bindsym $mod+Next   workspace next
+bindsym $mod+Shift+Next   move container to workspace next
+#bindsym $mod+Tab   workspace back_and_forth
 bindsym $mod+Tab   exec $HOME/.scripts/rofi-active-windows.sh
-bindsym $mod+XF86Back		workspace prev
-bindsym $mod+Shift+XF86Back	move container to workspace prev
-bindsym $mod+XF86Forward	workspace next
-bindsym $mod+Shift+XF86Forward	move container to workspace next
-bindsym $mod+semicolon		workspace next
-bindsym $mod+apostrophe		split horizontal ;; exec $term
-bindsym $mod+slash		split vertical ;; exec $term
-#bindsym $mod+Shift+slash	kill
-bindsym $mod+backslash		workspace back_and_forth
+bindsym $mod+XF86Back   workspace prev
+bindsym $mod+Shift+XF86Back move container to workspace prev
+bindsym $mod+XF86Forward  workspace next
+bindsym $mod+Shift+XF86Forward  move container to workspace next
+bindsym $mod+semicolon    workspace next
+bindsym $mod+apostrophe   split horizontal ;; exec $term
+bindsym $mod+slash    split vertical ;; exec $term
+#bindsym $mod+Shift+slash kill
+bindsym $mod+backslash    workspace back_and_forth
 
 
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume	exec --no-startup-id .scripts/volume/inc-vol.sh
-bindsym XF86AudioLowerVolume 	exec --no-startup-id .scripts/volume/dec-vol.sh
-bindsym XF86AudioMute 		exec --no-startup-id .scripts/volume/mute-vol.sh
+bindsym XF86AudioRaiseVolume  exec --no-startup-id .scripts/volume/inc-vol.sh
+bindsym XF86AudioLowerVolume  exec --no-startup-id .scripts/volume/dec-vol.sh
+bindsym XF86AudioMute     exec --no-startup-id .scripts/volume/mute-vol.sh
 
 # Sreen brightness controls
 #bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
@@ -509,18 +510,18 @@ bindsym XF86AudioPrev exec playerctl previous
 #bindsym XF86Display  exec $HOME/.scripts/display.s
 
 # #---Function Buttons---# #
-#bindsym $mod+F1		exec --no-startup-id groff -kejpt -mom ~/.local/share/larbs/readme.mom -Tpdf | zathura -
-bindsym $mod+F2		restart
-#bindsym $mod+F3		exec --no-startup-id displayselect
-#bindsym $mod+F4		exec --no-startup-id prompt "Hibernate computer?" "$hibernate"
-#bindsym $mod+F5		exec --no-startup-id $netrefresh
-#bindsym $mod+F6		exec --no-startup-id torwrap
-#bindsym $mod+F7		exec --no-startup-id xrandr --auto
-bindsym $mod+F8		exec --no-startup-id ~/.scripts/display.sh
-#bindsym $mod+F9		exec --no-startup-id dmenumount
-#bindsym $mod+F10	exec --no-startup-id dmenuumount
-#bindsym $mod+F11	exec --no-startup-id ducksearch
-#bindsym $mod+F12	exec $term -e nmtui
+#bindsym $mod+F1    exec --no-startup-id groff -kejpt -mom ~/.local/share/larbs/readme.mom -Tpdf | zathura -
+bindsym $mod+F2   restart
+#bindsym $mod+F3    exec --no-startup-id displayselect
+#bindsym $mod+F4    exec --no-startup-id prompt "Hibernate computer?" "$hibernate"
+#bindsym $mod+F5    exec --no-startup-id $netrefresh
+#bindsym $mod+F6    exec --no-startup-id torwrap
+#bindsym $mod+F7    exec --no-startup-id xrandr --auto
+bindsym $mod+F8   exec --no-startup-id ~/.scripts/display.sh
+#bindsym $mod+F9    exec --no-startup-id dmenumount
+#bindsym $mod+F10 exec --no-startup-id dmenuumount
+#bindsym $mod+F11 exec --no-startup-id ducksearch
+#bindsym $mod+F12 exec $term -e nmtui
 
 # screenshot
 bindsym --release Print exec --no-startup-id scrot

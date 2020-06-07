@@ -40,6 +40,7 @@ radius = 0.0
 fixed-center = true
 ;bottom = true
 
+
 background = ${colors.background}
 foreground = ${colors.foreground}
 
@@ -63,7 +64,7 @@ font-4 = DejaVuSansMono Nerd Font:pixelsize=12;5
 font-5 = Source Code Pro:pixelsize=12;6
 
 modules-left = start-menu i3 clementine cpu temperature
-modules-center = date
+modules-center = date color-mode
 modules-right = filesystem memory pulseaudio wlan  eth battery powermenu
 
 tray-position = right
@@ -75,7 +76,7 @@ tray-foreground = #F
 ;wm-restack = i3
 
 ;override-redirect = true
-enable-ipc = true
+enable-ipc = true ; for communicating with `polybar-msg` for hiding and showing bar
 
 ;scroll-up = bspwm-desknext
 ;scroll-down = bspwm-deskprev
@@ -387,9 +388,16 @@ format-background=${colors.background}
 type = custom/script
 format = <label>
 exec = echo 'Menu  '
-'
 click-left=$HOME/.scripts/rofi.sh
 format-background = #00FFFF
+label-foreground = #000000
+
+[module/color-mode]
+type = custom/script
+format = <label>
+exec = echo "MD: $([ -f /tmp/system_color_scheme.tmp ] && grep -oP "='\K[^']+" /tmp/system_color_scheme.tmp || echo "light" ) "
+click-left=$HOME/.scripts/mode.sh -t
+format-background = #ffffff
 label-foreground = #000000
 
 [module/pulseaudio]

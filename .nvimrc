@@ -1,6 +1,11 @@
 let mapleader=";"
 let maplocalleader = ","
 
+" Change the colors if you want
+" highlight default link WhichKey          Operator
+" highlight default link WhichKeySeperator DiffAdded
+" highlight default link WhichKeyGroup     Identifier
+" highlight default link WhichKeyDesc      Function
 
 " Leader key to trigger vim-which-key
 " pass leader key to WhichKey
@@ -20,8 +25,8 @@ set clipboard+=unnamedplus
 autocmd BufWritePre * %s/\s\+$//e
 
 " Enable spell checking, s for spell check
-" map <leader>s :setlocal spell! spelllang=en_us<CR>
-" let g:leader_map['s'] = 'toggle spell checking'
+map <localleader>s :setlocal spell! spelllang=en_us<CR>
+let g:leader_map['s'] = 'toggle spell checking'
 
 " Shortcut for split navigation
 map <C-h> <C-w>h
@@ -34,6 +39,19 @@ nnoremap <M-j>    :resize -2<CR>
 nnoremap <M-k>    :resize +2<CR>
 nnoremap <M-h>    :vertical resize -2<CR>
 nnoremap <M-l>    :vertical resize +2<CR>
+
+" zoom a vim pane, <C-w>= to re-balance
+nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
+nnoremap <leader>= :wincmd =<cr>
+let g:leader_map['='] = 'balance windows'
+let g:leader_map['-'] =  'Maximize current pane'
+
+let g:leader_map['z'] = [ ':Goyo' , 'Goyo Zen mode' ]
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
+
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
 
 " Shortcut split opening
 nnoremap <leader>h :split<Space>
@@ -90,16 +108,27 @@ augroup qs_colors
   autocmd ColorScheme * highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 augroup END
 
-" set theme according based on day/night
-if 6 <= strftime("%H") && strftime("%H") < 19
-  let ayucolor="mirage"   " for dark version of theme
+
+let s:mode = $SYSTEM_COLOR_SCHEME
+if s:mode == "light"
+  let g:airline_theme='light'
+  colorscheme pyte
+elseif s:mode == "dark"
+  let ayucolor="dark"
+  colorscheme ayu
+  let g:airline_theme='ayu'
 else
-  let ayucolor="mirage"  " for light version of theme
+  " set theme according based on day/night
+  if 6 <= strftime("%H") && strftime("%H") < 24
+    let g:airline_theme='light'
+    colorscheme pyte
+  else
+    let ayucolor="dark"  " for light version of theme
+    colorscheme ayu
+    let g:airline_theme='ayu'
+  endif
 endif
 
-" colorscheme ayu
-let g:airline_theme='light'
-colorscheme pyte
 set termguicolors
 lua require'colorizer'.setup()
 
@@ -109,10 +138,6 @@ let g:indentLine_char = '┊'
 let g:indentLine_first_char = '┊'
 let g:indentLine_showFirstIndentLevel = 1
 let g:indentLine_setColors = 0
-
-" === Stratify settings ===
-let g:startify_change_to_dir = 0
-let g:startify_change_to_vcs_root = 0
 
 " === NERDTree ===
 " Ctrl + b to toggle
@@ -168,7 +193,7 @@ let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } } " Add your
 let g:NERDCommentEmptyLines = 1 " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDTrimTrailingWhitespace = 1 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDToggleCheckAllLines = 1 " Enable NERDCommenterToggle to check all selected lines is commented or not
-
+let g:leader_map['/'] = [ '<Plug>NERDCommenterToggle'  , 'comment' ]
 
 " Buffer management
 set autowrite
@@ -202,6 +227,7 @@ set pastetoggle=<F2>
 set wrap " Automatically wrap text that extends beyond the screen length.
 set linebreak "Avoid wrapping a line in the middle of a word
 " set textwidth=79 " Uncomment to set the max textwidth. Use a value corresponding to the width of your screen.
+:set colorcolumn=80
 set formatoptions=tcqrn1
 set tabstop=2
 set shiftwidth=2
@@ -329,55 +355,77 @@ autocmd filetype cpp nm <buffer> gc :w<CR>:!printf "\033c" && printf "==========
 
 
 " GitGutter
-function! GitStatus()
-  let [a,m,r] = GitGutterGetHunkSummary()
-  return printf('+%d ~%d -%d', a, m, r)
-endfunction
-set statusline+=%{GitStatus()}
+highlight GitGutterAdd guifg=#009900 ctermfg=Green
+highlight GitGutterAddLine guifg=#009900 ctermfg=Green
+highlight GitGutterChange guifg=#bbbb00 ctermfg=Yellow
+highlight GitGutterChangeLine guifg=#bbbb00 ctermfg=Yellow
+highlight GitGutterDelete guifg=#ff2222 ctermfg=Red
+highlight GitGutterDeleteLine guifg=#ff2222 ctermfg=Red
 let g:gitgutter_enabled = 1
 let g:gitgutter_highlight_linenrs = 1
 let g:gitgutter_map_keys = 0
-nmap <Leader>gn <Plug>(GitGutterNextHunk)
-nmap <Leader>gp <Plug>(GitGutterPrevHunk)
-nmap <Leader>gu <Plug>(GitGutterUndoHunk)
-nmap <leader>gs <Plug>(GitGutterStageHunk)
-nmap <leader>ghl :GitGutterLineHighlightsToggle<CR>
-nmap <leader>ghf :GitGutterFold<CR>
-nmap <leader>ga :Git add %
-nmap <leader>gc :Git commit<CR>
-nmap <leader>gr :Git rebase -i
-nmap <leader>gb :Git blame<CR>
-nmap <leader>gm :Git mergetool<CR>
-nmap <leader>gd :Gdiffsplit<CR>
-nmap <leader>gg :Git<CR>
-nmap <leader>ga :Git add %<CR>
+nmap <leader>gR :Git rebase -i HEAD~
+let g:leader_map['i'] = [':GitGutterFold | GitGutterLineHighlightsToggle', 'highlight and fold']
 let g:leader_map['g'] = {
   \ 'name':'+git',
-  \ 'h' : { 'name' : '+highlight' }
+  \ 'a' : [':Git add %'                        , 'add current'],
+  \ 'A' : [':Git add .'                        , 'add all'],
+  \ 'b' : [':Git blame'                        , 'blame'],
+  \ 'B' : [':GBrowse'                          , 'browse'],
+  \ 'c' : [':Git commit'                       , 'commit'],
+  \ 'd' : [':Git diff'                         , 'diff'],
+  \ 'D' : [':Gdiffsplit'                       , 'diff split'],
+  \ 'f' : [':GitGutterFold'                    , 'fold unchanged lines'],
+  \ 'g' : [':Git'                              , 'Git '],
+  \ 'G' : [':Gstatus'                          , 'status'],
+  \ 'h' : [':GitGutterLineHighlightsToggle'    , 'highlight hunks'],
+  \ 'H' : ['<Plug>(GitGutterPreviewHunk)'      , 'preview hunk'],
+  \ 'j' : ['<Plug>(GitGutterNextHunk)'         , 'next hunk'],
+  \ 'k' : ['<Plug>(GitGutterPrevHunk)'         , 'prev hunk'],
+  \ 'l' : [':Git log'                          , 'log'],
+  \ 'm' : [':Git mergetool'                    , 'Mergtool'],
+  \ 'p' : [':Git push'                         , 'push'],
+  \ 'P' : [':Git pull'                         , 'pull'],
+  \ 'r' : [':GRemove'                          , 'remove'],
+  \ 'R' : 'Rebase',
+  \ 's' : ['<Plug>(GitGutterStageHunk)'        , 'stage hunk'],
+  \ 't' : [':GitGutterSignsToggle'             , 'toggle signs'],
+  \ 'u' : ['<Plug>(GitGutterUndoHunk)'         , 'undo hunk'],
+  \ '[' : [':diffget //2 | diffupdate'         , 'hunk from the target parent'],
+  \ ']' : [':diffget //3 | diffupdate'         , 'hunk from the merge parent'],
   \ }
 
 " === File management ===
 " Ranger && Denite
 let g:ranger_map_keys = 0
-nnoremap <leader>fr :Ranger<CR>
-nnoremap <leader>fb :Buffers<CR>
-nnoremap <leader>ff :Files<CR>
 nnoremap <leader>fs :Find<SPace>
 nnoremap <leader>fj :exe "Find ". expand('<cword>') <CR>
-nnoremap <leader>ft :Colors<CR>
-nnoremap <leader>fg :GFiles<CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-h': 'split',
   \ 'ctrl-v': 'vsplit' }
-
+let g:leader_map['o'] = [':Buffers' , 'Open buffers']
+let g:leader_map['j'] = [':BLines'  , 'Find in current buffer']
+let g:leader_map['r'] = [':Ranger'  , 'Ranger']
 let g:leader_map['f'] = {
   \ 'name' : '+file',
-  \ 'r' : 'Open Ranger',
-  \ 'b' : 'View buffers',
-  \ 'f' : 'Browse files in cwd',
+  \ 'c' : [':Commits'      , 'commits'],
+  \ 'C' : [':BCommits'     , 'buffer commits'],
+  \ 'f' : [':Files'        , 'files'],
+  \ 'g' : [':GFiles'       , 'git files'],
+  \ 'G' : [':GFiles?'      , 'modified git files'],
+  \ 'h' : [':History'      , 'file history'],
+  \ 'H' : [':History:'     , 'command history'],
+  \ 'j' : 'Search term under cursor in cwd',
+  \ 'l' : [':Lines'        , 'lines'] ,
+  \ 'm' : [':Marks'        , 'marks'] ,
+  \ 'M' : [':Maps'         , 'normal maps'] ,
+  \ 'p' : [':Helptags'     , 'help tags'] ,
+  \ 'P' : [':Tags'         , 'project tags'],
   \ 's' : 'Search term occurences in cwd',
-  \ 'j' : 'Search term under cursor in cwd'
+  \ 'S' : [':Colors'       , 'color schemes'],
+  \ 'y' : [':Filetypes'    , 'file types'],
+  \ 'z' : [':FZF'          , 'FZF'],
   \ }
 " --column: Show column number
 " --line-number: Show line number
@@ -393,6 +441,8 @@ command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-h
 """ Uncomment following if you want to see search result in floating window
 " let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
 " let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
+
+let g:fzf_layout = { 'down': '~80%' }
 
 if has('nvim') && !exists('g:fzf_layout')
   autocmd! FileType fzf
@@ -509,7 +559,15 @@ nnoremap <Leader>st :Obsession<CR>
 let g:airline#extensions#obsession#enabled = 1
 let g:airline#extensions#obsession#indicator_text = "SESSION-ACTIVE"
 
-let g:startify_change_to_vcs_root = v:true
+" === Stratify settings ===
+let g:startify_change_to_dir = 0
+let g:startify_lists = [
+          \ { 'type': 'sessions',  'header': ['   Sessions']                     },
+          \ { 'type': 'files',     'header': ['   Files']                        },
+          \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
+          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']                    },
+          \ ]
+let g:startify_change_to_vcs_root = 1
 let g:startify_session_dir = g:sessions_dir
 let g:startify_session_before_save = [
   \ 'echo "Cleaning up before saving.."',

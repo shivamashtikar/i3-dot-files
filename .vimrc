@@ -20,7 +20,7 @@ set wildmode=longest,list,full
 nmap <silent> ,/ :nohlsearch<CR>
 
 " Alias write and quit to Q
-nnoremap <leader>q :q<CR>
+nnoremap <leader>q :bd<CR>
 nnoremap <leader>w :w<CR>
 
 " Fix splitting
@@ -165,8 +165,7 @@ endfunction
 
 " Statusline with highlight groups (requires Powerline font, using Solarized theme)
 set statusline=
-set statusline+=%(%{&buflisted?bufnr('%'):''}\ \ %)
-set statusline+=%(%{ModeCurrent()}\ %)
+set statusline+=%(\ %{ModeCurrent()}\ %)
 set statusline+=%< " Truncate line here
 set statusline+=%f\  " File path, as typed or relative to current directory
 set statusline+=%{&modified?'+\ ':''}
@@ -187,3 +186,73 @@ set statusline+=\ %l:%c
 hi StatusLine cterm=reverse gui=reverse ctermfg=14 ctermbg=8 guifg=#93a1a1 guibg=#002732
 hi StatusLineNC cterm=reverse gui=reverse ctermfg=11 ctermbg=0 guifg=#657b83 guibg=#073642
 hi User1 ctermfg=14 ctermbg=0 guifg=#93a1a1 guibg=#073642
+hi User2 ctermfg=14 ctermbg=0 guifg=#073642 guibg=#93a1a1
+
+
+set showtabline=2
+
+if exists("+showtabline")
+
+  function! MyTabLine()
+    let s = ''
+    let t = tabpagenr()
+    for i in range(1, tabpagenr('$'))
+      let buflist = tabpagebuflist(i)
+      let winnr = tabpagewinnr(i)
+      let s .= '%' . i . 'T'
+      let s .= (i == t ? '%2*' : '%1*')
+      let s .= ' t' . i . ' '
+      if i != t
+        continue
+      endif
+      let s .= '%1*'
+      let openBufList = []
+      for nr in range(1,bufnr("$"))
+        if buflisted(nr)
+          call add(openBufList, nr)
+        endif
+      endfor
+      for bi in range(1,len(openBufList))
+        let bufnum = openBufList[bi - 1 ]
+        let file = bufname(bufnum)
+        let buftype = getbufvar(bufnum, '&buftype')
+        if buftype == 'help'
+            let file = 'help:' . fnamemodify(file, ':t:r')
+        elseif buftype == 'quickfix'
+            let file = 'quickfix'
+        elseif buftype == 'nofile'
+            if file =~ '\/.'
+                let file = substitute(file, '.*\/\ze.', '', '')
+            endif
+        else
+            let file = pathshorten(fnamemodify(file, ':p:~:.'))
+            if getbufvar(bufnum, '&modified')
+                let file = '+' . file
+            endif
+        endif
+        if file == '' || file == '~/'
+            let file = '[No Name]'
+        endif
+        let active_buf = bufnr('%')
+        if bufnum == active_buf
+          if bi == 1
+            let s .= '%#StatusLine# '
+          else
+            let s .= '%2*%#StatusLine# '
+          endif
+          let s .= file .' %1*'
+        else
+          let s .= ' '. file .' '
+          if (bufnum +1) != active_buf
+            let s .= ''
+          endif
+        endif
+      endfor
+    endfor
+    let s .= '%T%1*%='
+    let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+    return s
+  endfunction
+  set tabline=%!MyTabLine()
+
+endif

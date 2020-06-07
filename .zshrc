@@ -3,6 +3,9 @@
 # Path to your oh-my-zsh installation.
 export ZSH="/home/shivam/.oh-my-zsh"
 
+
+[ -f /tmp/system_color_scheme.tmp ] && source /tmp/system_color_scheme.tmp
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -138,3 +141,4 @@ if [ -f '/home/shivam/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/shiv
 # --follow: Follow symlinks
 # --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 export FZF_DEFAULT_COMMAND='rg --files --ignore-case --no-ignore --hidden --follow --glob "!.git/*"'
+

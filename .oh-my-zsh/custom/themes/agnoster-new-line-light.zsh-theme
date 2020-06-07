@@ -13,12 +13,8 @@
 #
 # In addition, I recommend the
 # [Solarized theme](https://github.com/altercation/solarized/) and, if you're
-# using it on Mac OS X, [iTerm 2](https://iterm2.com/) over Terminal.app -
+# using it on Mac OS X, [iTerm 2](http://www.iterm2.com/) over Terminal.app -
 # it has significantly better color fidelity.
-#
-# If using with "light" variant of the Solarized color schema, set
-# SOLARIZED_THEME variable to "light". If you don't specify, we'll assume
-# you're using the "dark" variant.
 #
 # # Goals
 #
@@ -32,15 +28,8 @@
 ### Segment drawing
 # A few utility functions to make it easy and re-usable to draw segmented prompts
 
-
-THEME=$(echo $SYSTEM_COLOR_SCHEME) # 'dark' or 'light'
 CURRENT_BG='NONE'
 
-if [[ $THEME == "dark" ]]; then
-  CURRENT_FG='black'
-else
-  CURRENT_FG='white'
-fi
 # Special Powerline characters
 
 () {
@@ -81,65 +70,38 @@ prompt_end() {
   else
     echo -n "%{%k%}"
   fi
-  #echo -n "{%f%}"
-  echo -n "ॐ%{%f%}"
+  echo -n "%{%f%}"
   CURRENT_BG=''
 }
 
-
-prompt_newline() {
-  if [[ -n $CURRENT_BG ]]; then
-    echo -n " %{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR\n%{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR"
-  else
-    echo -n " %{%k%}"
-  fi
-
-  echo -n " %{%f%}"
-  CURRENT_BG=''
-}
 ### Prompt components
 # Each component will draw itself, and hide itself if no information needs to be shown
 
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    if [[ $THEME == "dark" ]]; then
-      prompt_segment black default "%(!.%{%F{yellow}%}.)%n@%m"
-    else
-      prompt_segment white default "%(!.%{%F{green}%}.)%n@%m"
-    fi
+    prompt_segment white blue "%(!.%{%F{green}%}.)$USER@%m"
   fi
 }
 
 # Git: branch/detached head, dirty status
 prompt_git() {
-  (( $+commands[git] )) || return
-  if [[ "$(git config --get oh-my-zsh.hide-status 2>/dev/null)" = 1 ]]; then
-    return
-  fi
+
   local PL_BRANCH_CHAR
   () {
     local LC_ALL="" LC_CTYPE="en_US.UTF-8"
     PL_BRANCH_CHAR=$'\ue0a0'         # 
   }
   local ref dirty mode repo_path
+  repo_path=$(git rev-parse --git-dir 2>/dev/null)
 
   if $(git rev-parse --is-inside-work-tree >/dev/null 2>&1); then
-    repo_path=$(git rev-parse --git-dir 2>/dev/null)
     dirty=$(parse_git_dirty)
     ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
-    if [[ $THEME == "dark" ]]; then
-       if [[ -n $dirty ]]; then
-        prompt_segment yellow black
-      else
-        prompt_segment green "$CURRENT_FG"
-      fi
+    if [[ -n $dirty ]]; then
+      prompt_segment magenta 015
     else
-      if [[ -n $dirty ]]; then
-        prompt_segment magenta 015
-      else
-        prompt_segment 011 015
-      fi
+      prompt_segment 011 015
     fi
 
     if [[ -e "${repo_path}/BISECT_LOG" ]]; then
@@ -165,30 +127,8 @@ prompt_git() {
   fi
 }
 
-prompt_bzr() {
-    (( $+commands[bzr] )) || return
-    if (bzr status >/dev/null 2>&1); then
-        status_mod=`bzr status | head -n1 | grep "modified" | wc -m`
-        status_all=`bzr status | head -n1 | wc -m`
-        revision=`bzr log | head -n2 | tail -n1 | sed 's/^revno: //'`
-        if [[ $status_mod -gt 0 ]] ; then
-            prompt_segment yellow black
-            echo -n "bzr@"$revision "✚ "
-        else
-            if [[ $status_all -gt 0 ]] ; then
-                prompt_segment yellow black
-                echo -n "bzr@"$revision
-            else
-                prompt_segment green black
-                echo -n "bzr@"$revision
-            fi
-        fi
-    fi
-}
-
 prompt_hg() {
-  (( $+commands[hg] )) || return
-  local rev st branch
+  local rev status
   if $(hg id >/dev/null 2>&1); then
     if $(hg prompt >/dev/null 2>&1); then
       if [[ $(hg prompt "{status|unknown}") = "?" ]]; then
@@ -197,20 +137,11 @@ prompt_hg() {
         st='±'
       elif [[ -n $(hg prompt "{status|modified}") ]]; then
         # if any modification
-        if [[ $THEME == "dark" ]]; then
-          prompt_segment yellow black
-        else
-          prompt_segment magenta 015
-        fi
-
+        prompt_segment magenta 015
         st='±'
       else
         # if working copy is clean
-        if [[ $THEME == "dark" ]]; then
-          prompt_segment green "$CURRENT_FG"
-        else
-          prompt_segment 011 015
-        fi
+        prompt_segment 011 015
       fi
       echo -n $(hg prompt "☿ {rev}@{branch}") $st
     else
@@ -218,13 +149,13 @@ prompt_hg() {
       rev=$(hg id -n 2>/dev/null | sed 's/[^-0-9]//g')
       branch=$(hg id -b 2>/dev/null)
       if `hg st | grep -q "^\?"`; then
-        prompt_segment red "$CURRENT_FG"
+        prompt_segment red white
         st='±'
       elif `hg st | grep -q "^[MA]"`; then
-        prompt_segment yellow "$CURRENT_FG"
+        prompt_segment yellow white
         st='±'
       else
-        prompt_segment green "$CURRENT_FG"
+        prompt_segment green white
       fi
       echo -n "☿ $rev@$branch" $st
     fi
@@ -233,14 +164,14 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment blue $CURRENT_FG '%~'
+  prompt_segment blue white '%~'
 }
 
 # Virtualenv: current working virtualenv
 prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
-  if [[ -n $virtualenv_path && -z $VIRTUAL_ENV_DISABLE_PROMPT ]]; then
-    prompt_segment blue $CURRENT_FG "(`basename $virtualenv_path`)"
+  if [[ -n $virtualenv_path && -n $VIRTUAL_ENV_DISABLE_PROMPT ]]; then
+    prompt_segment blue white "(`basename $virtualenv_path`)"
   fi
 }
 
@@ -249,72 +180,26 @@ prompt_virtualenv() {
 # - am I root
 # - are there background jobs?
 prompt_status() {
-  local -a symbols
-
+  local symbols
+  symbols=()
   [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
   [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
 
-  [[ -n "$symbols" ]] && prompt_segment $CURRENT_FG default "$symbols"
-}
-
-#AWS Profile:
-# - display current AWS_PROFILE name
-# - displays yellow on red if profile name contains 'production' or
-#   ends in '-prod'
-# - displays black on green otherwise
-prompt_aws() {
-  [[ -z "$AWS_PROFILE" ]] && return
-  case "$AWS_PROFILE" in
-    *-prod|*production*) prompt_segment red yellow  "AWS: $AWS_PROFILE" ;;
-    *) prompt_segment green black "AWS: $AWS_PROFILE" ;;
-  esac
-}
-
-# nix-shell: currently running nix-shell
-prompt_nix_shell() {
-  if [[ -n "$IN_NIX_SHELL" ]]; then
-    if [[ -n $NIX_SHELL_PACKAGES ]]; then
-      local package_names=""
-      local packages=($NIX_SHELL_PACKAGES)
-      for package in $packages; do
-        package_names+=" ${package##*.}"
-      done
-      prompt_segment yellow black "{$package_names }"
-    elif [[ -n $name ]]; then
-      local cleanName=${name#interactive-}
-      cleanName=${cleanName%-environment}
-      envName=`echo $cleanName | cut -d'-' -f4`
-      prompt_segment yellow black "$envName"
-    else # This case is only reached if the nix-shell plugin isn't installed or failed in some way
-      prompt_segment yellow black "nix-shell {}"
-    fi
-  fi
-}
-
-
-prompt_kubecontext() {
-        CUR_CONTEXT=`kubectl config current-context | cut -d'.' -f3 | sed 's/mum/pri/g'`
-        if [[ $CUR_CONTEXT != 'minikube' ]]; then
-          prompt_segment green black "$CUR_CONTEXT"
-        fi
+  [[ -n "$symbols" ]] && prompt_segment white default "$symbols"
 }
 
 ## Main prompt
 build_prompt() {
   RETVAL=$?
-  prompt_kubecontext
-  prompt_nix_shell
   prompt_status
   prompt_virtualenv
-  prompt_aws
   prompt_context
   prompt_dir
   prompt_git
-  prompt_bzr
   prompt_hg
-  prompt_newline
   prompt_end
 }
 
 PROMPT='%{%f%b%k%}$(build_prompt) '
+

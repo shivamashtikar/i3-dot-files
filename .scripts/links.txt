@@ -1,0 +1,9 @@
+https://bitbucket.org
+https://github.com
+https://www.google.com
+https://mail.google.com
+https://pursuit.purescript.org/
+https://hoogle.haskell.org/
+https://web.whatsapp.com/
+https://www.youtube.com/
+https://archive.org/
