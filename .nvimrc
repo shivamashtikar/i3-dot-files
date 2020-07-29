@@ -111,21 +111,33 @@ augroup END
 
 let s:mode = $SYSTEM_COLOR_SCHEME
 if s:mode == "light"
-  let g:airline_theme='light'
-  colorscheme pyte
+  " let g:airline_theme='light'
+  " colorscheme pyte
+  let g:airline_theme='one'
+  colorscheme one
+  set background=light
 elseif s:mode == "dark"
-  let ayucolor="dark"
-  colorscheme ayu
-  let g:airline_theme='ayu'
+  let g:airline_theme='one'
+  colorscheme one
+  set background=dark
+  " let ayucolor="dark"
+  " colorscheme ayu
+  " let g:airline_theme='ayu'
 else
   " set theme according based on day/night
   if 6 <= strftime("%H") && strftime("%H") < 24
-    let g:airline_theme='light'
-    colorscheme pyte
+    " let g:airline_theme='light'
+    " colorscheme pyte
+    let g:airline_theme='one'
+    colorscheme one
+    set background=light
   else
-    let ayucolor="dark"  " for light version of theme
-    colorscheme ayu
-    let g:airline_theme='ayu'
+    let g:airline_theme='one'
+    colorscheme one
+    set background=dark
+    " let ayucolor="dark"  " for light version of theme
+    " colorscheme ayu
+    " let g:airline_theme='ayu'
   endif
 endif
 
@@ -389,11 +401,24 @@ let g:leader_map['g'] = {
   \ 'r' : [':GRemove'                          , 'remove'],
   \ 'R' : 'Rebase',
   \ 's' : ['<Plug>(GitGutterStageHunk)'        , 'stage hunk'],
-  \ 't' : [':GitGutterSignsToggle'             , 'toggle signs'],
+  \ 'S' : [ ':GStashList'                      , 'git stash list' ],
+  \ 't' : [':Twiggy'                           , 'Twiggy' ],
+  \ 'T' : [':GitGutterSignsToggle'             , 'toggle signs'],
   \ 'u' : ['<Plug>(GitGutterUndoHunk)'         , 'undo hunk'],
+  \ 'v' : [ ':GV'                              , 'git tree GV' ],
+  \ 'V' : [ ':GV!'                             , 'git tree GV' ],
   \ '[' : [':diffget //2 | diffupdate'         , 'hunk from the target parent'],
   \ ']' : [':diffget //3 | diffupdate'         , 'hunk from the merge parent'],
   \ }
+" let g:twiggy_group_locals_by_slash = 0
+" let g:twiggy_local_branch_sort = 'mru'
+let g:twiggy_remote_branch_sort = 'date'
+
+" A more sane configuration
+let g:fuzzy_stash_actions = {
+  \ 'ctrl-d': 'drop',
+  \ 'ctrl-p': 'pop',
+  \ 'ctrl-w': 'apply' }
 
 " === File management ===
 " Ranger && Denite
@@ -412,8 +437,8 @@ let g:leader_map['f'] = {
   \ 'c' : [':Commits'      , 'commits'],
   \ 'C' : [':BCommits'     , 'buffer commits'],
   \ 'f' : [':Files'        , 'files'],
-  \ 'g' : [':GFiles'       , 'git files'],
-  \ 'G' : [':GFiles?'      , 'modified git files'],
+  \ 'g' : [':GFiles?'      , 'modified git files'],
+  \ 'G' : [':GFiles'       , 'git files'],
   \ 'h' : [':History'      , 'file history'],
   \ 'H' : [':History:'     , 'command history'],
   \ 'j' : 'Search term under cursor in cwd',
@@ -517,21 +542,21 @@ autocmd Filetype purescript nm <buffer> <silent> <localleader>l :Pbuild<CR>
 
 "
 " === vim-codefmt CodeFormater ===
-augroup autoformat_settings
-  autocmd FileType bzl AutoFormatBuffer buildifier
-  autocmd FileType c,cpp,proto AutoFormatBuffer clang-format
-  autocmd FileType javascript AutoFormatBuffer prettier
-  autocmd FileType dart AutoFormatBuffer dartfmt
-  autocmd FileType go AutoFormatBuffer gofmt
-  autocmd FileType gn AutoFormatBuffer gn
-  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
-  autocmd FileType java AutoFormatBuffer google-java-format
-  autocmd FileType python AutoFormatBuffer yapf
-  autocmd FileType rust AutoFormatBuffer rustfmt
-  autocmd FileType vue AutoFormatBuffer prettier
-  " autocmd FileType purescript AutoFormatBuffer purty
-augroup END
-
+" augroup autoformat_settings
+"   autocmd FileType bzl AutoFormatBuffer buildifier
+"   autocmd FileType c,cpp,proto AutoFormatBuffer clang-format
+"   autocmd FileType javascript AutoFormatBuffer prettier
+"   autocmd FileType dart AutoFormatBuffer dartfmt
+"   autocmd FileType go AutoFormatBuffer gofmt
+"   autocmd FileType gn AutoFormatBuffer gn
+"   autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
+"   autocmd FileType java AutoFormatBuffer google-java-format
+"   autocmd FileType python AutoFormatBuffer yapf
+"   autocmd FileType rust AutoFormatBuffer rustfmt
+"   autocmd FileType vue AutoFormatBuffer prettier
+"   " autocmd FileType purescript AutoFormatBuffer purty
+" augroup END
+"
 
 " === Quick Edit ===
 "
@@ -557,7 +582,7 @@ exec 'nnoremap <Leader>ss :Obsession ' . g:sessions_dir . '/*.vim<C-D><BS><BS><B
 exec 'nnoremap <Leader>sl :so ' . g:sessions_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 nnoremap <Leader>st :Obsession<CR>
 let g:airline#extensions#obsession#enabled = 1
-let g:airline#extensions#obsession#indicator_text = "SESSION-ACTIVE"
+let g:airline#extensions#obsession#indicator_text = "ACTIVE"
 
 " === Stratify settings ===
 let g:startify_change_to_dir = 0

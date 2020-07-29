@@ -6,6 +6,8 @@ Plug 'zchee/deoplete-clang'
 " vim-which-key for bindings Suggestions
 Plug 'liuchengxu/vim-which-key'
 
+Plug 'tpope/vim-surround'
+
 " Snipets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -14,6 +16,10 @@ Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
 "git diff in gutter
 Plug 'airblade/vim-gitgutter'
+Plug 'junegunn/gv.vim'
+Plug 'sodapopcan/vim-twiggy'
+Plug 'aacunningham/vim-fuzzy-stash'
+" Plug 'jreybert/vimagit'
 
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -27,6 +33,7 @@ Plug 'whatyouhide/vim-gotham'
 Plug 'ayu-theme/ayu-vim'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'therubymug/vim-pyte'
+Plug 'rakr/vim-one'
 
 " Indentation
 Plug  'Yggdroot/indentLine'
