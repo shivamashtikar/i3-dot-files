@@ -582,7 +582,7 @@ exec 'nnoremap <Leader>ss :Obsession ' . g:sessions_dir . '/*.vim<C-D><BS><BS><B
 exec 'nnoremap <Leader>sl :so ' . g:sessions_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 nnoremap <Leader>st :Obsession<CR>
 let g:airline#extensions#obsession#enabled = 1
-let g:airline#extensions#obsession#indicator_text = "ACTIVE"
+let g:airline#extensions#obsession#indicator_text = "{ॐ}"
 
 " === Stratify settings ===
 let g:startify_change_to_dir = 0
