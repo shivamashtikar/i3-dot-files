@@ -8,6 +8,11 @@ Plug 'liuchengxu/vim-which-key'
 
 Plug 'tpope/vim-surround'
 
+" fuzzyFinders
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'stsewd/fzf-checkout.vim'
+
 " Snipets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -36,7 +41,8 @@ Plug 'therubymug/vim-pyte'
 Plug 'rakr/vim-one'
 
 " Indentation
-Plug  'Yggdroot/indentLine'
+" Plug  'Yggdroot/indentLine'
+Plug 'nathanaelkane/vim-indent-guides'
 
 Plug 'neovimhaskell/haskell-vim'
 " Plug 'w0rp/ale'
@@ -51,18 +57,20 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 
 
+" Haskell
+Plug 'vmchale/dhall-vim'
 Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
 "Support for writing Nix expressions in vim
 Plug 'LnL7/vim-nix'
+" Plug 'Twinside/vim-hoogle'
+Plug 'monkoose/fzf-hoogle.vim'
 
-Plug 'neovimhaskell/haskell-vim'
-
-Plug 'alx741/vim-stylishask'
+" Plug 'alx741/vim-stylishask'
 
 
 Plug 'ryanoasis/vim-devicons'
 
-Plug 'direnv/direnv.vim'
+" Plug 'direnv/direnv.vim'
 
 " ranger vim
 Plug 'francoiscabrol/ranger.vim'
@@ -75,12 +83,9 @@ Plug 'plasticboy/vim-markdown'
 "editorConfig
 Plug 'editorconfig/editorconfig-vim'
 
-" fuzzyFinders
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-
 " nerdCommenter
-Plug 'preservim/nerdcommenter'
+" Plug 'preservim/nerdcommenter'
+Plug 'tpope/vim-commentary'
 
 "Startify at the start screen in nvim
 Plug 'mhinz/vim-startify'
@@ -115,5 +120,18 @@ Plug 'junegunn/limelight.vim'
 
 " TODO list
 Plug 'aserebryakov/vim-todo-lists'
+
+Plug 'mbbill/undotree'
+
+Plug 'junegunn/vim-slash'
+
+" Journal
+Plug 'junegunn/vim-journal'
+Plug 'kristijanhusak/vim-carbon-now-sh'
+
+Plug 'rhysd/git-messenger.vim'
+
+"CPP
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 call plug#end()

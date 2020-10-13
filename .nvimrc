@@ -146,10 +146,11 @@ lua require'colorizer'.setup()
 
 " === IndentLine ===
 " let g:indentLine_char_list = ['|', '¦', '┆', '┊']
-let g:indentLine_char = '┊'
-let g:indentLine_first_char = '┊'
-let g:indentLine_showFirstIndentLevel = 1
-let g:indentLine_setColors = 0
+" let g:indentLine_char = '┊'
+" let g:indentLine_first_char = '┊'
+" let g:indentLine_showFirstIndentLevel = 1
+" let g:indentLine_setColors = 0
+let g:indent_guides_enable_on_vim_startup = 1
 
 " === NERDTree ===
 " Ctrl + b to toggle
@@ -160,17 +161,17 @@ let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir
 let g:NERDTreeStatusline = ''
 let g:NERDTreeHighlightCursorline = 0
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter *
-         \   if argc() == 0 && !exists("s:std_in")
-         \ |   Startify
-         \ |   NERDTree
-         \ |   wincmd w
-         \ | elseif argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in")
-         \ |   Startify
-         \ |   exe 'NERDTree' argv()[0]
-         \ |   wincmd p
-         \ |   exe 'cd '.argv()[0]
-         \ | endif
+" autocmd VimEnter *
+"           \   if argc() == 0 && !exists("s:std_in")
+"           \ |   Startify
+"           \ |   NERDTree
+"           \ |   wincmd w
+"           \ | elseif argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in")
+"           \ |   Startify
+"           \ |   exe 'NERDTree' argv()[0]
+"           \ |   wincmd p
+"           \ |   exe 'cd '.argv()[0]
+"           \ | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " === vim-devicons for NERDTree ===
 "
@@ -196,16 +197,18 @@ let WebDevIconsUnicodeDecorateFolderNodesExactMatches = 1
 " <leader> cn -> Same as cc but forces nesting.
 " <leader> c <space> -> toggle the comment state of the selected line(s)
 " <leader> cu -> Uncomments the selected line(s).
-let g:leader_map['c'] = {'name': '+NerdCommenter'}
-let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
-let g:NERDCompactSexyComs = 1 " Use compact syntax for prettified multi-line comments
-let g:NERDDefaultAlign = 'left' " Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDAltDelims_java = 1 " Set a language to use its alternate delimiters by default
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } } " Add your own custom formats or override the defaults
-let g:NERDCommentEmptyLines = 1 " Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDTrimTrailingWhitespace = 1 " Enable trimming of trailing whitespace when uncommenting
-let g:NERDToggleCheckAllLines = 1 " Enable NERDCommenterToggle to check all selected lines is commented or not
-let g:leader_map['/'] = [ '<Plug>NERDCommenterToggle'  , 'comment' ]
+" let g:leader_map['c'] = {'name': '+NerdCommenter'}
+" let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
+" let g:NERDCompactSexyComs = 1 " Use compact syntax for prettified multi-line comments
+" let g:NERDDefaultAlign = 'left' " Align line-wise comment delimiters flush left instead of following code indentation
+" let g:NERDAltDelims_java = 1 " Set a language to use its alternate delimiters by default
+" let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } } " Add your own custom formats or override the defaults
+" let g:NERDCommentEmptyLines = 1 " Allow commenting and inverting empty lines (useful when commenting a region)
+" let g:NERDTrimTrailingWhitespace = 1 " Enable trimming of trailing whitespace when uncommenting
+" let g:NERDToggleCheckAllLines = 1 " Enable NERDCommenterToggle to check all selected lines is commented or not
+" let g:leader_map['/'] = [ '<Plug>NERDCommenterToggle'  , 'comment' ]
+nnoremap <leader>/ :Commentary<CR>
+vnoremap <leader>/ :Commentary<CR>
 
 " Buffer management
 set autowrite
@@ -325,14 +328,8 @@ autocmd filetype purescript nm <buffer> <silent> ,h :!purty --write %<CR>
 let g:LanguageClient_rootMarkers = {}
 let g:LanguageClient_rootMarkers.haskell = ['*.cabal', 'stack.yaml']
 let g:LanguageClient_serverCommands = {
-    \ 'haskell': ['ghcide', '--lsp'],
+    \ 'haskell': ['haskell-language-server-wrapper', '--lsp'],
     \ }
-"Call language server
-" nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" Or map each action separately
-" nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-" nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
@@ -365,7 +362,18 @@ autocmd BufNewFile *.cpp -r ~/.templates/template.cpp
 autocmd filetype cpp nm <buffer> gb :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r < %:r.in > %:r.out 2> %:r.err && printf "\n\n\n\n"<CR>
 autocmd filetype cpp nm <buffer> gc :w<CR>:!printf "\033c" && printf "================\n  Compiling...\n================\n" && time g++ -g -std=c++17 -Wall -Wextra -Wno-unused-result -D LOCAL -O2 %:r.cpp -o %:r 2>&1 \| tee %:r.cerr && printf "\n================\n   Running...\n================\n" && time ./%:r  && printf "\n\n\n\n"<CR>
 
-
+"GBranches
+let g:fzf_branch_actions = {
+      \ 'diff': {
+      \   'prompt': 'Diff> ',
+      \   'execute': 'Git diff {branch}',
+      \   'multiple': v:false,
+      \   'keymap': 'ctrl-f',
+      \   'required': ['branch'],
+      \   'confirm': v:false,
+      \ },
+      \}
+let g:git_messenger_include_diff = 'current'
 " GitGutter
 highlight GitGutterAdd guifg=#009900 ctermfg=Green
 highlight GitGutterAddLine guifg=#009900 ctermfg=Green
@@ -376,30 +384,30 @@ highlight GitGutterDeleteLine guifg=#ff2222 ctermfg=Red
 let g:gitgutter_enabled = 1
 let g:gitgutter_highlight_linenrs = 1
 let g:gitgutter_map_keys = 0
-nmap <leader>gR :Git rebase -i HEAD~
 let g:leader_map['i'] = [':GitGutterFold | GitGutterLineHighlightsToggle', 'highlight and fold']
 let g:leader_map['g'] = {
   \ 'name':'+git',
   \ 'a' : [':Git add %'                        , 'add current'],
   \ 'A' : [':Git add .'                        , 'add all'],
   \ 'b' : [':Git blame'                        , 'blame'],
-  \ 'B' : [':GBrowse'                          , 'browse'],
+  \ 'B' : [':GBranches'                        , 'Checkout branch'],
   \ 'c' : [':Git commit'                       , 'commit'],
+  \ 'C' : [':GBranches create'                 , 'Create branch'],
   \ 'd' : [':Git diff'                         , 'diff'],
   \ 'D' : [':Gdiffsplit'                       , 'diff split'],
-  \ 'f' : [':GitGutterFold'                    , 'fold unchanged lines'],
+  \ 'f' : [':GBranches diff'                   , 'Diff branch'],
+  \ 'F' : [':GitGutterFold'                    , 'fold unchanged lines'],
   \ 'g' : [':Git'                              , 'Git '],
-  \ 'G' : [':Gstatus'                          , 'status'],
   \ 'h' : [':GitGutterLineHighlightsToggle'    , 'highlight hunks'],
   \ 'H' : ['<Plug>(GitGutterPreviewHunk)'      , 'preview hunk'],
   \ 'j' : ['<Plug>(GitGutterNextHunk)'         , 'next hunk'],
   \ 'k' : ['<Plug>(GitGutterPrevHunk)'         , 'prev hunk'],
-  \ 'l' : [':Git log'                          , 'log'],
-  \ 'm' : [':Git mergetool'                    , 'Mergtool'],
+  \ 'l' : [':Git log --stat'                   , 'logs'],
+  \ 'L' : [':Git log --stat -p'                , 'logs with changes'],
+  \ 'M' : [':GBranches merge'                  , 'Merge branch'],
   \ 'p' : [':Git push'                         , 'push'],
   \ 'P' : [':Git pull'                         , 'pull'],
-  \ 'r' : [':GRemove'                          , 'remove'],
-  \ 'R' : 'Rebase',
+  \ 'r' : [':GBranches rebase'                 , 'Rebase with branch'],
   \ 's' : ['<Plug>(GitGutterStageHunk)'        , 'stage hunk'],
   \ 'S' : [ ':GStashList'                      , 'git stash list' ],
   \ 't' : [':Twiggy'                           , 'Twiggy' ],
@@ -534,12 +542,17 @@ autocmd FileType tex,latex inoremap ,h \huge
 "
 
 let g:vimmerps_disable_mappings = v:true
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+nm <localleader>t :call LanguageClient#textDocument_hover()<CR>
+nm <localleader>g :call LanguageClient#textDocument_definition()<CR>
+nm <localleader>r :call LanguageClient#textDocument_rename()<CR>
+nm <localleader>f :call LanguageClient#textDocument_formatting()<CR>
+nm <localleader>b :call LanguageClient#textDocument_references()<CR>
+nm <localleader>a :call LanguageClient#textDocument_codeAction()<CR>
+nm <localleader>s :call LanguageClient#textDocument_documentSymbol()<CR>
 autocmd Filetype purescript nm <buffer> <silent> <localleader>a :Papply<CR>
 autocmd Filetype purescript nm <buffer> <silent> <localleader>i :Pimport<CR>
-autocmd Filetype purescript nm <buffer> <silent> <localleader>g :call LanguageClient_textDocument_definition()<CR>
-autocmd Filetype purescript nm <buffer> <silent> <localleader>t :call LanguageClient_textDocument_hover()<CR>
 autocmd Filetype purescript nm <buffer> <silent> <localleader>l :Pbuild<CR>
-
 "
 " === vim-codefmt CodeFormater ===
 " augroup autoformat_settings
@@ -566,14 +579,27 @@ nmap <leader>ez :edit $HOME/.zshrc <CR>
 
 " === Utilities ===
 "
-nmap <leader>ut i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+nmap <leader>uT i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
 let g:leader_map['u'] = {'name':'+Utilities',
-  \ 't': 'Add timeStamp'
+  \ 't' : [':UndotreeToggle',   'UndotreeToggle'],
+  \ 'T' : 'Add timeStamp',
   \ }
 
 " === Session management ===
 "
 let g:sessions_dir = '~/vim-sessions'
+" function LoadSessionHash()
+"   let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
+"   exec ':source ' . g:sessions_dir . '/' . s:sessionFile
+" endfunction
+" exec 'nnoremap <Leader>sl :call LoadSessionHash()<CR>'
+
+" function SaveSessionHash()
+"   let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
+"   exec ':Obsession ' . g:sessions_dir . '/' . s:sessionFile
+" endfunction
+" exec 'nnoremap <Leader>sh :call SaveSessionHash()<CR>'
+
 let g:leader_map['s'] = {'name':'+Session',
   \ 's' : 'Save Session',
   \ 'l' : 'Load Session',
@@ -598,4 +624,48 @@ let g:startify_session_before_save = [
   \ 'echo "Cleaning up before saving.."',
   \ 'silent! NERDTreeTabsClose'
   \ ]
+let g:startify_session_sort = 1
+
+augroup HoogleMaps
+  autocmd!
+  autocmd FileType haskell nnoremap <buffer> <localleader>hh :Hoogle <C-r><C-w><CR>
+augroup END
+
+" vim-slash
+" enhanced in-buffer search
+" noremap <plug>(slash-after) zz
+
+let g:carbon_now_sh_options =
+\ { 'ln': 'true',
+  \ 'fm': 'Source Code Pro' }
+
+" ----------------------------------------------------------------------------
+" tmux
+" ----------------------------------------------------------------------------
+function! s:tmux_send(content, dest) range
+  let dest = empty(a:dest) ? input('To which pane? ') : a:dest
+  let tempfile = tempname()
+  call writefile(split(a:content, "\n", 1), tempfile, 'b')
+  call system(printf('tmux load-buffer -b vim-tmux %s \; paste-buffer -d -b vim-tmux -t %s',
+        \ shellescape(tempfile), shellescape(dest)))
+  call delete(tempfile)
+endfunction
+
+function! s:tmux_map(key, dest)
+  execute printf('nnoremap <silent> %s "tyy:call <SID>tmux_send(@t, "%s")<cr>', a:key, a:dest)
+  execute printf('xnoremap <silent> %s "ty:call <SID>tmux_send(@t, "%s")<cr>gv', a:key, a:dest)
+endfunction
+
+call s:tmux_map('<leader>tt', '')
+call s:tmux_map('<leader>th', '.left')
+call s:tmux_map('<leader>tj', '.bottom')
+call s:tmux_map('<leader>tk', '.top')
+call s:tmux_map('<leader>tl', '.right')
+call s:tmux_map('<leader>ty', '.top-left')
+call s:tmux_map('<leader>to', '.top-right')
+call s:tmux_map('<leader>tn', '.bottom-left')
+call s:tmux_map('<leader>t.', '.bottom-right')
+
+
+vnoremap <leader>p "_dP
 
