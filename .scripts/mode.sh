@@ -2,7 +2,8 @@
 MODE="light" # Default mode
 
 KITTY_LIGHT_THEME="$HOME/.config/kitty/Piatto_Light.conf"
-KITTY_DARK_THEME="$HOME/.config/kitty/3024_Night.conf"
+
+KITTY_DARK_THEME="$HOME/.config/kitty/OneDark.conf"
 
 # Destination file
 KITTY_THEME="$HOME/.config/kitty/theme.conf"
