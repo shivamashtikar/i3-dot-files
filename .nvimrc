@@ -1,4 +1,4 @@
-let mapleader=";"
+let mapleader=" "
 let maplocalleader = ","
 
 " Change the colors if you want
@@ -9,8 +9,8 @@ let maplocalleader = ","
 
 " Leader key to trigger vim-which-key
 " pass leader key to WhichKey
-call which_key#register(';', "g:leader_map")
-nnoremap <silent> <leader> :WhichKey ';'<CR>
+call which_key#register(' ', "g:leader_map")
+nnoremap <silent> <leader> :WhichKey ' '<CR>
 
 call which_key#register(',', "g:localleader_map")
 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
@@ -28,17 +28,17 @@ autocmd BufWritePre * %s/\s\+$//e
 map <localleader>s :setlocal spell! spelllang=en_us<CR>
 let g:leader_map['s'] = 'toggle spell checking'
 
-" Shortcut for split navigation
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+" Use alt + hjkl split navigation
+map <M-h> <C-w>h
+map <M-j> <C-w>j
+map <M-k> <C-w>k
+map <M-l> <C-w>l
 
-" Use alt + hjkl to resize windows
-nnoremap <M-j>    :resize -2<CR>
-nnoremap <M-k>    :resize +2<CR>
-nnoremap <M-h>    :vertical resize -2<CR>
-nnoremap <M-l>    :vertical resize +2<CR>
+" Shortcut ctrl + hjkl for to resize windows
+nnoremap <C-j>    :resize -2<CR>
+nnoremap <C-k>    :resize +2<CR>
+nnoremap <C-h>    :vertical resize -2<CR>
+nnoremap <C-l>    :vertical resize +2<CR>
 
 " zoom a vim pane, <C-w>= to re-balance
 nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
@@ -79,20 +79,27 @@ let g:leader_map['q'] = 'Quit buffer'
 nnoremap <leader>w :w<CR>
 let g:leader_map['w'] = 'Write buffer'
 
+let g:leader_map['b']={ 'name' : '+buffer' }
+nnoremap <silent> <Leader>bp :bprevious<CR>
+nnoremap <silent> <Leader>bn :bnext<CR>
+nnoremap <silent> <Leader>bf :bfirst<CR>
+nnoremap <silent> <Leader>bl :blast<CR>
+nnoremap <silent> <Leader>bk :bw<CR>
+
 
 " Shift + u for redo
 noremap <S-u> <C-r>
 
 " === Deoplete ===
 " Use deoplete at startup
-let g:deoplete#enable_at_startup = 1
+" let g:deoplete#enable_at_startup = 1
 " deoplete-clang
 " # On GNU/Linux
 " $ sudo find / -name libclang.so
 " # On macOS
 " $ mdfind -name libclang.dylib
-let g:deoplete#sources#clang#libclang_path='/usr/lib/libclang.so'
-let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
+" let g:deoplete#sources#clang#libclang_path='/usr/lib/libclang.so'
+" let g:deoplete#sources#clang#clang_header='/usr/lib/clang'
 " call deoplete#custom#option('sources', {
 " \ '_': ['ale'],
 " \})
@@ -109,40 +116,38 @@ augroup qs_colors
 augroup END
 
 
+set termguicolors
+lua require'colorizer'.setup()
+
+hi Comment cterm=italic
+
 let s:mode = $SYSTEM_COLOR_SCHEME
 if s:mode == "light"
-  " let g:airline_theme='light'
-  " colorscheme pyte
-  let g:airline_theme='one'
-  colorscheme one
   set background=light
+  colorscheme PaperColor
+  let g:airline_theme='papercolor'
 elseif s:mode == "dark"
-  let g:airline_theme='one'
-  colorscheme one
-  set background=dark
-  " let ayucolor="dark"
-  " colorscheme ayu
-  " let g:airline_theme='ayu'
+  let g:airline_theme='onedark'
+  colorscheme onedark
 else
   " set theme according based on day/night
   if 6 <= strftime("%H") && strftime("%H") < 24
-    " let g:airline_theme='light'
-    " colorscheme pyte
-    let g:airline_theme='one'
-    colorscheme one
     set background=light
+    " colorscheme one
+    " let g:airline_theme='one'
+    colorscheme PaperColor
+    let g:airline_theme='papercolor'
   else
-    let g:airline_theme='one'
-    colorscheme one
-    set background=dark
-    " let ayucolor="dark"  " for light version of theme
-    " colorscheme ayu
-    " let g:airline_theme='ayu'
+    colorscheme onedark
+    let g:airline_theme='onedark'
   endif
 endif
 
-set termguicolors
-lua require'colorizer'.setup()
+
+
+" sets F10 as a switch between dark and light modes
+map <F10> :let &background = ( &background == "dark" ? "light" : "dark" )<CR>
+
 
 " === IndentLine ===
 " let g:indentLine_char_list = ['|', '¦', '┆', '┊']
@@ -260,7 +265,7 @@ set laststatus=2 " Status bar
 set cursorline "Highlight the line currently under cursor.
 set backupdir=~/.cache/vim " Directory to store backup files.h
 set confirm "Display a confirmation dialog when closing an unsaved file.
-set updatetime=250
+set updatetime=300
 
 " Display options
 set showmode
@@ -291,12 +296,12 @@ set smartcase " Include only uppercase words with uppercase search term
 set viminfo='100,<9999,s100 " Store info from no more than 100 files at a time, 9999 lines of text, 100kb of data. Useful for copying large amounts of data between files.
 
 " Map the <Space> key to toggle a selected fold opened/closed.
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-vnoremap <Space> zf
+" nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+" vnoremap <Space> zf
 
 " move among buffers
-map <C-p> :bprevious<CR>
-map <C-n> :bnext<CR>
+map <M-a> :bprevious<CR>
+map <M-d> :bnext<CR>
 
 
 " let g:ale_linters = {'haskell': ['hlint', 'ghc'], 'purescript': ['purty']}
@@ -325,11 +330,11 @@ autocmd filetype haskell nm <buffer> <silent> ,h :!hlint %<CR>
 autocmd filetype purescript nm <buffer> <silent> ,h :!purty --write %<CR>
 
 " Ghcide
-let g:LanguageClient_rootMarkers = {}
-let g:LanguageClient_rootMarkers.haskell = ['*.cabal', 'stack.yaml']
-let g:LanguageClient_serverCommands = {
-    \ 'haskell': ['haskell-language-server-wrapper', '--lsp'],
-    \ }
+" let g:LanguageClient_rootMarkers = {}
+" let g:LanguageClient_rootMarkers.haskell = ['*.cabal', 'stack.yaml']
+" let g:LanguageClient_serverCommands = {
+"     \ 'haskell': ['haskell-language-server-wrapper', '--lsp'],
+"     \ }
 
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
@@ -338,6 +343,7 @@ let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
 let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+" let g:haskell_classic_highlighting = 1
 
 let g:airline#extensions#tabline#enabled = 1 " Enable the list of buffers
 let g:airline#extensions#tabline#fnamemod = ':t' " Show just the filename
@@ -348,10 +354,10 @@ set conceallevel=2 " concealing text For example, conceal [link text](link url) 
 
 " UltiSnips
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-let g:UltiSnipsEditSplit="vertical" " If you want :UltiSnipsEdit to split your window.
+" let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsJumpForwardTrigger="<c-b>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+" let g:UltiSnipsEditSplit="vertical" " If you want :UltiSnipsEdit to split your window.
 
 " **************** Competitve Coding *****************
 "
@@ -389,8 +395,8 @@ let g:leader_map['g'] = {
   \ 'name':'+git',
   \ 'a' : [':Git add %'                        , 'add current'],
   \ 'A' : [':Git add .'                        , 'add all'],
-  \ 'b' : [':Git blame'                        , 'blame'],
-  \ 'B' : [':GBranches'                        , 'Checkout branch'],
+  \ 'b' : [':GBranches'                        , 'Checkout branch'],
+  \ 'B' : [':Git blame'                        , 'blame'],
   \ 'c' : [':Git commit'                       , 'commit'],
   \ 'C' : [':GBranches create'                 , 'Create branch'],
   \ 'd' : [':Git diff'                         , 'diff'],
@@ -398,15 +404,15 @@ let g:leader_map['g'] = {
   \ 'f' : [':GBranches diff'                   , 'Diff branch'],
   \ 'F' : [':GitGutterFold'                    , 'fold unchanged lines'],
   \ 'g' : [':Git'                              , 'Git '],
-  \ 'h' : [':GitGutterLineHighlightsToggle'    , 'highlight hunks'],
-  \ 'H' : ['<Plug>(GitGutterPreviewHunk)'      , 'preview hunk'],
+  \ 'h' : ['<Plug>(GitGutterPreviewHunk)'      , 'preview hunk'],
+  \ 'H' : [':GitGutterLineHighlightsToggle'    , 'highlight hunks'],
   \ 'j' : ['<Plug>(GitGutterNextHunk)'         , 'next hunk'],
   \ 'k' : ['<Plug>(GitGutterPrevHunk)'         , 'prev hunk'],
   \ 'l' : [':Git log --stat'                   , 'logs'],
   \ 'L' : [':Git log --stat -p'                , 'logs with changes'],
   \ 'M' : [':GBranches merge'                  , 'Merge branch'],
-  \ 'p' : [':Git push'                         , 'push'],
-  \ 'P' : [':Git pull'                         , 'pull'],
+  \ 'p' : [':Git pull'                         , 'pull'],
+  \ 'P' : [':Git push'                         , 'push'],
   \ 'r' : [':GBranches rebase'                 , 'Rebase with branch'],
   \ 's' : ['<Plug>(GitGutterStageHunk)'        , 'stage hunk'],
   \ 'S' : [ ':GStashList'                      , 'git stash list' ],
@@ -444,9 +450,9 @@ let g:leader_map['f'] = {
   \ 'name' : '+file',
   \ 'c' : [':Commits'      , 'commits'],
   \ 'C' : [':BCommits'     , 'buffer commits'],
-  \ 'f' : [':Files'        , 'files'],
+  \ 'f' : [':GFiles'       , 'git files'],
+  \ 'F' : [':Files'        , 'files'],
   \ 'g' : [':GFiles?'      , 'modified git files'],
-  \ 'G' : [':GFiles'       , 'git files'],
   \ 'h' : [':History'      , 'file history'],
   \ 'H' : [':History:'     , 'command history'],
   \ 'j' : 'Search term under cursor in cwd',
@@ -541,18 +547,18 @@ autocmd FileType tex,latex inoremap ,h \huge
 " autocmd filetype purescript nm <buffer> <silent> ,t :Ptype<CR>
 "
 
-let g:vimmerps_disable_mappings = v:true
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-nm <localleader>t :call LanguageClient#textDocument_hover()<CR>
-nm <localleader>g :call LanguageClient#textDocument_definition()<CR>
-nm <localleader>r :call LanguageClient#textDocument_rename()<CR>
-nm <localleader>f :call LanguageClient#textDocument_formatting()<CR>
-nm <localleader>b :call LanguageClient#textDocument_references()<CR>
-nm <localleader>a :call LanguageClient#textDocument_codeAction()<CR>
-nm <localleader>s :call LanguageClient#textDocument_documentSymbol()<CR>
-autocmd Filetype purescript nm <buffer> <silent> <localleader>a :Papply<CR>
-autocmd Filetype purescript nm <buffer> <silent> <localleader>i :Pimport<CR>
-autocmd Filetype purescript nm <buffer> <silent> <localleader>l :Pbuild<CR>
+" let g:vimmerps_disable_mappings = v:true
+" nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" nm <localleader>t :call LanguageClient#textDocument_hover()<CR>
+" nm <localleader>g :call LanguageClient#textDocument_definition()<CR>
+" nm <localleader>r :call LanguageClient#textDocument_rename()<CR>
+" nm <localleader>f :call LanguageClient#textDocument_formatting()<CR>
+" nm <localleader>b :call LanguageClient#textDocument_references()<CR>
+" nm <localleader>a :call LanguageClient#textDocument_codeAction()<CR>
+" nm <localleader>s :call LanguageClient#textDocument_documentSymbol()<CR>
+" autocmd Filetype purescript nm <buffer> <silent> <localleader>a :Papply<CR>
+" autocmd Filetype purescript nm <buffer> <silent> <localleader>i :Pimport<CR>
+" autocmd Filetype purescript nm <buffer> <silent> <localleader>l :Pbuild<CR>
 "
 " === vim-codefmt CodeFormater ===
 " augroup autoformat_settings
@@ -575,6 +581,7 @@ autocmd Filetype purescript nm <buffer> <silent> <localleader>l :Pbuild<CR>
 "
 let g:leader_map['e'] = {'name':'+quickOpen'}
 nmap <leader>en :edit $HOME/.nvimrc <CR>
+nmap <leader>ep :edit $HOME/.nvimrc.plug <CR>
 nmap <leader>ez :edit $HOME/.zshrc <CR>
 
 " === Utilities ===
@@ -584,6 +591,8 @@ let g:leader_map['u'] = {'name':'+Utilities',
   \ 't' : [':UndotreeToggle',   'UndotreeToggle'],
   \ 'T' : 'Add timeStamp',
   \ }
+" Source Vim configuration file and install plugins
+nnoremap <silent><leader>ui :source ~/.nvimrc.plug \| :PlugInstall<CR>
 
 " === Session management ===
 "
@@ -610,6 +619,10 @@ nnoremap <Leader>st :Obsession<CR>
 let g:airline#extensions#obsession#enabled = 1
 let g:airline#extensions#obsession#indicator_text = "{ॐ}"
 
+" let g:remembers_tmp_dir = '~/.cache/vim/remembers'
+" let g:remembers_session_dir = g:sessions_dir
+" let g:remembers_ignore_empty_buffers = 1
+
 " === Stratify settings ===
 let g:startify_change_to_dir = 0
 let g:startify_lists = [
@@ -630,10 +643,6 @@ augroup HoogleMaps
   autocmd!
   autocmd FileType haskell nnoremap <buffer> <localleader>hh :Hoogle <C-r><C-w><CR>
 augroup END
-
-" vim-slash
-" enhanced in-buffer search
-" noremap <plug>(slash-after) zz
 
 let g:carbon_now_sh_options =
 \ { 'ln': 'true',
@@ -668,4 +677,138 @@ call s:tmux_map('<leader>t.', '.bottom-right')
 
 
 vnoremap <leader>p "_dP
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+" Give more space for displaying messages.
+set cmdheight=2
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <M-space> to trigger completion.
+inoremap <silent><expr> <M-space> coc#refresh()
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> <localleader>[ <Plug>(coc-diagnostic-prev)
+nmap <silent> <localleader>] <Plug>(coc-diagnostic-next)
+" Mappings for CoCList, Show all diagnostics.
+nnoremap <silent><nowait> <localleader>cd  :<C-u>CocList diagnostics<cr>
+
+" GoTo code navigation.
+nmap <silent> <localleader>g <Plug>(coc-definition)
+nmap <silent> <localleader>d <Plug>(coc-type-definition)
+nmap <silent> <localleader>i <Plug>(coc-implementation)
+nmap <silent> <localleader>r <Plug>(coc-references)
+" Symbol renaming.
+nmap <localleader>r <Plug>(coc-rename)
+" Formatting selected code.
+xmap <localleader>f  <Plug>(coc-format-selected)
+nmap <localleader>f  <Plug>(coc-format-selected)
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+" Use K to show documentation in preview window.
+nnoremap <silent> <localleader>t :call <SID>show_documentation()<CR>
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <localleader>aa  <Plug>(coc-codeaction-selected)
+nmap <localleader>aa  <Plug>(coc-codeaction-selected)
+" Remap keys for applying codeAction to the current buffer.
+nmap <localleader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <localleader>af  <Plug>(coc-fix-current)
+
+" Manage extensions.
+nnoremap <silent><nowait> <localleader>ce  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <localleader>cc  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <localleader>co  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <localleader>cs  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <localleader>cj  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <localleader>ck  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <localleader>cp  :<C-u>CocListResume<CR>
+
+nnoremap <silent> <leader>tt :<C-u>CocList todolist<CR>
+nnoremap <silent> <leader>tc :<C-u>CocCommand todolist.create<CR>
+nnoremap <silent> <leader>te :<C-u>CocCommand todolist.export<CR>
+nnoremap <silent> <leader>tq :<C-u>CocCommand todolist.closeNotice<CR>
+nnoremap <silent> <leader>tQ :<C-u>CocCommand todolist.clear<CR>
+
+" alok/notational-fzf-vim
+let g:nv_search_paths = ['~/notes' ,'~/wiki', '~/writing', '~/code', 'docs.md' , './notes.md']
+nnoremap <silent> <leader>ee :NV<CR>
+let g:nv_default_extension = '.md'
+let g:nv_create_note_key = 'ctrl-x'
+
+
+let g:leader_map['a'] = {'name' : '+align'}
+if exists(":Tabularize")
+  nmap <Leader>a= :Tabularize /=<CR>
+  vmap <Leader>a= :Tabularize /=<CR>
+  nmap <Leader>a: :Tabularize /:\zs<CR>
+  vmap <Leader>a: :Tabularize /:\zs<CR>
+  nmap <Leader>aa :Tabularize /
+  vmap <Leader>aa :Tabularize /
+endif
+
+" blamer.nvim
+let g:blamer_enabled = 1
+let g:blamer_show_in_visual_modes = 0
+let g:blamer_show_in_insert_modes = 0
+" let g:blamer_prefix = ' | '
+"
+
+" edit macro using  "q<leader>m
+nnoremap <leader>m  :<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
+let g:leader_map['m'] = 'edit reg'
 
