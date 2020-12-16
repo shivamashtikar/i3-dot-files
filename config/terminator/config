@@ -1,0 +1,62 @@
+[global_config]
+  handle_size = 2
+  scroll_tabbar = True
+  title_transmit_bg_color = "#0059ff"
+  title_receive_bg_color = "#729fcf"
+  title_inactive_bg_color = "#74d6ff"
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  suppress_multiple_term_dialog = True
+  always_split_with_profile = True
+  title_use_system_font = False
+  title_font = Source Code Pro Ultra-Light 20
+[keybindings]
+[profiles]
+  [[default]]
+    background_darkness = 0.83
+    background_type = transparent
+    cursor_color = "#aaaaaa"
+    font = Source Code Variable Bold Italic 35
+    foreground_color = "#ffffff"
+    show_titlebar = False
+    scrollback_infinite = True
+    palette = "#000000:#cc0000:#4e9a06:#c4a000:#3465a4:#75507b:#06989a:#d3d7cf:#555753:#ef2929:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
+  [[Argonaut]]
+    cursor_color = "#aaaaaa"
+  [[Cobalt2]]
+    background_color = "#132738"
+    cursor_color = "#f0cc09"
+    foreground_color = "#ffffff"
+    palette = "#000000:#ff0000:#38de21:#ffe50a:#1460d2:#ff005d:#00bbbb:#bbbbbb:#555555:#f40e17:#3bd01d:#edc809:#5555ff:#ff55ff:#6ae3fa:#ffffff"
+  [[floating]]
+    background_darkness = 0.8
+    background_type = transparent
+    cursor_color = "#aaaaaa"
+    font = Source Code Variable Bold Italic 35
+    foreground_color = "#fcaf3e"
+    show_titlebar = False
+    scrollback_infinite = True
+    palette = "#2e3436:#cd0000:#00cd00:#cdcd00:#ce5c00:#c4a000:#00cdcd:#faebd7:#babdb6:#ff0000:#00ff00:#ffff00:#f57900:#c17d11:#00ffff:#ffffff"
+  [[hold]]
+    audible_bell = True
+    background_color = "#0e1019"
+    background_type = transparent
+    cursor_color = "#aaaaaa"
+    foreground_color = "#fffaf4"
+    show_titlebar = False
+    scrollback_infinite = True
+    exit_action = hold
+    palette = "#232323:#ff000f:#8ce10b:#ffb900:#008df8:#6d43a6:#00d8eb:#ffffff:#444444:#ff2740:#abe15b:#ffd242:#0092ff:#9a5feb:#67fff0:#ffffff"
+  [[light]]
+    background_color = "#fbf1c7"
+    cursor_color = "#aaaaaa"
+    foreground_color = "#3c3836"
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
