@@ -11,7 +11,6 @@ set $term --no-startup-id kitty
 set $FLOATING_TERM kitty  --class=floating_term -o background_opacity=0.8
 set $uterm --no-startup-id urxvt
 set $WALLPAPER --no-startup-id  nitrogen --set-zoom-fill --random /mnt/314414C203296959/images/wallpaper  --save
-set $WALLPAPER_HOT --no-startup-id  nitrogen --set-zoom-fill --random $HOME/Pictures/Hot
 #set $WALLPAPER --no-startup-id feh --randomize --bg-fill /run/media/shivam/Data/images/Wallbase /run/media/shivam/Data/images/wallpaper
 
 # set default desktop layout (default is tiling)
@@ -125,7 +124,6 @@ bindsym $mod+y fullscreen disable; floating enable; resize set 422 240; sticky e
 
 # change wallpaper
 bindsym $mod+Shift+w  exec $WALLPAPER
-bindsym $mod+Shift+n  exec $WALLPAPER_HOT
 
 # toggle fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
