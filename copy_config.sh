@@ -8,6 +8,7 @@ cp -r $HOME/.config/rofi/* config/rofi
 cp -r $HOME/.config/ranger/* config/ranger
 cp -r $HOME/.config/conky/* config/conky
 cp -r $HOME/.config/nvim/init.vim config/nvim/
+cp -r $HOME/.config/nvim/coc-settings.json config/nvim/
 cp -r $HOME/.scripts/* scripts
 cp -r $HOME/.i3/* i3
 cp -r $HOME/.nvimrc nvimrc

@@ -317,7 +317,7 @@ ramp-coreload-7-foreground = #ff5555
 [module/memory]
 
 type = internal/memory
-format = <bar-used>
+format = <label>
 ;format = <label> <bar-used>
 label =  %gb_swap_used% %{T5} %{T5-} %gb_used%
 label-foreground = ${colors.foreground}

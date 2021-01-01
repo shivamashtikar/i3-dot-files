@@ -162,4 +162,9 @@ Plug 'https://github.com/alok/notational-fzf-vim' " note-taking app where search
 
 Plug 'APZelos/blamer.nvim' " A git blame plugin for (neo)vim inspired by VS Code's GitLens plugin.
 " Plug 'abdalrahman-ali/vim-remembers' "  A vim plugin that emulates Notepad++ remembering the contents of unnamed files
+
+" JS snytax
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
+
 call plug#end()

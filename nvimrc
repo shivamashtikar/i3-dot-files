@@ -12,10 +12,13 @@ set shell=/bin/bash
 " Leader key to trigger vim-which-key
 " pass leader key to WhichKey
 call which_key#register(' ', "g:leader_map")
-nnoremap <silent> <leader> :WhichKey ' '<CR>
+nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+vnoremap <silent> <leader> :<c-u>WhichKeyVisual  '<Space>'<CR>
 
 call which_key#register(',', "g:localleader_map")
 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+vnoremap <silent> <localleader> :<c-u>WhichKeyVisual  ','<CR>
+
 set timeoutlen=500
 let g:leader_map = {}
 let g:localleader_map = {}
@@ -74,10 +77,12 @@ nmap <silent> <localleader>/ :nohlsearch<CR>
 let g:localleader_map['/'] = 'Clear search'
 
 " Alias write and quit to Q
-nnoremap <leader><S-q> :q<CR>
-let g:leader_map['Q'] = 'Quit Window'
-nnoremap <leader>q :Bclose<CR>
-let g:leader_map['q'] = 'Quit buffer'
+let g:leader_map['q'] = {
+  \ 'name' : '+quit',
+  \ 'a' : [':qa', 'Quit all window'],
+  \ 'w' : [':q', 'Quit window'],
+  \ 'q' : [':Bclose', 'Quit buffer'] ,
+  \ }
 nnoremap <leader>w :w<CR>
 let g:leader_map['w'] = 'Write buffer'
 
@@ -162,6 +167,7 @@ let g:indent_guides_enable_on_vim_startup = 1
 " === NERDTree ===
 " Ctrl + b to toggle
 map <C-b> :NERDTreeToggle<CR>
+let g:leader_map['n'] = [':NERDTreeToggle' , 'NERDTreeToggle']
 " let g:NERDTreeMinimalUI = 1
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
@@ -395,37 +401,49 @@ let g:gitgutter_map_keys = 0
 let g:leader_map['i'] = [':GitGutterFold | GitGutterLineHighlightsToggle', 'highlight and fold']
 let g:leader_map['g'] = {
   \ 'name':'+git',
-  \ 'a' : [':Git add %'                        , 'add current'],
-  \ 'A' : [':Git add .'                        , 'add all'],
-  \ 'b' : [':GBranches'                        , 'Checkout branch'],
-  \ 'B' : [':Git blame'                        , 'blame'],
-  \ 'c' : [':Git commit'                       , 'commit'],
-  \ 'C' : [':GBranches create'                 , 'Create branch'],
-  \ 'd' : [':Git diff'                         , 'diff'],
-  \ 'D' : [':Gdiffsplit'                       , 'diff split'],
-  \ 'f' : [':GBranches diff'                   , 'Diff branch'],
-  \ 'F' : [':GitGutterFold'                    , 'fold unchanged lines'],
-  \ 'g' : [':Git'                              , 'Git '],
-  \ 'h' : ['<Plug>(GitGutterPreviewHunk)'      , 'preview hunk'],
-  \ 'H' : [':GitGutterLineHighlightsToggle'    , 'highlight hunks'],
-  \ 'j' : ['<Plug>(GitGutterNextHunk)'         , 'next hunk'],
-  \ 'k' : ['<Plug>(GitGutterPrevHunk)'         , 'prev hunk'],
-  \ 'l' : [':Git log --stat'                   , 'logs'],
-  \ 'L' : [':Git log --stat -p'                , 'logs with changes'],
-  \ 'M' : [':GBranches merge'                  , 'Merge branch'],
-  \ 'p' : [':Git pull'                         , 'pull'],
-  \ 'P' : [':Git push'                         , 'push'],
-  \ 'r' : [':GBranches rebase'                 , 'Rebase with branch'],
-  \ 's' : ['<Plug>(GitGutterStageHunk)'        , 'stage hunk'],
-  \ 'S' : [ ':GStashList'                      , 'git stash list' ],
-  \ 't' : [':Twiggy'                           , 'Twiggy' ],
-  \ 'T' : [':GitGutterSignsToggle'             , 'toggle signs'],
-  \ 'u' : ['<Plug>(GitGutterUndoHunk)'         , 'undo hunk'],
-  \ 'v' : [ ':GV'                              , 'git tree GV' ],
-  \ 'V' : [ ':GV!'                             , 'git tree GV' ],
-  \ '[' : [':diffget //2 | diffupdate'         , 'hunk from the target parent'],
-  \ ']' : [':diffget //3 | diffupdate'         , 'hunk from the merge parent'],
+  \ 'a' : [':Git add %'                     , 'add current'                 ] ,
+  \ 'A' : [':Git add .'                     , 'add all'                     ] ,
+  \ 'b' : [':GBranches'                     , 'Checkout branch'             ] ,
+  \ 'B' : [':Git blame'                     , 'blame'                       ] ,
+  \ 'c' : [':Git commit'                    , 'commit'                      ] ,
+  \ 'C' : [':GBranches create'              , 'Create branch'               ] ,
+  \ 'd' : [':Git diff'                      , 'diff'                        ] ,
+  \ 'D' : [':Gdiffsplit'                    , 'diff split'                  ] ,
+  \ 'f' : [':GBranches diff'                , 'Diff branch'                 ] ,
+  \ 'F' : [':GitGutterFold'                 , 'fold unchanged lines'        ] ,
+  \ 'g' : [':Git'                           , 'Git '                        ] ,
+  \ 'h' : ['<Plug>(GitGutterPreviewHunk)'   , 'preview hunk'                ] ,
+  \ 'H' : [':GitGutterLineHighlightsToggle' , 'highlight hunks'             ] ,
+  \ 'j' : ['<Plug>(GitGutterNextHunk)'      , 'next hunk'                   ] ,
+  \ 'k' : ['<Plug>(GitGutterPrevHunk)'      , 'prev hunk'                   ] ,
+  \ 'l' : [':Git log --stat'                , 'logs'                        ] ,
+  \ 'L' : [':Git log --stat -p'             , 'logs with changes'           ] ,
+  \ 'M' : [':GBranches merge'               , 'Merge branch'                ] ,
+  \ 'p' : [':Git pull'                      , 'pull'                        ] ,
+  \ 'P' : [':Git push'                      , 'push'                        ] ,
+  \ 'r' : [':GBranches rebase'              , 'Rebase with branch'          ] ,
+  \ 's' : ['<Plug>(GitGutterStageHunk)'     , 'stage hunk'                  ] ,
+  \ 'S' : [ ':GStashList'                   , 'git stash list'              ] ,
+  \ 't' : [':Twiggy'                        , 'Twiggy'                      ] ,
+  \ 'T' : [':GitGutterSignsToggle'          , 'toggle signs'                ] ,
+  \ 'u' : ['<Plug>(GitGutterUndoHunk)'      , 'undo hunk'                   ] ,
+  \ 'v' : [ ':GV'                           , 'git tree GV'                 ] ,
+  \ 'V' : [ ':GV!'                          , 'git tree GV'                 ] ,
+  \ '[' : [':diffget //2 | diffupdate'      , 'hunk from the target parent' ] ,
+  \ ']' : [':diffget //3 | diffupdate'      , 'hunk from the merge parent'  ] ,
+  \ 'i' : {
+    \ 'name' : '+advance',
+    \ 'm' : [':Git merge --continue'                                   , 'merge continue'    ] ,
+    \ 'r' : [':Git rebase --continue'                                  , 'rebase continue'   ] ,
+    \ 'p' : [':Git push --force'                                       , 'push force'        ] ,
+    \ 'c' : [':Git commit -m "fast-commit"'                            , 'quick commit'      ] ,
+    \ 's' : [':Git rebase -i HEAD~2'                                   , 'squash cur commit' ] ,
+    \ 'n' : [':exe "Git push --set-upstream origin ". fugitive#head()' , 'push upstream new' ] ,
+    \ 'q' : [':call GSquash()'                                         , 'fast squash'       ] ,
+    \ 'g' : 'reset branch',
+    \ },
   \ }
+nmap <leader>gig :exe "Git reset --hard origin/". fugitive#head()<CR>
 " let g:twiggy_group_locals_by_slash = 0
 " let g:twiggy_local_branch_sort = 'mru'
 let g:twiggy_remote_branch_sort = 'date'
@@ -436,11 +454,27 @@ let g:fuzzy_stash_actions = {
   \ 'ctrl-p': 'pop',
   \ 'ctrl-w': 'apply' }
 
+function GSquash() abort
+  exec ':Git commit -m "fast-commit"'
+  exec ':Git rebase -i HEAD~2'
+  exec '/fast-commit'
+  exec ':s/pick/squash/g'
+  exec ':wq'
+  function CommentMessage() abort
+    exec '/fast-commit'
+    exec ':Commentary'
+    exec ':wq'
+  endfunction
+  call timer_start(200, { tid -> execute('call CommentMessage()')})
+endfunction
+
 " === File management ===
 " Ranger && Denite
 let g:ranger_map_keys = 0
 nnoremap <leader>fs :Find<SPace>
 nnoremap <leader>fj :exe "Find ". expand('<cword>') <CR>
+nnoremap <leader>fS :FindAll<SPace>
+nnoremap <leader>fJ :exe "FindAll ". expand('<cword>') <CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-h': 'split',
@@ -464,7 +498,6 @@ let g:leader_map['f'] = {
   \ 'p' : [':Helptags'     , 'help tags'] ,
   \ 'P' : [':Tags'         , 'project tags'],
   \ 's' : 'Search term occurences in cwd',
-  \ 'S' : [':Colors'       , 'color schemes'],
   \ 'y' : [':Filetypes'    , 'file types'],
   \ 'z' : [':FZF'          , 'FZF'],
   \ }
@@ -478,7 +511,8 @@ let g:leader_map['f'] = {
 " --follow: Follow symlinks
 " --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 " --color: Search color options
-command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+command! -bang -nargs=* FindAll call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --no-ignore --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 """ Uncomment following if you want to see search result in floating window
 " let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
 " let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
@@ -676,6 +710,7 @@ call s:tmux_map('<leader>ty', '.top-left')
 call s:tmux_map('<leader>to', '.top-right')
 call s:tmux_map('<leader>tn', '.bottom-left')
 call s:tmux_map('<leader>t.', '.bottom-right')
+let g:leader_map['t'] = { 'name' : '+tmux+coc'}
 
 
 vnoremap <leader>p "_dP
@@ -787,6 +822,9 @@ nnoremap <silent> <leader>tc :<C-u>CocCommand todolist.create<CR>
 nnoremap <silent> <leader>te :<C-u>CocCommand todolist.export<CR>
 nnoremap <silent> <leader>tq :<C-u>CocCommand todolist.closeNotice<CR>
 nnoremap <silent> <leader>tQ :<C-u>CocCommand todolist.clear<CR>
+
+nmap <silent> <leader>c :CocCommand explorer<CR>
+autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
 
 " alok/notational-fzf-vim
 let g:nv_search_paths = ['~/notes' ,'~/wiki', '~/writing', '~/code', 'docs.md' , './notes.md']

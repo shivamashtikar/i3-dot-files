@@ -42,6 +42,10 @@ function zshtheme(){
 alias hobby='cd $DATA/hobby'
 
 alias f='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
+alias fz='nvim `find . | fzf --reverse --height=10`'
+
+alias v='nvim'
+alias :q='exit'
 
 alias ws='cd $DATA/workspace'
 alias wsu='cd $DATA/workspace/ui-team'
