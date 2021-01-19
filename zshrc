@@ -109,7 +109,7 @@ source $HOME/.config/aliasrc
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-npm set prefix ~/.npm
+# npm set prefix ~/.npm
 export PATH="$HOME/.npm/bin:$PATH"
 export PATH="$HOME/node_modules/.bin:$PATH"
 
@@ -147,4 +147,13 @@ fi
 # export LD_LIBRARY_PATH=/usr/lib/
 #
 #
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"   # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# export ANDROID_HOME=$HOME/Android/Sdk
+# export PATH=$PATH:$ANDROID_HOME/emulator
+# export PATH=$PATH:$ANDROID_HOME/tools
+# export PATH=$PATH:$ANDROID_HOME/tools/bin
+# export PATH=$PATH:$ANDROID_HOME/platform-tools
 

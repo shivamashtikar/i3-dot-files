@@ -32,7 +32,4 @@ else
   polybar --reload example &
 fi
 
-$HOME/.scripts/autoname_workspaces.py &
-
-
 echo "Bars launched..."

@@ -40,10 +40,10 @@ map <M-k> <C-w>k
 map <M-l> <C-w>l
 
 " Shortcut ctrl + hjkl for to resize windows
-nnoremap <C-j>    :resize -2<CR>
-nnoremap <C-k>    :resize +2<CR>
-nnoremap <C-h>    :vertical resize -2<CR>
-nnoremap <C-l>    :vertical resize +2<CR>
+nnoremap <C-j> : resize -2<CR>
+nnoremap <C-k> : resize +2<CR>
+nnoremap <C-h> : vertical resize -2<CR>
+nnoremap <C-l> : vertical resize +2<CR>
 
 " zoom a vim pane, <C-w>= to re-balance
 nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
@@ -79,9 +79,10 @@ let g:localleader_map['/'] = 'Clear search'
 " Alias write and quit to Q
 let g:leader_map['q'] = {
   \ 'name' : '+quit',
-  \ 'a' : [':qa', 'Quit all window'],
-  \ 'w' : [':q', 'Quit window'],
-  \ 'q' : [':Bclose', 'Quit buffer'] ,
+  \ 'a' : [':qa'     , 'Quit all window'    ] ,
+  \ 'w' : [':q'      , 'Quit window'        ] ,
+  \ 'q' : [':Bclose' , 'Quit buffer'        ] ,
+  \ 'o' : ['<C-w>o'  , 'Close other window' ] ,
   \ }
 nnoremap <leader>w :w<CR>
 let g:leader_map['w'] = 'Write buffer'
@@ -110,7 +111,7 @@ noremap <S-u> <C-r>
 " call deoplete#custom#option('sources', {
 " \ '_': ['ale'],
 " \})
-let g:airline_powerline_fonts = 1
+" let g:airline_powerline_fonts = 1
 
 " === QuickScope Configuration ===
 "
@@ -128,28 +129,31 @@ lua require'colorizer'.setup()
 
 hi Comment cterm=italic
 
+function SwitchTheme(isLight) abort
+  if a:isLight
+    set background=light
+    let g:airline_theme='gruvbox8'
+    colorscheme gruvbox8_hard
+  else
+    set background=dark
+    let g:airline_theme='gruvbox8'
+    colorscheme gruvbox8
+  endif
+endfunction
+
 let s:mode = $SYSTEM_COLOR_SCHEME
 if s:mode == "light"
-  set background=light
-  colorscheme PaperColor
-  let g:airline_theme='papercolor'
+  call SwitchTheme(v:true)
 elseif s:mode == "dark"
-  let g:airline_theme='onedark'
-  colorscheme onedark
+  call SwitchTheme(v:false)
 else
   " set theme according based on day/night
   if 6 <= strftime("%H") && strftime("%H") < 24
-    set background=light
-    " colorscheme one
-    " let g:airline_theme='one'
-    colorscheme PaperColor
-    let g:airline_theme='papercolor'
+    call SwitchTheme(v:true)
   else
-    colorscheme onedark
-    let g:airline_theme='onedark'
+    call SwitchTheme(v:false)
   endif
 endif
-
 
 
 " sets F10 as a switch between dark and light modes
@@ -157,12 +161,12 @@ map <F10> :let &background = ( &background == "dark" ? "light" : "dark" )<CR>
 
 
 " === IndentLine ===
-" let g:indentLine_char_list = ['|', '¦', '┆', '┊']
-" let g:indentLine_char = '┊'
-" let g:indentLine_first_char = '┊'
-" let g:indentLine_showFirstIndentLevel = 1
-" let g:indentLine_setColors = 0
-let g:indent_guides_enable_on_vim_startup = 1
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indentLine_char = '┊'
+let g:indentLine_first_char = '┊'
+let g:indentLine_showFirstIndentLevel = 1
+let g:indentLine_setColors = 0
+" let g:indent_guides_enable_on_vim_startup = 1
 
 " === NERDTree ===
 " Ctrl + b to toggle
@@ -438,13 +442,18 @@ let g:leader_map['g'] = {
     \ 'p' : [':Git push --force'                                       , 'push force'        ] ,
     \ 'c' : [':Git commit -m "fast-commit"'                            , 'quick commit'      ] ,
     \ 's' : [':Git rebase -i HEAD~2'                                   , 'squash cur commit' ] ,
-    \ 'n' : [':exe "Git push --set-upstream origin ". fugitive#head()' , 'push upstream new' ] ,
-    \ 'q' : [':call GSquash()'                                         , 'fast squash'       ] ,
+    \ 'f' : [':!git checkout -- .'                                     , 'flus changes'      ] ,
+    \ 'q' : 'fast squash',
+    \ 'n' : 'push upstream new',
     \ 'g' : 'reset branch',
+    \ 'j' : 'insert jira ticket no.',
     \ },
   \ }
+nmap <leader>giq :call GSquash()<CR>
+nmap <leader>gin :exe "Git push --set-upstream origin ". fugitive#head()<CR>
 nmap <leader>gig :exe "Git reset --hard origin/". fugitive#head()<CR>
-" let g:twiggy_group_locals_by_slash = 0
+nmap <leader>gij :exe "normal! a" . matchstr(fugitive#head(), 'PICAF-\_[0-9]*'). " "<CR>a
+let g:twiggy_group_locals_by_slash = 0
 " let g:twiggy_local_branch_sort = 'mru'
 let g:twiggy_remote_branch_sort = 'date'
 
@@ -484,22 +493,22 @@ let g:leader_map['j'] = [':BLines'  , 'Find in current buffer']
 let g:leader_map['r'] = [':Ranger'  , 'Ranger']
 let g:leader_map['f'] = {
   \ 'name' : '+file',
-  \ 'c' : [':Commits'      , 'commits'],
-  \ 'C' : [':BCommits'     , 'buffer commits'],
-  \ 'f' : [':GFiles'       , 'git files'],
-  \ 'F' : [':Files'        , 'files'],
-  \ 'g' : [':GFiles?'      , 'modified git files'],
-  \ 'h' : [':History'      , 'file history'],
-  \ 'H' : [':History:'     , 'command history'],
-  \ 'j' : 'Search term under cursor in cwd',
-  \ 'l' : [':Lines'        , 'lines'] ,
-  \ 'm' : [':Marks'        , 'marks'] ,
-  \ 'M' : [':Maps'         , 'normal maps'] ,
-  \ 'p' : [':Helptags'     , 'help tags'] ,
-  \ 'P' : [':Tags'         , 'project tags'],
+  \ 'c' : [':Commits'   , 'commits'            ] ,
+  \ 'C' : [':BCommits'  , 'buffer commits'     ] ,
+  \ 'f' : [':GFiles'    , 'git files'          ] ,
+  \ 'F' : [':Files'     , 'files'              ] ,
+  \ 'g' : [':GFiles?'   , 'modified git files' ] ,
+  \ 'h' : [':History'   , 'file history'       ] ,
+  \ 'H' : [':History:'  , 'command history'    ] ,
+  \ 'l' : [':Lines'     , 'lines'              ] ,
+  \ 'm' : [':Marks'     , 'marks'              ] ,
+  \ 'M' : [':Maps'      , 'normal maps'        ] ,
+  \ 'p' : [':Helptags'  , 'help tags'          ] ,
+  \ 'P' : [':Tags'      , 'project tags'       ] ,
+  \ 'y' : [':Filetypes' , 'file types'         ] ,
+  \ 'z' : [':FZF'       , 'FZF'                ] ,
   \ 's' : 'Search term occurences in cwd',
-  \ 'y' : [':Filetypes'    , 'file types'],
-  \ 'z' : [':FZF'          , 'FZF'],
+  \ 'j' : 'Search term under cursor in cwd',
   \ }
 " --column: Show column number
 " --line-number: Show line number
@@ -620,6 +629,7 @@ nmap <leader>en :edit $HOME/.nvimrc <CR>
 nmap <leader>ep :edit $HOME/.nvimrc.plug <CR>
 nmap <leader>ez :edit $HOME/.zshrc <CR>
 
+nmap <leader>ur :%s/<C-r><C-w>//g<Left><Left>
 " === Utilities ===
 "
 nmap <leader>uT i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
@@ -633,17 +643,17 @@ nnoremap <silent><leader>ui :source ~/.nvimrc.plug \| :PlugInstall<CR>
 " === Session management ===
 "
 let g:sessions_dir = '~/vim-sessions'
-" function LoadSessionHash()
-"   let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
-"   exec ':source ' . g:sessions_dir . '/' . s:sessionFile
-" endfunction
-" exec 'nnoremap <Leader>sl :call LoadSessionHash()<CR>'
+function LoadSessionHash()
+  let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
+  exec ':source ' . g:sessions_dir . '/' . s:sessionFile
+endfunction
+nmap <Leader>sq :call LoadSessionHash()<CR>
 
-" function SaveSessionHash()
-"   let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
-"   exec ':Obsession ' . g:sessions_dir . '/' . s:sessionFile
-" endfunction
-" exec 'nnoremap <Leader>sh :call SaveSessionHash()<CR>'
+function SaveSessionHash()
+  let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
+  exec ':Obsession ' . g:sessions_dir . '/' . s:sessionFile
+endfunction
+nmap <Leader>sh :call SaveSessionHash()<CR>
 
 let g:leader_map['s'] = {'name':'+Session',
   \ 's' : 'Save Session',
@@ -662,10 +672,10 @@ let g:airline#extensions#obsession#indicator_text = "{ॐ}"
 " === Stratify settings ===
 let g:startify_change_to_dir = 0
 let g:startify_lists = [
-          \ { 'type': 'sessions',  'header': ['   Sessions']                     },
-          \ { 'type': 'files',     'header': ['   Files']                        },
-          \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
-          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']                    },
+          \ { 'type': 'sessions'  , 'header': ['   Sessions'                     ] } ,
+          \ { 'type': 'files'     , 'header': ['   Files'                        ] } ,
+          \ { 'type': 'dir'       , 'header': ['   Current Directory '. getcwd() ] } ,
+          \ { 'type': 'bookmarks' , 'header': ['   Bookmarks'                    ] } ,
           \ ]
 let g:startify_change_to_vcs_root = 1
 let g:startify_session_dir = g:sessions_dir
@@ -835,12 +845,12 @@ let g:nv_create_note_key = 'ctrl-x'
 
 let g:leader_map['a'] = {'name' : '+align'}
 if exists(":Tabularize")
-  nmap <Leader>a= :Tabularize /=<CR>
-  vmap <Leader>a= :Tabularize /=<CR>
-  nmap <Leader>a: :Tabularize /:\zs<CR>
-  vmap <Leader>a: :Tabularize /:\zs<CR>
-  nmap <Leader>aa :Tabularize /
-  vmap <Leader>aa :Tabularize /
+  nmap <leader>a= :Tabularize /=<CR>
+  vmap <leader>a= :Tabularize /=<CR>
+  nmap <leader>a: :Tabularize /:\zs<CR>
+  vmap <leader>a: :Tabularize /:\zs<CR>
+  nmap <leader>aa :Tabularize /
+  vmap <leader>aa :Tabularize /
 endif
 
 " blamer.nvim
@@ -854,3 +864,37 @@ let g:blamer_show_in_insert_modes = 0
 nnoremap <leader>m  :<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 let g:leader_map['m'] = 'edit reg'
 
+" ================ CloseTag ==========================
+
+" Shortcut for closing tags, default is '>'
+"
+let g:closetag_shortcut = '>'
+
+" Add > at current position without closing the current tag, default is ''
+"
+let g:closetag_close_shortcut = '<leader>>'
+
+" filenames like *.xml, *.html, *.xhtml, ...
+" These are the file extensions where this plugin is enabled.
+"
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
+
+" filenames like *.xml, *.xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+"
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+
+" filetypes like xml, html, xhtml, ...
+" These are the file types where this plugin is enabled.
+"
+let g:closetag_filetypes = 'html,xhtml,phtml,javascript,typescript'
+
+" filetypes like xml, xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+"
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+
+" integer value [0|1]
+" This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
+"
+let g:closetag_emptyTags_caseSensitive = 1

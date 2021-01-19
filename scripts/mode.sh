@@ -1,9 +1,9 @@
 #!/bin/bash
 MODE="light" # Default mode
 
-KITTY_LIGHT_THEME="$HOME/.config/kitty/Piatto_Light.conf"
+KITTY_LIGHT_THEME="$HOME/.config/kitty/gruvbox_light.conf"
 
-KITTY_DARK_THEME="$HOME/.config/kitty/OneDark.conf"
+KITTY_DARK_THEME="$HOME/.config/kitty/gruvbox_dark.conf"
 
 # Destination file
 KITTY_THEME="$HOME/.config/kitty/theme.conf"

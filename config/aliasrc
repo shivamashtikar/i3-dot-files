@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 
 alias vim=nvim
@@ -190,4 +190,4 @@ _gs() {
   cut -d: -f1
 }
 
-
+alias gpn='(git symbolic-ref HEAD 2>/dev/null || echo "(unnamed branch)")|cut -d/ -f3- | xargs -ro git push --set-upstream origin'
