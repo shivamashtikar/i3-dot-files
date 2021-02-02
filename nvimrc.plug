@@ -30,8 +30,8 @@ Plug 'aacunningham/vim-fuzzy-stash'
 " Plug 'jreybert/vimagit'
 " Plug 'f-person/git-blame.nvim'
 
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'scrooloose/nerdtree'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -142,7 +142,7 @@ Plug 'mbbill/undotree'
 
 Plug 'junegunn/vim-slash' "  enhancing in-buffer searc
 
-Plug 'junegunn/vim-journal' " Journal
+" Plug 'junegunn/vim-journal' " Journal
 Plug 'kristijanhusak/vim-carbon-now-sh'
 
 Plug 'rhysd/git-messenger.vim'
@@ -169,4 +169,7 @@ Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
 
 Plug 'alvan/vim-closetag'
+
+Plug 'mtth/scratch.vim'
+
 call plug#end()

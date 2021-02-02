@@ -27,7 +27,7 @@ let g:localleader_map = {}
 set clipboard+=unnamedplus
 
 " Trailing whitespace on save
-autocmd BufWritePre * %s/\s\+$//e
+" autocmd BufWritePre * %s/\s\+$//e
 
 " Enable spell checking, s for spell check
 map <localleader>s :setlocal spell! spelllang=en_us<CR>
@@ -898,3 +898,6 @@ let g:closetag_xhtml_filetypes = 'xhtml,jsx'
 " This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
 "
 let g:closetag_emptyTags_caseSensitive = 1
+
+let g:scratch_persistence_file = '.scratch.vim'
+
