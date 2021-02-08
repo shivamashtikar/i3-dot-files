@@ -132,11 +132,11 @@ hi Comment cterm=italic
 function SwitchTheme(isLight) abort
   if a:isLight
     set background=light
-    let g:airline_theme='gruvbox8'
+    let g:airline_theme='gruvbox'
     colorscheme gruvbox8_hard
   else
     set background=dark
-    let g:airline_theme='gruvbox8'
+    let g:airline_theme='gruvbox'
     colorscheme gruvbox8
   endif
 endfunction
@@ -900,4 +900,18 @@ let g:closetag_xhtml_filetypes = 'xhtml,jsx'
 let g:closetag_emptyTags_caseSensitive = 1
 
 let g:scratch_persistence_file = '.scratch.vim'
+
+" =============== conflict-marker.vim =====================================
+" disable the default highlight group
+let g:conflict_marker_highlight_group = ''
+" Include text after begin and end markers
+let g:conflict_marker_begin = '^<<<<<<< .*$'
+let g:conflict_marker_end   = '^>>>>>>> .*$'
+highlight ConflictMarkerBegin guibg=#2f7366
+highlight ConflictMarkerOurs guibg=#2e5049
+highlight ConflictMarkerTheirs guibg=#344f69
+highlight ConflictMarkerEnd guibg=#2f628e
+highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
+map <leader>[ :ConflictMarkerPrevHunk<CR>
+map <leader>] :ConflictMarkerNextHunk<CR>
 

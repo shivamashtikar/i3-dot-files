@@ -1,8 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 # Path to your oh-my-zsh installation.
-export ZSH="/home/shivam/.oh-my-zsh"
-
+export ZSH="/Users/shivamashtikar-juspay/.oh-my-zsh"
 
 [ -f /tmp/system_color_scheme.tmp ] && source /tmp/system_color_scheme.tmp
 
@@ -110,8 +109,12 @@ source $HOME/.config/aliasrc
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # npm set prefix ~/.npm
-export PATH="$HOME/.npm/bin:$PATH"
-export PATH="$HOME/node_modules/.bin:$PATH"
+# export PATH="$HOME/.npm/bin:$PATH"
+# export PATH="$HOME/node_modules/.bin:$PATH"
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
 
 
 export PATH=$PATH:~/.cabal/bin:~/.psvm/current/bin
@@ -123,7 +126,7 @@ export LC_ALL=en_US.UTF-8
 export LANG="en_US.UTF-8"
 
 #fortune | cowsay | lolcat
-figlet -f ~/.fonts/figlet/Bloody "Shivam" -w 1000 | lolcat
+# figlet -f ~/.fonts/figlet/Bloody "Shivam" -w 1000 | lolcat
 
 alias myxargs='perl -p -e "s/\n/\0/;" | xargs -0'
 
@@ -158,4 +161,5 @@ source_nvm() {
 # export PATH=$PATH:$ANDROID_HOME/tools
 # export PATH=$PATH:$ANDROID_HOME/tools/bin
 # export PATH=$PATH:$ANDROID_HOME/platform-tools
-
+export SYSTEM_COLOR_SCHEME=dark
+export PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_281.jdk/Contents/Home/bin:$PATH"

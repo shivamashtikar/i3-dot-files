@@ -29,6 +29,7 @@ Plug 'sodapopcan/vim-twiggy'
 Plug 'aacunningham/vim-fuzzy-stash'
 " Plug 'jreybert/vimagit'
 " Plug 'f-person/git-blame.nvim'
+Plug 'rhysd/conflict-marker.vim'
 
 " Plug 'scrooloose/nerdtree'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -44,7 +45,7 @@ Plug 'NLKNguyen/papercolor-theme'
 " Plug 'therubymug/vim-pyte'
 Plug 'rakr/vim-one'
 " Plug 'jsit/toast.vim'
-" Plug 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 " Plug 'tomasr/molokai'
 " Plug 'KeitaNakamura/neodark.vim'
 Plug 'joshdick/onedark.vim'
@@ -158,7 +159,7 @@ Plug 'sunaku/tmux-navigate'
 "
 
 Plug 'dkarter/bullets.vim' "  plugin for automated bullet lists.
-Plug 'https://github.com/alok/notational-fzf-vim' " note-taking app where searching for a note and creating one are the same operation.
+" Plug 'https://github.com/alok/notational-fzf-vim' " note-taking app where searching for a note and creating one are the same operation.
 " Plug 'wellle/context.vim' "  shows the context of the currently visible buffer contents
 
 Plug 'APZelos/blamer.nvim' " A git blame plugin for (neo)vim inspired by VS Code's GitLens plugin.

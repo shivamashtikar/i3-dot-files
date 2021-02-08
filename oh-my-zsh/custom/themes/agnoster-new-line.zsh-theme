@@ -82,7 +82,7 @@ prompt_end() {
     echo -n "%{%k%}"
   fi
   #echo -n "{%f%}"
-  echo -n "ॐ%{%f%}"
+  echo -n "ॐ%{%f%} "
   CURRENT_BG=''
 }
 
@@ -303,7 +303,7 @@ prompt_kubecontext() {
 ## Main prompt
 build_prompt() {
   RETVAL=$?
-  prompt_kubecontext
+  # prompt_kubecontext
   prompt_nix_shell
   prompt_status
   prompt_virtualenv
