@@ -22,6 +22,8 @@ vnoremap <silent> <localleader> :<c-u>WhichKeyVisual  ','<CR>
 set timeoutlen=500
 let g:leader_map = {}
 let g:localleader_map = {}
+let g:which_key_centered = 1
+let g:which_key_hspace = 5
 
 " Use system Clipboard
 set clipboard+=unnamedplus
@@ -161,12 +163,12 @@ map <F10> :let &background = ( &background == "dark" ? "light" : "dark" )<CR>
 
 
 " === IndentLine ===
-let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+" let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_char = '┊'
-let g:indentLine_first_char = '┊'
-let g:indentLine_showFirstIndentLevel = 1
-let g:indentLine_setColors = 0
-" let g:indent_guides_enable_on_vim_startup = 1
+" let g:indentLine_first_char = '┊'
+" let g:indentLine_showFirstIndentLevel = 1
+" let g:indentLine_setColors = 0
+let g:indent_guides_enable_on_vim_startup = 1
 
 " === NERDTree ===
 " Ctrl + b to toggle
@@ -629,9 +631,9 @@ nmap <leader>en :edit $HOME/.nvimrc <CR>
 nmap <leader>ep :edit $HOME/.nvimrc.plug <CR>
 nmap <leader>ez :edit $HOME/.zshrc <CR>
 
-nmap <leader>ur :%s/<C-r><C-w>//g<Left><Left>
 " === Utilities ===
 "
+map <leader>ur :%s/<C-r><C-w>//g<Left><Left>
 nmap <leader>uT i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
 let g:leader_map['u'] = {'name':'+Utilities',
   \ 't' : [':UndotreeToggle',   'UndotreeToggle'],
@@ -915,3 +917,16 @@ highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
 map <leader>[ :ConflictMarkerPrevHunk<CR>
 map <leader>] :ConflictMarkerNextHunk<CR>
 
+
+"============== vimwiki ===================
+" let g:vimwiki_key_mappings = { 'all_maps': 0, }
+let g:vimwiki_map_prefix = '<Leader>d'
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \ 'syntax': 'markdown',
+                      \ 'ext': '.md',
+                      \ 'auto_generate_links' : 1
+                      \}]
+nmap <leader>dg :VimwikiGenerateLinks<CR>
+" nmap <Leader>tl <Plug>VimwikiToggleListItem
+" vmap <Leader>tl <Plug>VimwikiToggleListItem
+" nnoremap glo :VimwikiChangeSymbolTo a)<CR>

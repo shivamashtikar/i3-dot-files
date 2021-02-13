@@ -172,5 +172,6 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'alvan/vim-closetag'
 
 Plug 'mtth/scratch.vim'
+Plug 'vimwiki/vimwiki'
 
 call plug#end()
