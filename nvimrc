@@ -887,7 +887,7 @@ let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
 " filetypes like xml, html, xhtml, ...
 " These are the file types where this plugin is enabled.
 "
-let g:closetag_filetypes = 'html,xhtml,phtml,javascript,typescript'
+let g:closetag_filetypes = 'html,xhtml,phtml,javascript,typescript,typescriptreact'
 
 " filetypes like xml, xhtml, ...
 " This will make the list of non-closing tags self-closing in the specified files.
@@ -901,3 +901,19 @@ let g:closetag_emptyTags_caseSensitive = 1
 
 let g:scratch_persistence_file = '.scratch.vim'
 
+" typescript
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
+
+" =============== conflict-marker.vim =====================================
+" disable the default highlight group
+let g:conflict_marker_highlight_group = ''
+" Include text after begin and end markers
+let g:conflict_marker_begin = '^<<<<<<< .*$'
+let g:conflict_marker_end   = '^>>>>>>> .*$'
+highlight ConflictMarkerBegin guibg=#2f7366
+highlight ConflictMarkerOurs guibg=#2e5049
+highlight ConflictMarkerTheirs guibg=#344f69
+highlight ConflictMarkerEnd guibg=#2f628e
+highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
+map <leader>[ :ConflictMarkerPrevHunk<CR>
+map <leader>] :ConflictMarkerNextHunk<CR>

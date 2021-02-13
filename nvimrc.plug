@@ -29,6 +29,7 @@ Plug 'sodapopcan/vim-twiggy'
 Plug 'aacunningham/vim-fuzzy-stash'
 " Plug 'jreybert/vimagit'
 " Plug 'f-person/git-blame.nvim'
+Plug 'rhysd/conflict-marker.vim'
 
 " Plug 'scrooloose/nerdtree'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -165,8 +166,12 @@ Plug 'APZelos/blamer.nvim' " A git blame plugin for (neo)vim inspired by VS Code
 " Plug 'abdalrahman-ali/vim-remembers' "  A vim plugin that emulates Notepad++ remembering the contents of unnamed files
 
 " JS snytax
-Plug 'yuezk/vim-js'
+" Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'pangloss/vim-javascript'
+" Typescript
+Plug 'leafgarland/typescript-vim'
+" Plug 'peitalin/vim-jsx-typescript'
 
 Plug 'alvan/vim-closetag'
 
