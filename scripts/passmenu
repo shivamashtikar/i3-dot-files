@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 
-shopt -s nullglob globstar
+
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)
+      script=rofi -p " Key" -i -dmenu "$@"
+      shopt -s nullglob globstar
+      ;;
+    Darwin*)
+      script=fzf
+      shopt -s nullglob
+      ;;
+    *) exit;;
+esac
+
 export LANG="en_US.UTF-8" 
 typeit=0
 if [[ $1 == "--type" ]]; then
@@ -13,7 +26,7 @@ password_files=( "$prefix"/**/*.gpg )
 password_files=( "${password_files[@]#"$prefix"/}" )
 password_files=( "${password_files[@]%.gpg}" )
 
-password=$(printf '%s\n' "${password_files[@]}" | rofi -p " Key" -i -dmenu "$@")
+password=$(printf '%s\n' "${password_files[@]}" | $script )
 
 [[ -n $password ]] || exit
 
