@@ -13,7 +13,21 @@ password_files=( "$prefix"/**/*.gpg )
 password_files=( "${password_files[@]#"$prefix"/}" )
 password_files=( "${password_files[@]%.gpg}" )
 
-password=$(printf '%s\n' "${password_files[@]}" | rofi -p " Key" -i -dmenu "$@")
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)
+      command=rofi -p " Key" -i -dmenu "$@"
+      ;;
+    Darwin*)
+      command=fzf
+      ;;
+    # CYGWIN*)    machine=Cygwin;;
+    # MINGW*)     machine=MinGw;;
+    *)
+      exit;;
+esac
+
+password=$(printf '%s\n' "${password_files[@]}" | $command)
 
 [[ -n $password ]] || exit
 
