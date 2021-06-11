@@ -1,8 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 # Path to your oh-my-zsh installation.
-export ZSH="/home/shivam/.oh-my-zsh"
+export SYSTEM_COLOR_SCHEME=dark
 
+export ZSH="$HOME/.oh-my-zsh"
 
 [ -f /tmp/system_color_scheme.tmp ] && source /tmp/system_color_scheme.tmp
 
@@ -110,13 +111,16 @@ source $HOME/.config/aliasrc
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # npm set prefix ~/.npm
-export PATH="$HOME/.npm/bin:$PATH"
-export PATH="$HOME/node_modules/.bin:$PATH"
+# export PATH="$HOME/.npm/bin:$PATH"
+# export PATH="$HOME/node_modules/.bin:$PATH"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
 export PATH=$PATH:~/.cabal/bin:~/.psvm/current/bin
 
-if [ -e /home/shivam/.nix-profile/etc/profile.d/nix.sh ]; then . /home/shivam/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 
 export LC_ALL=en_US.UTF-8
@@ -128,10 +132,10 @@ figlet -f ~/.fonts/figlet/Bloody "Shivam" -w 1000 | lolcat
 alias myxargs='perl -p -e "s/\n/\0/;" | xargs -0'
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/shivam/google-cloud-sdk/path.zsh.inc' ]; then . '/home/shivam/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '$HOME/google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/home/shivam/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/shivam/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '/$HOME/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/google-cloud-sdk/completion.zsh.inc'; fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # --files: List files that would be searched but do not search
@@ -144,18 +148,17 @@ if [[ -n "$IN_NIX_SHELL" ]]; then
 else
   export FZF_DEFAULT_COMMAND='rg --files --ignore-case --no-ignore --hidden --follow --glob "!.git/*"'
 fi
-# export LD_LIBRARY_PATH=/usr/lib/
-#
-#
-source_nvm() {
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"   # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-}
-
+# export LD_LIBRARY_PATH=/usr/lib
 # export ANDROID_HOME=$HOME/Android/Sdk
 # export PATH=$PATH:$ANDROID_HOME/emulator
 # export PATH=$PATH:$ANDROID_HOME/tools
 # export PATH=$PATH:$ANDROID_HOME/tools/bin
 # export PATH=$PATH:$ANDROID_HOME/platform-tools
 
+if [[ -s /Library/Java/JavaVirtualMachines/jdk1.8.0_281.jdk/Contents/Home/bin ]]; then
+  export PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_281.jdk/Contents/Home/bin:$PATH"
+fi
+
+if [[ -s /usr/lib/jvm/default/bin ]]; then
+  export PATH=${PATH}:/usr/lib/jvm/default/bin
+fi
