@@ -294,6 +294,7 @@ prompt_nix_shell() {
 
 
 prompt_kubecontext() {
+        [ -s kubectl ] || return
         CUR_CONTEXT=`kubectl config current-context | cut -d'.' -f3 | sed 's/mum/pri/g'`
         if [[ $CUR_CONTEXT != 'minikube' ]]; then
           prompt_segment green black "$CUR_CONTEXT"

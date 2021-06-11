@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-shopt -s nullglob globstar
 export LANG="en_US.UTF-8" 
 typeit=0
 if [[ $1 == "--type" ]]; then
@@ -16,10 +15,15 @@ password_files=( "${password_files[@]%.gpg}" )
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)
-      command=rofi -p " Key" -i -dmenu "$@"
+      if [[  $XDG_CURRENT_DESKTOP == "GNOME" ]];
+      then script=fzf
+      else script='rofi -p " Key" -i -dmenu "$@"'
+      fi
+      shopt -s nullglob globstar
       ;;
-    Darwin*)
-      command=fzf
+   Darwin*)
+      script=fzf
+      shopt -s nullglob
       ;;
     # CYGWIN*)    machine=Cygwin;;
     # MINGW*)     machine=MinGw;;
@@ -27,7 +31,7 @@ case "${unameOut}" in
       exit;;
 esac
 
-password=$(printf '%s\n' "${password_files[@]}" | $command)
+password=$(printf '%s\n' "${password_files[@]}" | $script)
 
 [[ -n $password ]] || exit
 

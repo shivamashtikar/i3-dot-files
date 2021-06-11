@@ -1,180 +1,57 @@
 call plug#begin('~/.config/nvim/plugged')
-" Suggestions
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'zchee/deoplete-clang'
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'voldikss/vim-skylight'
-
-" vim-which-key for bindings Suggestions
-Plug 'liuchengxu/vim-which-key'
-
-Plug 'tpope/vim-surround'
-
-" fuzzyFinders
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'francoiscabrol/ranger.vim'
+
 Plug 'stsewd/fzf-checkout.vim'
-
-" Snipets
-" Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
-"Fugitive Vim Github Wrapper
 Plug 'tpope/vim-fugitive'
-"git diff in gutter
+Plug 'airblade/vim-gitgutter'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/gv.vim'
-Plug 'sodapopcan/vim-twiggy'
-Plug 'aacunningham/vim-fuzzy-stash'
-" Plug 'jreybert/vimagit'
-" Plug 'f-person/git-blame.nvim'
 Plug 'rhysd/conflict-marker.vim'
-
-" Plug 'scrooloose/nerdtree'
-" Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-" Colorschemes
-" Plug 'fcpg/vim-fahrenheit'
-" Plug 'fcpg/vim-orbital'
-" Plug 'whatyouhide/vim-gotham'
-" Plug 'ayu-theme/ayu-vim'
-Plug 'NLKNguyen/papercolor-theme'
-" Plug 'therubymug/vim-pyte'
-Plug 'rakr/vim-one'
-" Plug 'jsit/toast.vim'
-" Plug 'morhetz/gruvbox'
-" Plug 'tomasr/molokai'
-" Plug 'KeitaNakamura/neodark.vim'
-Plug 'joshdick/onedark.vim'
-" Plug 'lifepillar/vim-solarized8'
-" Plug 'protesilaos/prot16-vim'
-" Plug 'jacoborus/tender.vim'
-" Plug 'relastle/bluewery.vim'
-" Plug 'cocopon/iceberg.vim'
-" Plug 'wimstefan/Lightning'
-" Plug 'ulwlu/abyss.vim'
-Plug 'lifepillar/vim-gruvbox8'
-
-" Indentation
-Plug  'Yggdroot/indentLine'
-" Plug 'nathanaelkane/vim-indent-guides'
-
-Plug 'neovimhaskell/haskell-vim'
-" Plug 'w0rp/ale'
-" Reverse the order of commits in a git interactive rebase
 Plug 'salcode/vim-interactive-rebase-reverse'
+Plug 'rhysd/git-messenger.vim'
+Plug 'APZelos/blamer.nvim' " A git blame plugin for (neo)vim inspired by VS Code's GitLens plugin.
 
-Plug 'jiangmiao/auto-pairs'
-
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'bash install.sh',
-"     \ }
-
-
-" Haskell
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vmchale/dhall-vim'
 Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
-"Support for writing Nix expressions in vim
 Plug 'LnL7/vim-nix'
-" Plug 'Twinside/vim-hoogle'
 Plug 'monkoose/fzf-hoogle.vim'
-
-" Plug 'alx741/vim-stylishask'
-
-
-Plug 'ryanoasis/vim-devicons'
-
-" Plug 'direnv/direnv.vim'
-
-" ranger vim
-Plug 'francoiscabrol/ranger.vim'
-Plug 'rbgrouleff/bclose.vim'
-
-Plug 'godlygeek/tabular' "useful to line up text.
-"vim-markdown
-Plug 'plasticboy/vim-markdown'
-
-"editorConfig
-Plug 'editorconfig/editorconfig-vim'
-
-" nerdCommenter
-" Plug 'preservim/nerdcommenter'
-Plug 'tpope/vim-commentary'
-
-"Startify at the start screen in nvim
-Plug 'mhinz/vim-startify'
-
-"Purescript
 Plug 'purescript-contrib/purescript-vim'
-" Plug 'frigoeu/psc-ide-vim'
-" Plug 'sriharshachilakapati/vimmer-ps'
-
-" Codeformater
-" Add maktaba and codefmt to the runtimepath.
-" (The latter must be installed before it can be used.)
-" Plug 'google/vim-maktaba'
-" Plug 'google/vim-codefmt'
-" Plug 'google/vim-glaive'
-
-" Log file hightlight
 Plug 'mtdl9/vim-log-highlighting'
-
-" color highlight
-Plug 'norcalli/nvim-colorizer.lua'
-
-" session management
-Plug 'tpope/vim-obsession'
-
-" Quickscope for fast movement in line
-Plug 'unblevable/quick-scope'
-
-" Zen mode
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-
-" TODO list
-Plug 'aserebryakov/vim-todo-lists'
-
-Plug 'mbbill/undotree'
-
-Plug 'junegunn/vim-slash' "  enhancing in-buffer searc
-
-" Plug 'junegunn/vim-journal' " Journal
-Plug 'kristijanhusak/vim-carbon-now-sh'
-
-Plug 'rhysd/git-messenger.vim'
-
-"CPP
 Plug 'octol/vim-cpp-enhanced-highlight'
-
-"Multiple cursor
-Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-
-Plug 'sunaku/tmux-navigate'
-" Plug 'pseewald/vim-anyfold'
-"
-
-Plug 'dkarter/bullets.vim' "  plugin for automated bullet lists.
-Plug 'https://github.com/alok/notational-fzf-vim' " note-taking app where searching for a note and creating one are the same operation.
-" Plug 'wellle/context.vim' "  shows the context of the currently visible buffer contents
-
-Plug 'APZelos/blamer.nvim' " A git blame plugin for (neo)vim inspired by VS Code's GitLens plugin.
-" Plug 'abdalrahman-ali/vim-remembers' "  A vim plugin that emulates Notepad++ remembering the contents of unnamed files
-
-" JS snytax
-" Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'pangloss/vim-javascript'
-" Typescript
 Plug 'leafgarland/typescript-vim'
-" Plug 'peitalin/vim-jsx-typescript'
 
-Plug 'alvan/vim-closetag'
+Plug 'rbgrouleff/bclose.vim'
+Plug 'liuchengxu/vim-which-key'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-abolish'
+Plug 'jiangmiao/auto-pairs'
+Plug 'godlygeek/tabular' "useful to line up text.
+Plug 'editorconfig/editorconfig-vim'
+Plug 'tpope/vim-commentary'
+Plug 'mhinz/vim-startify'
+Plug 'tpope/vim-obsession'
+Plug 'unblevable/quick-scope'
+Plug 'mbbill/undotree'
+Plug 'kristijanhusak/vim-carbon-now-sh'
+Plug 'junegunn/vim-slash' "  enhancing in-buffer searc
+Plug 'sunaku/tmux-navigate'
+Plug 'szw/vim-maximizer'
 
 Plug 'mtth/scratch.vim'
+Plug 'aserebryakov/vim-todo-lists'
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'ryanoasis/vim-devicons'
+Plug 'norcalli/nvim-colorizer.lua'
+
+Plug 'lifepillar/vim-gruvbox8'
+Plug 'crusoexia/vim-monokai'
 
 call plug#end()
