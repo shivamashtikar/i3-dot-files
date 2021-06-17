@@ -123,8 +123,10 @@ export PATH=$PATH:~/.cabal/bin:~/.psvm/current/bin
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 
-export LC_ALL=en_US.UTF-8
-export LANG="en_US.UTF-8"
+# export LC_ALL=en_US.UTF-8
+# export LANG="en_US.UTF-8"
+export LC_ALL=en_IN.UTF-8
+export LANG=en_IN.UTF-8
 
 #fortune | cowsay | lolcat
 figlet -f ~/.fonts/figlet/Bloody "Shivam" -w 1000 | lolcat

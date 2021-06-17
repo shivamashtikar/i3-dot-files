@@ -198,7 +198,7 @@ nmap <leader>ud i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
 nnoremap <leader>um  :<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 " Source Vim configuration file and install plugins
 nnoremap <silent><leader>ui :source ~/.nvimrc.plug \| :PlugInstall<CR>
-nmap <leader><Tab> :edit # <CR>
+nmap <M-b> :edit # <CR>
 
 
 " ======== haskell ======== 
@@ -399,6 +399,8 @@ nmap <silent> <leader><space> :CocCommand explorer --width 50<CR>
 map <C-b> :CocCommand explorer --width 50<CR>
 
 autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
+
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " ======== git ========
 " $ blamer.nvim

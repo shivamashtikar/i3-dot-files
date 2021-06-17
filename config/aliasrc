@@ -5,6 +5,8 @@ alias vim=nvim
 
 
 
+export DATA=/run/media/shivam/Data
+
 alias data='cd $DATA'
 alias shrinkpdf='/home/shivam/.scripts/shrinkpdf.sh'
 alias yl='youtube-dl --output "$HOME/Videos/%(title)s.%(ext)s" -f 18'
@@ -18,8 +20,6 @@ function ym(){
 function cheat(){
 	curl cheat.sh/$1
 }
-
-export DATA=/mnt/314414C203296959
 
 alias gog="git log  --abbrev-commit \
   --name-status --color --graph
@@ -52,7 +52,7 @@ alias wsu='cd $DATA/workspace/ui-team'
 alias wsd='cd $DATA/workspace-data'
 
 
-source $HOME/.config/sec.sh
+[ -f ~/.config/sec.sh ] && source $HOME/.config/sec.sh
 
 # in order to sync packages, run this
 # sudo pacman -Fy # <- only run this once
