@@ -1,12 +1,16 @@
 call plug#begin('~/.config/nvim/plugged')
 
+
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'francoiscabrol/ranger.vim'
 
 Plug 'stsewd/fzf-checkout.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/gv.vim'
 Plug 'rhysd/conflict-marker.vim'
@@ -50,8 +54,12 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
 Plug 'norcalli/nvim-colorizer.lua'
+Plug 'Rigellute/shades-of-purple.vim'
+Plug 'kyoz/purify', { 'rtp': 'vim' }
 
 Plug 'lifepillar/vim-gruvbox8'
 Plug 'crusoexia/vim-monokai'
+
+Plug 'shivamashtikar/tmuxjump.vim'
 
 call plug#end()

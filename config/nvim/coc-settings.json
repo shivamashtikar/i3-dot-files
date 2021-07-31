@@ -1,4 +1,5 @@
 {
+  "coc.source.emoji.filetypes": ["markdown", "gitcommit"],
   "todolist.enable": true,
   "todolist.notify": "virtual",
   "todolist.promptForReminder": true,

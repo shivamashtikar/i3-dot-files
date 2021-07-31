@@ -35,8 +35,8 @@ function SwitchTheme(isLight) abort
     let g:airline_theme='gruvbox8'
     colorscheme gruvbox8_hard
   else
-    let g:airline_theme='molokai'
-    colorscheme monokai
+    let g:airline_theme='purify'
+    colorscheme purify
   endif
 endfunction
 
@@ -153,7 +153,7 @@ set scrolloff=5 " Display 5 lines above/below the cursor when scrolling with a m
 set backspace=indent,eol,start " Fixes common backspace problems
 set ttyfast " Speed up scrolling in Vim
 set laststatus=2 " Status bar
-set cursorline "Highlight the line currently under cursor.
+" set cursorline "Highlight the line currently under cursor.
 set backupdir=~/.cache/vim " Directory to store backup files.h
 set confirm "Display a confirmation dialog when closing an unsaved file.
 set updatetime=300
@@ -192,13 +192,36 @@ let g:carbon_now_sh_options =
 
 
 " ======== utilities ========
+" Shift + u for redo
+noremap <S-u> <C-r>
+
 nmap <leader>ur :%s/<C-r><C-w>//g<Left><Left>
 vmap <leader>ur "hy:%s/<C-r>h//gc<left><left><left>
 nmap <leader>ud i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
 nnoremap <leader>um  :<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 " Source Vim configuration file and install plugins
 nnoremap <silent><leader>ui :source ~/.nvimrc.plug \| :PlugInstall<CR>
-nmap <M-b> :edit # <CR>
+nmap <leader><TAB> :edit # <CR>
+
+let g:leader_map['u'] = {
+  \ 'name':'+git'                       ,
+  \ 'c': [':Telescope colorscheme'      , 'ColorScheme'     ] ,
+  \ 'd': 'Insert date time'             ,
+  \ 'f' : [':Telescope filetype'        , 'file types'      ] ,
+  \ 'h' : [':Telescope command_history' , 'Command history' ] ,
+  \ 'm': 'Modify registers'             ,
+  \ 'r': 'Replace word'                 ,
+  \ 'u' : [':Telescope commands'        , 'Commands'        ] ,
+  \}
+nnoremap Y y$
+
+" Moving text
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+inoremap <C-k> <esc>:m .-2<CR>==i
+inoremap <C-j> <esc>:m .+1<CR>==i
+nnoremap <leader>k :m .-2<CR>==
+nnoremap <leader>j :m .+1<CR>==
 
 
 " ======== haskell ======== 
@@ -428,11 +451,9 @@ let g:conflict_marker_begin = '^<<<<<<< .*$'
 let g:conflict_marker_end   = '^>>>>>>> .*$'
 " highlight ConflictMarkerBegin guibg=#2f7366
 highlight ConflictMarkerOurs guibg=#2e5049
-highlight ConflictMarkerTheirs guibg=#344f69
+highlight ConflictMarkerTheirsmakeprg guibg=#344f69
 highlight ConflictMarkerEnd guibg=#2f628e
 highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
-map gK :ConflictMarkerPrevHunk<CR>
-map gJ :ConflictMarkerNextHunk<CR>
 
 highlight GitGutterAdd guifg=#009900 ctermfg=Green
 highlight GitGutterAddLine guifg=#009900 ctermfg=Green
@@ -440,8 +461,27 @@ highlight GitGutterChange guifg=#bbbb00 ctermfg=Yellow
 highlight GitGutterChangeLine guifg=#bbbb00 ctermfg=Yellow
 highlight GitGutterDelete guifg=#ff2222 ctermfg=Red
 highlight GitGutterDeleteLine guifg=#ff2222 ctermfg=Red
-map gk :GitGutterPrevHunk<CR>
-map gj :GitGutterNextHunk<CR>
+
+function PrevAction() abort
+  try
+    exe ':cp'
+  catch
+    ConflictMarkerPrevHunk
+    GitGutterPrevHunk
+  endtry
+endfunction
+
+function NextAction() abort
+  try
+    exe ':cn'
+  catch
+      ConflictMarkerNextHunk
+      GitGutterNextHunk
+  endtry
+endfunction
+
+nnoremap <C-n> :call NextAction()<CR>
+nnoremap <C-p> :call PrevAction()<CR>
 
 nmap <leader>giq :call GSquash()<CR>
 nmap <leader>gin :exe "Git push --set-upstream origin ". fugitive#head()<CR>
@@ -463,12 +503,17 @@ function GSquash() abort
 endfunction
 let g:leader_map['g'] = {
   \ 'name':'+git',
-  \ 'a' : [':Git add %'                     , 'add current'                 ] ,
-  \ 'A' : [':Git add .'                     , 'add all'                     ] ,
-  \ 'b' : [':GBranches'                     , 'Checkout branch'             ] ,
-  \ 'B' : [':Git blame'                     , 'blame'                       ] ,
-  \ 'c' : [':Git commit'                    , 'commit'                      ] ,
-  \ 'C' : [':GBranches create'              , 'Create branch'               ] ,
+  \ 'a' : [':Git add %'              , 'add current'     ] ,
+  \ 'A' : [':Git add .'              , 'add all'         ] ,
+  \ 'b' : [':Telescope git_branches' , 'Checkout branch' ] ,
+  \ 'B' : [':Git blame'              , 'blame'           ] ,
+  \ 'c' : {
+    \ 'name' : '+Ccommands',
+    \ 'a' : [':Telescope git_commits'  , 'branch commits' ] ,
+    \ 'b' : [':Telescope git_bcommits' , 'buffer commits' ] ,
+    \ 'c' : [':Git commit'             , 'commit'         ] ,
+    \ 'n' : [':GBranches create'       , 'Create branch'  ] ,
+    \ },
   \ 'd' : [':Git diff'                      , 'diff'                        ] ,
   \ 'D' : [':Gdiffsplit'                    , 'diff split'                  ] ,
   \ 'f' : [':GBranches diff'                , 'Diff branch'                 ] ,
@@ -484,8 +529,12 @@ let g:leader_map['g'] = {
   \ 'p' : [':Git pull'                      , 'pull'                        ] ,
   \ 'P' : [':Git push'                      , 'push'                        ] ,
   \ 'r' : [':GBranches rebase'              , 'Rebase with branch'          ] ,
-  \ 's' : ['<Plug>(GitGutterStageHunk)'     , 'stage hunk'                  ] ,
-  \ 'S' : [ ':GStashList'                   , 'git stash list'              ] ,
+  \ 's' : {
+    \ 'name' : '+Scommands',
+    \ 'a' : ['<Plug>(GitGutterStageHunk)' , 'stage hunk'     ] ,
+    \ 'h' : [':Telescope git_stash'       , 'git stash list' ] ,
+    \ 's' : [':Telescope git_staus'       , 'git status'     ] ,
+    \ },
   \ 't' : [':Twiggy'                        , 'Twiggy'                      ] ,
   \ 'T' : [':GitGutterSignsToggle'          , 'toggle signs'                ] ,
   \ 'u' : ['<Plug>(GitGutterUndoHunk)'      , 'undo hunk'                   ] ,
@@ -495,12 +544,12 @@ let g:leader_map['g'] = {
   \ ']' : [':diffget //3 | diffupdate'      , 'hunk from the merge parent'  ] ,
   \ 'i' : {
     \ 'name' : '+advance',
-    \ 'm' : [':Git merge --continue'                                   , 'merge continue'    ] ,
-    \ 'r' : [':Git rebase --continue'                                  , 'rebase continue'   ] ,
-    \ 'p' : [':Git push --force'                                       , 'push force'        ] ,
-    \ 'c' : [':Git commit -m "fast-commit"'                            , 'quick commit'      ] ,
-    \ 's' : [':Git rebase -i HEAD~2'                                   , 'squash cur commit' ] ,
-    \ 'f' : [':!git checkout -- .'                                     , 'flus changes'      ] ,
+    \ 'm' : [':Git merge --continue'        , 'merge continue'    ] ,
+    \ 'r' : [':Git rebase --continue'       , 'rebase continue'   ] ,
+    \ 'p' : [':Git push --force'            , 'push force'        ] ,
+    \ 'c' : [':Git commit -m "fast-commit"' , 'quick commit'      ] ,
+    \ 's' : [':Git rebase -i HEAD~2'        , 'squash cur commit' ] ,
+    \ 'f' : [':!git checkout -- .'          , 'flus changes'      ] ,
     \ 'q' : 'fast squash',
     \ 'n' : 'push upstream new',
     \ 'g' : 'reset branch',
@@ -510,49 +559,33 @@ let g:leader_map['g'] = {
 
 " ======== file ======== 
 let g:ranger_map_keys = 0
-nnoremap <leader>fs :Find<SPace>
-nnoremap <leader>fj :exe "Find ". expand('<cword>') <CR>
-nnoremap <leader>fS :FindAll<SPace>
-nnoremap <leader>fJ :exe "FindAll ". expand('<cword>') <CR>
+nnoremap <leader>fS :lua require("telescope-config").live_grep_all()<CR>
+nnoremap <leader>fJ :lua require("telescope-config").grep_string_all()<CR>
+nnoremap <leader>ff :lua require("telescope-config").project_files()<CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-h': 'split',
   \ 'ctrl-v': 'vsplit' }
-let g:leader_map['o'] = [':Buffers' , 'Open buffers']
-let g:leader_map['j'] = [':BLines'  , 'Find in current buffer']
+let g:leader_map['o'] = [':Telescope buffers' , 'Open buffers']
 let g:leader_map['r'] = [':Ranger'  , 'Ranger']
 let g:leader_map['f'] = {
-  \ 'name' : '+file',
-  \ 'c' : [':Commits'   , 'commits'            ] ,
-  \ 'C' : [':BCommits'  , 'buffer commits'     ] ,
-  \ 'f' : [':GFiles'    , 'git files'          ] ,
-  \ 'F' : [':Files'     , 'files'              ] ,
-  \ 'g' : [':GFiles?'   , 'modified git files' ] ,
-  \ 'h' : [':History'   , 'file history'       ] ,
-  \ 'H' : [':History:'  , 'command history'    ] ,
-  \ 'l' : [':Lines'     , 'lines'              ] ,
-  \ 'm' : [':Marks'     , 'marks'              ] ,
-  \ 'M' : [':Maps'      , 'normal maps'        ] ,
-  \ 'p' : [':Helptags'  , 'help tags'          ] ,
-  \ 'P' : [':Tags'      , 'project tags'       ] ,
-  \ 'y' : [':Filetypes' , 'file types'         ] ,
-  \ 'z' : [':FZF'       , 'FZF'                ] ,
-  \ 's' : 'Search term occurences in cwd',
-  \ 'j' : 'Search term under cursor in cwd',
+  \ 'name' : '+file'                              ,
+  \ 'b' : [':Telescope file_browser'              , 'files and folders in cwd' ]        ,
+  \ 'f' : 'Project files'                         ,
+  \ 'F' : [':Telescope find_files hidden=true'    , 'files'                           ] ,
+  \ 'm' : [':Telescope marks'                     , 'marks'                           ] ,
+  \ 'M' : [':Maps'                                , 'normal maps'                     ] ,
+  \ 'o' : [':Telescope oldfiles'                  , 'Previously open files'           ] ,
+  \ 'p' : [':Helptags'                            , 'help tags'                       ] ,
+  \ 'l' : [':Telescope current_buffer_fuzzy_find' , 'Find in current buffer'          ] ,
+  \ 's' : [':Telescope live_grep'                 , 'Live Grep'                       ] ,
+  \ 't' : [':Telescope current_buffer_tags'       , 'current buffer tags'             ] ,
+  \ 'T' : [':Telescope tags'                      , 'project tags'                    ] ,
+  \ 'j' : [':Telescope grep_string'               , 'Search term under cursor in cwd' ] ,
+  \ 'z' : [':FZF'                                 , 'FZF'                             ] ,
   \ }
-" --column: Show column number
-" --line-number: Show line number
-" --no-heading: Do not show file headings in results
-" --fixed-strings: Search term as a literal string
-" --ignore-case: Case insensitive search
-" --no-ignore: Do not respect .gitignore, etc...
-" --hidden: Search hidden files and folders
-" --follow: Follow symlinks
-" --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
-" --color: Search color options
-command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
-command! -bang -nargs=* FindAll call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --no-ignore --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
-""" Uncomment following if you want to see search result in floating window
+
+"" Uncomment following if you want to see search result in floating window
 " let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
 " let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
 
@@ -572,3 +605,15 @@ let g:leader_map['e'] = {'name':'+quickOpen'}
 nmap <leader>en :edit $HOME/.nvimrc <CR>
 nmap <leader>ep :edit $HOME/.nvimrc.plug <CR>
 nmap <leader>ez :edit $HOME/.zshrc <CR>
+nmap <leader>ee :lua require("telescope-config").search_dotfiles()<CR>
+
+" ======== tmux-jump.vim ======== 
+" jump to file with position using filepath from sibling panes in tmux
+" Requires fzf
+nmap <leader>ft :TmuxJumpFile<CR>
+
+
+" ======= nvim-telescope.nvim =======
+lua require("telescope-config")
+
+
