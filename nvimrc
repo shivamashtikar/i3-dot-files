@@ -31,9 +31,12 @@ hi Comment cterm=italic
 
 function SwitchTheme(isLight) abort
   if a:isLight
-    set background=light
-    let g:airline_theme='gruvbox8'
-    colorscheme gruvbox8_hard
+    " set background=light
+    " let g:airline_theme='gruvbox8'
+    " colorscheme gruvbox8_hard
+    set background=light " for the light version
+    let g:airline_theme='one'
+    colorscheme one
   else
     let g:airline_theme='purify'
     colorscheme purify

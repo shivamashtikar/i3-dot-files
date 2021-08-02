@@ -82,7 +82,7 @@ prompt_end() {
     echo -n "%{%k%}"
   fi
   #echo -n "{%f%}"
-  echo -n "ॐ%{%f%}"
+  echo -n "ॐ%{%f%} "
   CURRENT_BG=''
 }
 

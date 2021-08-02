@@ -191,3 +191,5 @@ _gs() {
 }
 
 alias gpn='(git symbolic-ref HEAD 2>/dev/null || echo "(unnamed branch)")|cut -d/ -f3- | xargs -ro git push --set-upstream origin'
+
+alias getpass=~/.scripts/passmenu
