@@ -25,12 +25,7 @@ mkdir -p .fonts/figlet
 curl https://raw.githubusercontent.com/xero/figlet-fonts/master/Bloody.flf -o $HOME/.fonts/figlet/Bloody.flf
 
 echo "setting up nvim"
-mkdir -p $HOME/.config/nvim
-mkdir -p $HOME/vim-sessions
-ln -s $HOME/workspace/i3-dot-files/nvimrc $HOME/.nvimrc
-ln -s $HOME/workspace/i3-dot-files/nvimrc.plug $HOME/.nvimrc.plug
-ln -s $HOME/workspace/i3-dot-files/config/nvim/init.vim $HOME/.config/nvim/init.vim
-ln -s $HOME/workspace/i3-dot-files/config/nvim/coc-settings.json $HOME/.config/nvim/coc-settings.json
+sh ./init-nvim.sh
 
 echo "setting up tmux"
 ln -s $HOME/workspace/i3-dot-files/tmux.conf $HOME/.tmux.conf

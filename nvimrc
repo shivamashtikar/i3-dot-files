@@ -363,7 +363,9 @@ nmap <silent> <localleader>r <Plug>(coc-references)
 nmap <localleader>r <Plug>(coc-rename)
 " Formatting selected code.
 xmap <localleader>f  <Plug>(coc-format-selected)
-nmap <localleader>f  <Plug>(coc-format-selected)
+vmap <localleader>f  <Plug>(coc-format-selected)
+nmap <localleader>f :call CocAction('format')<CR>
+
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -615,5 +617,7 @@ nmap <leader>ft :TmuxJumpFile<CR>
 
 " ======= nvim-telescope.nvim =======
 lua require("telescope-config")
+" ======= treesitter
+lua require("treesitter-config")
 
 
