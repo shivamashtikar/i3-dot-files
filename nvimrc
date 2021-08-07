@@ -30,16 +30,12 @@ lua require'colorizer'.setup()
 hi Comment cterm=italic
 
 function SwitchTheme(isLight) abort
+  let g:airline_theme='one'
+  colorscheme one
   if a:isLight
-    " set background=light
-    " let g:airline_theme='gruvbox8'
-    " colorscheme gruvbox8_hard
     set background=light " for the light version
-    let g:airline_theme='one'
-    colorscheme one
   else
-    let g:airline_theme='purify'
-    colorscheme purify
+    set background=dark " for the dark version
   endif
 endfunction
 
@@ -108,8 +104,8 @@ let g:leader_map['q'] = {
   \ 'o' : ['<C-w>o'  , 'Close other window' ] ,
   \ }
 
-nnoremap <leader>w :w<CR>
-let g:leader_map['w'] = 'Write buffer'
+nnoremap <leader>w :up<CR>
+let g:leader_map['w'] = 'Write buffer if something is changed'
 
 let g:leader_map['b']={ 'name' : '+buffer' }
 nnoremap <silent> <Leader>bp :bprevious<CR>
@@ -181,6 +177,7 @@ set smartcase " Include only uppercase words with uppercase search term
 set viminfo='100,<9999,s100 " Store info from no more than 100 files at a time, 9999 lines of text, 100kb of data. Useful for copying large amounts of data between files.
 
 
+let g:webdevicons_enable = 1
 " ======== code ======== 
 " indent and retain selection in visual mode
 vnoremap > >gv
@@ -226,6 +223,21 @@ inoremap <C-j> <esc>:m .+1<CR>==i
 nnoremap <leader>k :m .-2<CR>==
 nnoremap <leader>j :m .+1<CR>==
 
+nmap <leader>` ysiw`
+
+" Wrap selection with '' 
+vnoremap <leader>' <esc>`>a'<esc>`<i'<esc>
+" Wrap selection with ""
+vnoremap <leader>" <esc>`>a"<esc>`<i"<esc>
+" Wrap selection with ()
+vnoremap <leader>( <esc>`>a)<esc>`<i(<esc>
+vnoremap <leader>) <esc>`>a)<esc>`<i(<esc>
+" Wrap selection with []
+vnoremap <leader>[ <esc>`>a]<esc>`<i[<esc>
+vnoremap <leader>] <esc>`>a]<esc>`<i[<esc>
+" Wrap selection with {}
+vnoremap <leader>{ <esc>`>a}<esc>`<i{<esc>}
+vnoremap <leader>} <esc>`>a}<esc>`<i{<esc>}
 
 " ======== haskell ======== 
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
@@ -538,7 +550,7 @@ let g:leader_map['g'] = {
     \ 'name' : '+Scommands',
     \ 'a' : ['<Plug>(GitGutterStageHunk)' , 'stage hunk'     ] ,
     \ 'h' : [':Telescope git_stash'       , 'git stash list' ] ,
-    \ 's' : [':Telescope git_staus'       , 'git status'     ] ,
+    \ 's' : [':Telescope git_status'       , 'git status'     ] ,
     \ },
   \ 't' : [':Twiggy'                        , 'Twiggy'                      ] ,
   \ 'T' : [':GitGutterSignsToggle'          , 'toggle signs'                ] ,
@@ -562,16 +574,35 @@ let g:leader_map['g'] = {
     \ },
   \ }
 
+" --column: Show column number
+" --line-number: Show line number
+" --no-heading: Do not show file headings in results
+" --fixed-strings: Search term as a literal string
+" --ignore-case: Case insensitive search
+" --no-ignore: Do not respect .gitignore, etc...
+" --hidden: Search hidden files and folders
+" --follow: Follow symlinks
+" --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+" --color: Search color options
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+command! -bang -nargs=* FindAll call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --no-ignore --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+""" Uncomment following if you want to see search result in floating window
 " ======== file ======== 
 let g:ranger_map_keys = 0
-nnoremap <leader>fS :lua require("telescope-config").live_grep_all()<CR>
-nnoremap <leader>fJ :lua require("telescope-config").grep_string_all()<CR>
+nnoremap <leader>fs :Find<SPace>
+nnoremap <leader>fj :exe "Find ". expand('<cword>') <CR>
+nnoremap <leader>fS :FindAll<SPace>
+nnoremap <leader>fJ :exe "FindAll ". expand('<cword>') <CR>
+
+" nnoremap <leader>fS :lua require("telescope-config").live_grep_all()<CR>
+" nnoremap <leader>fJ :lua require("telescope-config").grep_string_all()<CR>
 nnoremap <leader>ff :lua require("telescope-config").project_files()<CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-h': 'split',
   \ 'ctrl-v': 'vsplit' }
-let g:leader_map['o'] = [':Telescope buffers' , 'Open buffers']
+" let g:leader_map['o'] = [':Telescope buffers' , 'Open buffers']
+let g:leader_map['o'] = [':Buffers' , 'Open buffers']
 let g:leader_map['r'] = [':Ranger'  , 'Ranger']
 let g:leader_map['f'] = {
   \ 'name' : '+file'                              ,
@@ -583,13 +614,13 @@ let g:leader_map['f'] = {
   \ 'o' : [':Telescope oldfiles'                  , 'Previously open files'           ] ,
   \ 'p' : [':Helptags'                            , 'help tags'                       ] ,
   \ 'l' : [':Telescope current_buffer_fuzzy_find' , 'Find in current buffer'          ] ,
-  \ 's' : [':Telescope live_grep'                 , 'Live Grep'                       ] ,
   \ 't' : [':Telescope current_buffer_tags'       , 'current buffer tags'             ] ,
   \ 'T' : [':Telescope tags'                      , 'project tags'                    ] ,
-  \ 'j' : [':Telescope grep_string'               , 'Search term under cursor in cwd' ] ,
   \ 'z' : [':FZF'                                 , 'FZF'                             ] ,
   \ }
 
+  " \ 's' : [':Telescope live_grep'                 , 'Live Grep'                       ] ,
+  " \ 'j' : [':Telescope grep_string'               , 'Search term under cursor in cwd' ] ,
 "" Uncomment following if you want to see search result in floating window
 " let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
 " let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
