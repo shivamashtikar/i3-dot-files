@@ -205,13 +205,13 @@ nmap <leader><TAB> :edit # <CR>
 
 let g:leader_map['u'] = {
   \ 'name':'+git'                       ,
-  \ 'c': [':Telescope colorscheme'      , 'ColorScheme'     ] ,
+  \ 'c': [':Colors'      , 'ColorScheme'     ] ,
   \ 'd': 'Insert date time'             ,
-  \ 'f' : [':Telescope filetype'        , 'file types'      ] ,
+  \ 'f' : [':Filetypes'        , 'file types'      ] ,
   \ 'h' : [':Telescope command_history' , 'Command history' ] ,
   \ 'm': 'Modify registers'             ,
   \ 'r': 'Replace word'                 ,
-  \ 'u' : [':Telescope commands'        , 'Commands'        ] ,
+  \ 'u' : [':Commands'        , 'Commands'        ] ,
   \}
 nnoremap Y y$
 
@@ -504,6 +504,8 @@ nmap <leader>giq :call GSquash()<CR>
 nmap <leader>gin :exe "Git push --set-upstream origin ". fugitive#head()<CR>
 nmap <leader>gig :exe "Git reset --hard origin/". fugitive#head()<CR>
 nmap <leader>gij :exe "normal! a" . matchstr(fugitive#head(), 'PICAF-\_[0-9]*'). " "<CR>a
+nmap <leader>gpr :Git pull --rebase origin/
+nmap <leader>gpm :Git pull --merge origin/
 
 function GSquash() abort
   exec ':Git commit -m "fastcommit"'
@@ -520,43 +522,53 @@ function GSquash() abort
 endfunction
 let g:leader_map['g'] = {
   \ 'name':'+git',
-  \ 'a' : [':Git add %'              , 'add current'     ] ,
-  \ 'A' : [':Git add .'              , 'add all'         ] ,
-  \ 'b' : [':Telescope git_branches' , 'Checkout branch' ] ,
+  \ 'a' : ['<Plug>(GitGutterStageHunk)' , 'stage hunk'     ] ,
+  \ 'A' : [':Git add %'              , 'add current'     ] ,
+  \ 'b' : {
+    \ 'name' : '+Branches',
+    \ 'b' : [':GBranches' , 'Checkout branch' ] ,
+    \ 'f' : [':GBranches diff'                , 'Diff branch'                 ] ,
+    \ 'm' : [':GBranches merge'               , 'Merge branch'                ] ,
+    \ 'n' : [':GBranches create'       , 'Create branch'  ] ,
+    \ 'r' : [':GBranches rebase'              , 'Rebase with branch'          ] ,
+    \ },
   \ 'B' : [':Git blame'              , 'blame'           ] ,
   \ 'c' : {
     \ 'name' : '+Ccommands',
-    \ 'a' : [':Telescope git_commits'  , 'branch commits' ] ,
-    \ 'b' : [':Telescope git_bcommits' , 'buffer commits' ] ,
+    \ 'a' : [':Commits'  , 'branch commits' ] ,
+    \ 'b' : [':BCommits' , 'buffer commits' ] ,
     \ 'c' : [':Git commit'             , 'commit'         ] ,
-    \ 'n' : [':GBranches create'       , 'Create branch'  ] ,
+    \ 'f' : [ ':GV!'                          , 'GV file commit'                 ] ,
+    \ 'g' : [ ':GV'                           , 'GV commits'                 ] ,
+    \ 'o' : [':GBranches' , 'Checkout branch' ] ,
+    \ 't' : [':GTags' , 'Checkout tags' ] ,
     \ },
-  \ 'd' : [':Git diff'                      , 'diff'                        ] ,
-  \ 'D' : [':Gdiffsplit'                    , 'diff split'                  ] ,
-  \ 'f' : [':GBranches diff'                , 'Diff branch'                 ] ,
-  \ 'F' : [':GitGutterFold'                 , 'fold unchanged lines'        ] ,
+  \ 'd' : [':Gdiffsplit'                    , 'diff split'                  ] ,
+  \ 'D' : [':Git diff'                      , 'diff'                        ] ,
+  \ 'f' : [':GitGutterFold'                 , 'fold unchanged lines'        ] ,
   \ 'g' : [':Git'                           , 'Git '                        ] ,
   \ 'h' : ['<Plug>(GitGutterPreviewHunk)'   , 'preview hunk'                ] ,
-  \ 'H' : [':GitGutterLineHighlightsToggle' , 'highlight hunks'             ] ,
-  \ 'j' : ['<Plug>(GitGutterNextHunk)'      , 'next hunk'                   ] ,
-  \ 'k' : ['<Plug>(GitGutterPrevHunk)'      , 'prev hunk'                   ] ,
   \ 'l' : [':Git log --stat'                , 'logs'                        ] ,
   \ 'L' : [':Git log --stat -p'             , 'logs with changes'           ] ,
-  \ 'M' : [':GBranches merge'               , 'Merge branch'                ] ,
-  \ 'p' : [':Git pull'                      , 'pull'                        ] ,
-  \ 'P' : [':Git push'                      , 'push'                        ] ,
-  \ 'r' : [':GBranches rebase'              , 'Rebase with branch'          ] ,
+  \ 'p' : {
+    \ 'name' : '+Pcommands',
+    \ 'f' : [':Git fetch'                      , 'push'                        ] ,
+    \ 'm' : 'pull --merge origin' ,
+    \ 'p' : [':Git pull'                      , 'pull'                        ] ,
+    \ 'r' : 'pull --rebase origin' ,
+    \ 'u' : [':Git push'                      , 'push'                        ] ,
+    \ },
   \ 's' : {
     \ 'name' : '+Scommands',
-    \ 'a' : ['<Plug>(GitGutterStageHunk)' , 'stage hunk'     ] ,
     \ 'h' : [':Telescope git_stash'       , 'git stash list' ] ,
     \ 's' : [':Telescope git_status'       , 'git status'     ] ,
     \ },
-  \ 't' : [':Twiggy'                        , 'Twiggy'                      ] ,
-  \ 'T' : [':GitGutterSignsToggle'          , 'toggle signs'                ] ,
+  \ 't' : {
+    \ 'name' : '+Gutter',
+    \ 's' : [':GitGutterSignsToggle'          , 'toggle signs'                ] ,
+    \ 'h' : [':GitGutterLineHighlightsToggle' , 'highlight hunks'             ] ,
+    \ },
   \ 'u' : ['<Plug>(GitGutterUndoHunk)'      , 'undo hunk'                   ] ,
-  \ 'v' : [ ':GV'                           , 'git tree GV'                 ] ,
-  \ 'V' : [ ':GV!'                          , 'git tree GV'                 ] ,
   \ '[' : [':diffget //2 | diffupdate'      , 'hunk from the target parent' ] ,
   \ ']' : [':diffget //3 | diffupdate'      , 'hunk from the merge parent'  ] ,
   \ 'i' : {
@@ -594,33 +606,39 @@ nnoremap <leader>fj :exe "Find ". expand('<cword>') <CR>
 nnoremap <leader>fS :FindAll<SPace>
 nnoremap <leader>fJ :exe "FindAll ". expand('<cword>') <CR>
 
+function PFiles() abort
+  try
+    exe ':GFiles'
+  catch
+    Files
+  endtry
+endfunction
 " nnoremap <leader>fS :lua require("telescope-config").live_grep_all()<CR>
 " nnoremap <leader>fJ :lua require("telescope-config").grep_string_all()<CR>
-nnoremap <leader>ff :lua require("telescope-config").project_files()<CR>
+" nnoremap <leader>ff :lua require("telescope-config").project_files()<CR>
+nnoremap <leader>ff :call PFiles()<CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-h': 'split',
   \ 'ctrl-v': 'vsplit' }
-" let g:leader_map['o'] = [':Telescope buffers' , 'Open buffers']
-let g:leader_map['o'] = [':Buffers' , 'Open buffers']
+let g:leader_map['o'] = [':Buffers' , 'Show Open buffers']
+let g:leader_map['p'] = [':Windows' , 'Show Open Windows']
 let g:leader_map['r'] = [':Ranger'  , 'Ranger']
 let g:leader_map['f'] = {
-  \ 'name' : '+file'                              ,
-  \ 'b' : [':Telescope file_browser'              , 'files and folders in cwd' ]        ,
-  \ 'f' : 'Project files'                         ,
-  \ 'F' : [':Telescope find_files hidden=true'    , 'files'                           ] ,
-  \ 'm' : [':Telescope marks'                     , 'marks'                           ] ,
-  \ 'M' : [':Maps'                                , 'normal maps'                     ] ,
-  \ 'o' : [':Telescope oldfiles'                  , 'Previously open files'           ] ,
-  \ 'p' : [':Helptags'                            , 'help tags'                       ] ,
-  \ 'l' : [':Telescope current_buffer_fuzzy_find' , 'Find in current buffer'          ] ,
-  \ 't' : [':Telescope current_buffer_tags'       , 'current buffer tags'             ] ,
-  \ 'T' : [':Telescope tags'                      , 'project tags'                    ] ,
-  \ 'z' : [':FZF'                                 , 'FZF'                             ] ,
+  \ 'name' : '+file'      ,
+  \ 'f' : 'Project files' ,
+  \ 'g' : [':Rg'          , 'Live Grep'              ] ,
+  \ 'h' : [':Helptags'    , 'help tags'              ] ,
+  \ 'l' : [':Lines'       , 'Find in current buffer' ] ,
+  \ 'm' : [':Marks'       , 'marks'                  ] ,
+  \ 'M' : [':Maps'        , 'normal maps'            ] ,
+  \ 'o' : [':History'     , 'Previously open files'  ] ,
+  \ 'p' : [':Files'       , 'files'                  ] ,
+  \ 't' : [':BTags'       , 'current buffer tags'    ] ,
+  \ 'T' : [':Tags'        , 'project tags'           ] ,
+  \ 'z' : [':FZF'         , 'FZF'                    ] ,
   \ }
 
-  " \ 's' : [':Telescope live_grep'                 , 'Live Grep'                       ] ,
-  " \ 'j' : [':Telescope grep_string'               , 'Search term under cursor in cwd' ] ,
 "" Uncomment following if you want to see search result in floating window
 " let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
 " let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
