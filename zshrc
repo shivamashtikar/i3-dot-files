@@ -148,6 +148,7 @@ if [ -f '/$HOME/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/google-clo
 if [[ -n "$IN_NIX_SHELL" ]]; then
   unset FZF_DEFAULT_COMMAND
 else
+  export FZF_DEFAULT_OPTS=' --bind "alt-a:select-all,alt-d:deselect-all"'
   export FZF_DEFAULT_COMMAND='rg --files --ignore-case --no-ignore --hidden --follow --glob "!.git/*"'
 fi
 # export LD_LIBRARY_PATH=/usr/lib

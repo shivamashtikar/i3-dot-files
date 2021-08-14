@@ -65,6 +65,10 @@ map <M-j> <C-w>j
 map <M-k> <C-w>k
 map <M-l> <C-w>l
 
+nmap <C-g> :join<CR>
+nmap J <c-d>zz
+nmap K <c-u>zz
+
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 augroup qs_colors
   autocmd!
@@ -152,7 +156,7 @@ set scrolloff=5 " Display 5 lines above/below the cursor when scrolling with a m
 set backspace=indent,eol,start " Fixes common backspace problems
 set ttyfast " Speed up scrolling in Vim
 set laststatus=2 " Status bar
-" set cursorline "Highlight the line currently under cursor.
+set cursorline "Highlight the line currently under cursor.
 set backupdir=~/.cache/vim " Directory to store backup files.h
 set confirm "Display a confirmation dialog when closing an unsaved file.
 set updatetime=300
@@ -598,6 +602,13 @@ let g:leader_map['g'] = {
 " --color: Search color options
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 command! -bang -nargs=* FindAll call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --no-ignore --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+function FindList(expr) abort
+  exec ':Find '.a:expr
+  call timer_start(1000, { tid -> feedkeys("\<M-a>\<CR>")})
+endfunction
+
+command -nargs=1 FindList call FindList(<f-args>)
+
 """ Uncomment following if you want to see search result in floating window
 " ======== file ======== 
 let g:ranger_map_keys = 0
@@ -605,13 +616,14 @@ nnoremap <leader>fs :Find<SPace>
 nnoremap <leader>fj :exe "Find ". expand('<cword>') <CR>
 nnoremap <leader>fS :FindAll<SPace>
 nnoremap <leader>fJ :exe "FindAll ". expand('<cword>') <CR>
+nnoremap <leader>fq :FindList<SPace>
 
 function PFiles() abort
-  try
-    exe ':GFiles'
-  catch
+  if fugitive#head() == ''
     Files
-  endtry
+  else
+    GFiles
+  endif
 endfunction
 " nnoremap <leader>fS :lua require("telescope-config").live_grep_all()<CR>
 " nnoremap <leader>fJ :lua require("telescope-config").grep_string_all()<CR>
@@ -673,3 +685,11 @@ lua require("telescope-config")
 lua require("treesitter-config")
 
 
+function CopyPara(line,nlineBelow)
+ wincmd w | exec a:line | exec 'norm y'. a:nlineBelow .'j'| wincmd w | norm p
+endfunction
+
+command -nargs=1 CLine exec 'norm :wincmd w<CR>:' . <args> . '<CR>yy<C-W>wp'
+command -nargs=* CPara call CopyPara(<f-args>)
+nmap <leader>yy :CLine<space>
+nmap <leader>yp :CPara<space>
