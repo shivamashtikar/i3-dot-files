@@ -641,6 +641,7 @@ let g:leader_map['r'] = [':Ranger'  , 'Ranger']
 let g:leader_map['f'] = {
   \ 'name' : '+file'      ,
   \ 'f' : 'Project files' ,
+  \ 'F' : [':Files'          , 'Files'              ] ,
   \ 'g' : [':Rg'          , 'Live Grep'              ] ,
   \ 'h' : [':Helptags'    , 'help tags'              ] ,
   \ 'l' : [':Lines'       , 'Find in current buffer' ] ,
