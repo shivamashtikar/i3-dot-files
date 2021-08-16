@@ -49,6 +49,7 @@ Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'junegunn/vim-slash' "  enhancing in-buffer searc
 Plug 'sunaku/tmux-navigate'
 Plug 'szw/vim-maximizer'
+Plug 'romainl/vim-qf'
 
 Plug 'mtth/scratch.vim'
 Plug 'aserebryakov/vim-todo-lists'

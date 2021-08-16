@@ -16,13 +16,6 @@ set timeoutlen=500
 let g:leader_map = {}
 let g:localleader_map = {}
 
-" Change the colors if you want
-" highlight default link WhichKey          Operator
-" highlight default link WhichKeySeperator DiffAdded
-" highlight default link WhichKeyGroup     Identifier
-" highlight default link WhichKeyDesc      Function
-
-
 " ======== colors ========
 set termguicolors
 lua require'colorizer'.setup()
@@ -65,9 +58,12 @@ map <M-j> <C-w>j
 map <M-k> <C-w>k
 map <M-l> <C-w>l
 
-nmap <C-g> :join<CR>
-nmap J <c-d>zz
-nmap K <c-u>zz
+nnoremap <C-g> J
+nnoremap J <c-d>zz
+nnoremap K <c-u>zz
+
+nnoremap ; :
+nnoremap : ;
 
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 augroup qs_colors
@@ -112,6 +108,7 @@ nnoremap <leader>w :up<CR>
 let g:leader_map['w'] = 'Write buffer if something is changed'
 
 let g:leader_map['b']={ 'name' : '+buffer' }
+nnoremap <silent> <Leader>bb :b <C-d>
 nnoremap <silent> <Leader>bp :bprevious<CR>
 nnoremap <silent> <Leader>bn :bnext<CR>
 nnoremap <silent> <Leader>bf :bfirst<CR>
@@ -140,7 +137,6 @@ set smartcase
 set incsearch
 set hidden
 set mouse=a
-set nocompatible " Set compatibility to Vim only.
 filetype off " Helps force plug-ins to load correctly when it is turned back on below.
 filetype plugin indent on " For plug-ins to load correctly.
 set modelines=0 " Turn off modelines
@@ -199,16 +195,18 @@ let g:carbon_now_sh_options =
 " Shift + u for redo
 noremap <S-u> <C-r>
 
-nmap <leader>ur :%s/<C-r><C-w>//g<Left><Left>
-vmap <leader>ur "hy:%s/<C-r>h//gc<left><left><left>
-nmap <leader>ud i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+nnoremap <leader>ur :%s/<C-r><C-w>//g<Left><Left>
+vnoremap <leader>ur "hy:%s/<C-r>h//gc<left><left><left>
+nnoremap <leader>ud i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
 nnoremap <leader>um  :<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 " Source Vim configuration file and install plugins
 nnoremap <silent><leader>ui :source ~/.nvimrc.plug \| :PlugInstall<CR>
-nmap <leader><TAB> :edit # <CR>
+nnoremap <leader><TAB> :b#<CR>
+nnoremap <leader>ua :argadd <c-r>=fnameescape(expand('%:p:h'))<cr>/*<C-d>
 
 let g:leader_map['u'] = {
   \ 'name':'+git'                       ,
+  \ 'a': 'Open file with partern'                 ,
   \ 'c': [':Colors'      , 'ColorScheme'     ] ,
   \ 'd': 'Insert date time'             ,
   \ 'f' : [':Filetypes'        , 'file types'      ] ,
@@ -227,7 +225,7 @@ inoremap <C-j> <esc>:m .+1<CR>==i
 nnoremap <leader>k :m .-2<CR>==
 nnoremap <leader>j :m .+1<CR>==
 
-nmap <leader>` ysiw`
+nnoremap <leader>` ysiw`
 
 " Wrap selection with '' 
 vnoremap <leader>' <esc>`>a'<esc>`<i'<esc>
@@ -265,13 +263,13 @@ function LoadSessionHash()
   let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
   exec ':source ' . g:sessions_dir . '/' . s:sessionFile
 endfunction
-nmap <Leader>sq :call LoadSessionHash()<CR>
+nnoremap <Leader>sq :call LoadSessionHash()<CR>
 
 function SaveSessionHash()
   let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
   exec ':Obsession ' . g:sessions_dir . '/' . s:sessionFile
 endfunction
-nmap <Leader>sh :call SaveSessionHash()<CR>
+nnoremap <Leader>sh :call SaveSessionHash()<CR>
 
 let g:leader_map['s'] = {'name':'+Session',
   \ 's' : 'Save Session',
@@ -368,22 +366,22 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> <localleader>p <Plug>(coc-diagnostic-prev)
-nmap <silent> <localleader>n <Plug>(coc-diagnostic-next)
+nnoremap <silent> <localleader>p <Plug>(coc-diagnostic-prev)
+nnoremap <silent> <localleader>n <Plug>(coc-diagnostic-next)
 " Mappings for CoCList, Show all diagnostics.
 nnoremap <silent><nowait> <localleader>cd  :<C-u>CocList diagnostics<cr>
 
 " GoTo code navigation.
-nmap <silent> <localleader>g <Plug>(coc-definition)
-nmap <silent> <localleader>d <Plug>(coc-type-definition)
-nmap <silent> <localleader>i <Plug>(coc-implementation)
-nmap <silent> <localleader>r <Plug>(coc-references)
+nnoremap <silent> <localleader>g <Plug>(coc-definition)
+nnoremap <silent> <localleader>d <Plug>(coc-type-definition)
+nnoremap <silent> <localleader>i <Plug>(coc-implementation)
+nnoremap <silent> <localleader>r <Plug>(coc-references)
 " Symbol renaming.
-nmap <localleader>r <Plug>(coc-rename)
+nnoremap <localleader>r <Plug>(coc-rename)
 " Formatting selected code.
 xmap <localleader>f  <Plug>(coc-format-selected)
-vmap <localleader>f  <Plug>(coc-format-selected)
-nmap <localleader>f :call CocAction('format')<CR>
+vnoremap <localleader>f  <Plug>(coc-format-selected)
+nnoremap <localleader>f :call CocAction('format')<CR>
 
 
 function! s:show_documentation()
@@ -412,11 +410,11 @@ augroup end
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
 xmap <localleader>aa  <Plug>(coc-codeaction-selected)
-nmap <localleader>aa  <Plug>(coc-codeaction-selected)
+nnoremap <localleader>aa  <Plug>(coc-codeaction-selected)
 " Remap keys for applying codeAction to the current buffer.
-nmap <localleader>ac  <Plug>(coc-codeaction)
+nnoremap <localleader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-nmap <localleader>af  <Plug>(coc-fix-current)
+nnoremap <localleader>af  <Plug>(coc-fix-current)
 
 " Manage extensions.
 nnoremap <silent><nowait> <localleader>ce  :<C-u>CocList extensions<cr>
@@ -439,7 +437,7 @@ nnoremap <silent> <leader>te :<C-u>CocCommand todolist.export<CR>
 nnoremap <silent> <leader>tq :<C-u>CocCommand todolist.closeNotice<CR>
 nnoremap <silent> <leader>tQ :<C-u>CocCommand todolist.clear<CR>
 
-nmap <silent> <leader><space> :CocCommand explorer --width 50<CR>
+nnoremap <silent> <leader><space> :CocCommand explorer --width 50<CR>
 map <C-b> :CocCommand explorer --width 50<CR>
 
 autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
@@ -476,12 +474,7 @@ highlight ConflictMarkerTheirsmakeprg guibg=#344f69
 highlight ConflictMarkerEnd guibg=#2f628e
 highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
 
-highlight GitGutterAdd guifg=#009900 ctermfg=Green
-highlight GitGutterAddLine guifg=#009900 ctermfg=Green
-highlight GitGutterChange guifg=#bbbb00 ctermfg=Yellow
-highlight GitGutterChangeLine guifg=#bbbb00 ctermfg=Yellow
-highlight GitGutterDelete guifg=#ff2222 ctermfg=Red
-highlight GitGutterDeleteLine guifg=#ff2222 ctermfg=Red
+let g:gitgutter_highlight_lines=1
 
 function PrevAction() abort
   try
@@ -504,12 +497,12 @@ endfunction
 nnoremap <C-n> :call NextAction()<CR>
 nnoremap <C-p> :call PrevAction()<CR>
 
-nmap <leader>giq :call GSquash()<CR>
-nmap <leader>gin :exe "Git push --set-upstream origin ". fugitive#head()<CR>
-nmap <leader>gig :exe "Git reset --hard origin/". fugitive#head()<CR>
-nmap <leader>gij :exe "normal! a" . matchstr(fugitive#head(), 'PICAF-\_[0-9]*'). " "<CR>a
-nmap <leader>gpr :Git pull --rebase origin/
-nmap <leader>gpm :Git pull --merge origin/
+nnoremap <leader>giq :call GSquash()<CR>
+nnoremap <leader>gin :exe "Git push --set-upstream origin ". fugitive#head()<CR>
+nnoremap <leader>gig :exe "Git reset --hard origin/". fugitive#head()<CR>
+nnoremap <leader>gij :exe "normal! a" . matchstr(fugitive#head(), 'PICAF-\_[0-9]*'). " "<CR>a
+nnoremap <leader>gpr :Git pull --rebase origin/
+nnoremap <leader>gpm :Git pull --merge origin/
 
 function GSquash() abort
   exec ':Git commit -m "fastcommit"'
@@ -616,7 +609,16 @@ nnoremap <leader>fs :Find<SPace>
 nnoremap <leader>fj :exe "Find ". expand('<cword>') <CR>
 nnoremap <leader>fS :FindAll<SPace>
 nnoremap <leader>fJ :exe "FindAll ". expand('<cword>') <CR>
-nnoremap <leader>fq :FindList<SPace>
+nnoremap <leader>fqel :Doline<SPace>
+nnoremap <leader>fqef :Dofile<SPace>
+nnoremap <leader>fqd :Reject<SPace>
+nnoremap <leader>fqll :LoadList<SPace>
+nnoremap <leader>fqla :LoadListAdd<SPace>
+nnoremap <leader>fqk :Keep<space>
+nnoremap <leader>fqq :FindList<SPace>
+nnoremap <leader>fqr :Restore<CR>
+nnoremap <leader>fqss :SaveList<SPace>
+nnoremap <leader>fqsa :SaveListAdd<SPace>
 
 function PFiles() abort
   if fugitive#head() == ''
@@ -646,6 +648,18 @@ let g:leader_map['f'] = {
   \ 'M' : [':Maps'        , 'normal maps'            ] ,
   \ 'o' : [':History'     , 'Previously open files'  ] ,
   \ 'p' : [':Files'       , 'files'                  ] ,
+  \ 'q' : {
+    \ 'name' : '+QuickFix',
+    \ 'e' : {
+      \ 'name' : '+Execute',
+      \ },
+    \ 'l' : {
+      \ 'name' : '+Load',
+      \ },
+    \ 's' : {
+      \ 'name' : '+Save',
+      \ },
+    \ },
   \ 't' : [':BTags'       , 'current buffer tags'    ] ,
   \ 'T' : [':Tags'        , 'project tags'           ] ,
   \ 'z' : [':FZF'         , 'FZF'                    ] ,
@@ -668,15 +682,15 @@ endif
 let g:scratch_persistence_file = '~/Documents/Notes.todo.md'
 
 let g:leader_map['e'] = {'name':'+quickOpen'}
-nmap <leader>en :edit $HOME/.nvimrc <CR>
-nmap <leader>ep :edit $HOME/.nvimrc.plug <CR>
-nmap <leader>ez :edit $HOME/.zshrc <CR>
-nmap <leader>ee :lua require("telescope-config").search_dotfiles()<CR>
+nnoremap <leader>en :edit $HOME/.nvimrc <CR>
+nnoremap <leader>ep :edit $HOME/.nvimrc.plug <CR>
+nnoremap <leader>ez :edit $HOME/.zshrc <CR>
+nnoremap <leader>ee :lua require("telescope-config").search_dotfiles()<CR>
 
 " ======== tmux-jump.vim ======== 
 " jump to file with position using filepath from sibling panes in tmux
 " Requires fzf
-nmap <leader>ft :TmuxJumpFile<CR>
+nnoremap <leader>ft :TmuxJumpFile<CR>
 
 
 " ======= nvim-telescope.nvim =======
@@ -691,5 +705,6 @@ endfunction
 
 command -nargs=1 CLine exec 'norm :wincmd w<CR>:' . <args> . '<CR>yy<C-W>wp'
 command -nargs=* CPara call CopyPara(<f-args>)
-nmap <leader>yy :CLine<space>
-nmap <leader>yp :CPara<space>
+nnoremap <leader>yy :CLine<space>
+nnoremap <leader>yp :CPara<space>
+
