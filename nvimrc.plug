@@ -18,8 +18,8 @@ Plug 'salcode/vim-interactive-rebase-reverse'
 Plug 'rhysd/git-messenger.vim'
 Plug 'APZelos/blamer.nvim' " A git blame plugin for (neo)vim inspired by VS Code's GitLens plugin.
 
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-Plug 'windwp/nvim-ts-autotag'
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+" Plug 'windwp/nvim-ts-autotag'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vmchale/dhall-vim'

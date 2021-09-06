@@ -1,0 +1,213 @@
+let mapleader=" "
+let maplocalleader = ","
+
+" ======== colors ========
+set termguicolors
+lua require'colorizer'.setup()
+
+hi Comment cterm=italic
+
+colorscheme evening
+set background=dark " for the dark version
+
+" sets F10 as a switch between dark and light modes
+map <F10> :let &background = ( &background == "dark" ? "light" : "dark" )<CR>
+
+
+" ======== movement ========
+"
+" Use alt + hjkl split navigation
+map <M-h> <C-w>h
+map <M-j> <C-w>j
+map <M-k> <C-w>k
+map <M-l> <C-w>l
+
+nnoremap <C-g> J
+nnoremap J <c-d>zz
+nnoremap K <c-u>zz
+
+nnoremap ; :
+nnoremap : ;
+
+" ======== resize ========
+" Shortcut ctrl + hjkl for to resize windows
+nnoremap <C-j> : resize -2<CR>
+nnoremap <C-k> : resize +2<CR>
+nnoremap <C-h> : vertical resize -2<CR>
+nnoremap <C-l> : vertical resize +2<CR>
+nnoremap <leader>= :wincmd =<cr>
+
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
+
+" ======== splits ======== 
+" Shortcut split opening
+nnoremap <leader>h :split<Space>
+nnoremap <leader>v :vsplit<Space>
+
+" Fix splitting
+set splitbelow splitright
+
+" ======== quit ======== 
+" Alias write and quit to Q
+
+nnoremap <leader>qa :qa<CR>
+nnoremap <leader>qw :q<CR>
+nnoremap <leader>qq :bd<CR>
+nnoremap <leader>qo <C-w>o
+nnoremap <leader>w :up<CR>
+
+nnoremap <silent> <Leader>bb :b <C-d>
+nnoremap <silent> <Leader>bp :bprevious<CR>
+nnoremap <silent> <Leader>bn :bnext<CR>
+nnoremap <silent> <Leader>bf :bfirst<CR>
+nnoremap <silent> <Leader>bl :blast<CR>
+nnoremap <silent> <Leader>bk :bw<CR>
+
+" ======== setters ========
+" Use system Clipboard
+set clipboard+=unnamedplus
+" Path current directory and sub folders
+set path+=**
+" Buffer management
+set autowrite
+set autoread
+" Triger `autoread` when files changes on disk
+" Ref https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044 https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+            \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+" Notification after file change
+autocmd FileChangedShellPost *
+  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+
+set showmatch
+set ignorecase
+set smartcase
+set incsearch
+set hidden
+set mouse=a
+filetype off " Helps force plug-ins to load correctly when it is turned back on below.
+filetype plugin indent on " For plug-ins to load correctly.
+set modelines=0 " Turn off modelines
+set linebreak "Avoid wrapping a line in the middle of a word
+set colorcolumn=80
+set formatoptions=tcqrn1
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+set noshiftround
+set scrolloff=5 " Display 5 lines above/below the cursor when scrolling with a mouse.
+set backspace=indent,eol,start " Fixes common backspace problems
+set ttyfast " Speed up scrolling in Vim
+set laststatus=2 " Status bar
+set cursorline "Highlight the line currently under cursor.
+set backupdir=~/.cache/vim " Directory to store backup files.h
+set confirm "Display a confirmation dialog when closing an unsaved file.
+set updatetime=300
+set showmode " Display options
+set showcmd
+" Highlight matching pairs of brackets. Use the '%' character to jump between them.
+set matchpairs+=<:>
+set list " Display different types of white spaces.
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
+" Show line numbers, Automatic toggling between line number modes
+set number relativenumber
+:augroup numbertoggle
+:  autocmd!
+:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+:augroup END
+set encoding=utf-8 " Encoding
+set hlsearch " Highlight matching search patterns
+set incsearch " Enable incremental search
+set ignorecase " Include matching uppercase words with lowercase search term
+set smartcase " Include only uppercase words with uppercase search term
+set viminfo='100,<9999,s100 " Store info from no more than 100 files at a time, 9999 lines of text, 100kb of data. Useful for copying large amounts of data between files.
+
+
+let g:webdevicons_enable = 1
+" ======== code ======== 
+" indent and retain selection in visual mode
+vnoremap > >gv
+vnoremap < <gv
+
+" ======== utilities ========
+" Shift + u for redo
+noremap <S-u> <C-r>
+
+nnoremap <leader>ur :%s/<C-r><C-w>//g<Left><Left>
+vnoremap <leader>ur "hy:%s/<C-r>h//gc<left><left><left>
+nnoremap <leader>ud i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+nnoremap <leader>um  :<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
+" Source Vim configuration file and install plugins
+nnoremap <silent><leader>ui :source ~/.nvimrc.plug \| :PlugInstall<CR>
+nnoremap <leader><TAB> :b#<CR>
+nnoremap <leader>ua :argadd <c-r>=fnameescape(expand('%:p:h'))<cr>/*<C-d>
+
+nnoremap Y y$
+
+" Moving text
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+inoremap <C-k> <esc>:m .-2<CR>==i
+inoremap <C-j> <esc>:m .+1<CR>==i
+nnoremap <leader>k :m .-2<CR>==
+nnoremap <leader>j :m .+1<CR>==
+
+nnoremap <leader>` ysiw`
+
+" Wrap selection with '' 
+vnoremap <leader>' <esc>`>a'<esc>`<i'<esc>
+" Wrap selection with ""
+vnoremap <leader>" <esc>`>a"<esc>`<i"<esc>
+" Wrap selection with ()
+vnoremap <leader>( <esc>`>a)<esc>`<i(<esc>
+vnoremap <leader>) <esc>`>a)<esc>`<i(<esc>
+" Wrap selection with []
+vnoremap <leader>[ <esc>`>a]<esc>`<i[<esc>
+vnoremap <leader>] <esc>`>a]<esc>`<i[<esc>
+" Wrap selection with {}
+vnoremap <leader>{ <esc>`>a}<esc>`<i{<esc>}
+vnoremap <leader>} <esc>`>a}<esc>`<i{<esc>}
+
+function SaveSessionHash()
+  let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
+
+" ======== tmux ========
+function! s:tmux_send(content, dest) range
+  let dest = empty(a:dest) ? input('To which pane? ') : a:dest
+  let tempfile = tempname()
+  call writefile(split(a:content, "\n", 1), tempfile, 'b')
+  call system(printf('tmux load-buffer -b vim-tmux %s \; paste-buffer -d -b vim-tmux -t %s',
+        \ shellescape(tempfile), shellescape(dest)))
+  call delete(tempfile)
+endfunction
+
+function! s:tmux_map(key, dest)
+  execute printf('nnoremap <silent> %s "tyy:call <SID>tmux_send(@t, "%s")<cr>', a:key, a:dest)
+  execute printf('xnoremap <silent> %s "ty:call <SID>tmux_send(@t, "%s")<cr>gv', a:key, a:dest)
+endfunction
+
+call s:tmux_map('<leader>tt', '')
+call s:tmux_map('<leader>th', '.left')
+call s:tmux_map('<leader>tj', '.bottom')
+call s:tmux_map('<leader>tk', '.top')
+call s:tmux_map('<leader>tl', '.right')
+call s:tmux_map('<leader>ty', '.top-left')
+call s:tmux_map('<leader>to', '.top-right')
+call s:tmux_map('<leader>tn', '.bottom-left')
+call s:tmux_map('<leader>t.', '.bottom-right')
+
+nnoremap <C-n> :cn<CR>
+nnoremap <C-p> :cp<CR>
+
+function CopyPara(line,nlineBelow)
+ wincmd w | exec a:line | exec 'norm y'. a:nlineBelow .'j'| wincmd w | norm p
+endfunction
+
+command -nargs=1 CLine exec 'norm :wincmd w<CR>:' . <args> . '<CR>yy<C-W>wp'
+command -nargs=* CPara call CopyPara(<f-args>)
+nnoremap <leader>yy :CLine<space>
+nnoremap <leader>yp :CPara<space>
+

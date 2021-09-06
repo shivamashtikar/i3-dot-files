@@ -696,7 +696,7 @@ nnoremap <leader>ft :TmuxJumpFile<CR>
 " ======= nvim-telescope.nvim =======
 lua require("telescope-config")
 " ======= treesitter
-lua require("treesitter-config")
+" lua require("treesitter-config")
 
 
 function CopyPara(line,nlineBelow)

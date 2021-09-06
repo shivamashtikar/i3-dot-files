@@ -5,7 +5,7 @@ alias vim=nvim
 
 
 
-export DATA=/run/media/shivam/Data
+export DATA=/media/shivam/Data
 
 alias data='cd $DATA'
 alias shrinkpdf='/home/shivam/.scripts/shrinkpdf.sh'
