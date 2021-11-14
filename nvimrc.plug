@@ -64,6 +64,7 @@ Plug 'kyoz/purify', { 'rtp': 'vim' }
 Plug 'lifepillar/vim-gruvbox8'
 Plug 'crusoexia/vim-monokai'
 Plug 'rakr/vim-one'
+" Plug 'joshdick/onedark.vim'
 
 Plug 'shivamashtikar/tmuxjump.vim'
 

@@ -538,6 +538,7 @@ let g:leader_map['g'] = {
     \ 'f' : [ ':GV!'                          , 'GV file commit'                 ] ,
     \ 'g' : [ ':GV'                           , 'GV commits'                 ] ,
     \ 'o' : [':GBranches' , 'Checkout branch' ] ,
+    \ 's' : [':!git commit --ammend --no-edit'             , 'ammend commit'         ] ,
     \ 't' : [':GTags' , 'Checkout tags' ] ,
     \ },
   \ 'd' : [':Gdiffsplit'                    , 'diff split'                  ] ,
@@ -699,13 +700,26 @@ lua require("telescope-config")
 " ======= treesitter
 lua require("treesitter-config")
 
-
-function CopyPara(line,nlineBelow)
- wincmd w | exec a:line | exec 'norm y'. a:nlineBelow .'j'| wincmd w | norm p
+function CopyLine(line) abort
+  let l:win = winnr()
+   wincmd w | exec a:line | exec 'norm yy' | exec l:win . 'wincmd w' | norm p
 endfunction
 
-command -nargs=1 CLine exec 'norm :wincmd w<CR>:' . <args> . '<CR>yy<C-W>wp'
+function CopyPara(line,nlineBelow)
+  let l:win = winnr()
+   wincmd w | exec a:line | exec 'norm y'. a:nlineBelow .'j'| exec l:win . 'wincmd w' | norm p
+endfunction
+
+command -nargs=1 CLine call CopyLine(<args>)
 command -nargs=* CPara call CopyPara(<f-args>)
 nnoremap <leader>yy :CLine<space>
 nnoremap <leader>yp :CPara<space>
 
+" TODO complete
+function CopyDiff(line) abort
+  let l:win = winnr()
+  let l:curline = getline(l:line)
+  wincmd w 
+  let l:targetline = getline(l:line)
+  exec l:win . 'wincmd w' | norm p
+endfunction
