@@ -2,17 +2,17 @@
 set -x
 
 echo "Refreshing packages"
-sudo pacman -Syyu
+#sudo pacman -Syyu
 
 echo "Installing packages"
-sudo pacman -S tmux neovim kitty yay ranger ripgrep figlet lolcat base-devel htop 
+#sudo pacman -S tmux neovim kitty yay ranger ripgrep figlet lolcat base-devel htop 
 
-yay -S visual-studio-code-bin
+#yay -S visual-studio-code-bin
 
 
 echo "Cloning dotfiles"
-mkdir workspace
-cd workspace
+mkdir $HOME/workspace
+cd $HOME/workspace
 git clone https://github.com/shivamashtikar/i3-dot-files
 cd $HOME
 

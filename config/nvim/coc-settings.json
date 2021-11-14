@@ -8,6 +8,7 @@
     "Kubernetes": "globPattern",
     "eslint.packageManager": "npm"
   },
+  "diagnostic.enableSign": false,
   "languageserver": {
     "purescript": {
       "command": "purescript-language-server",
