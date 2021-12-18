@@ -191,6 +191,14 @@ let g:carbon_now_sh_options =
   \ , 'fm': 'Source Code Pro'
   \ }
 
+" ======= nvim-telescope.nvim =======
+lua require("telescope-config")
+" ======= treesitter
+lua require("treesitter-config")
+" ================= neovim LSP =======================
+lua require('lsp-config')
+lua require('nvim-tree').setup ()
+nnoremap <leader><space> :NvimTreeToggle<CR>
 
 " ======== utilities ========
 " Shift + u for redo
@@ -329,122 +337,6 @@ call s:tmux_map('<leader>to', '.top-right')
 call s:tmux_map('<leader>tn', '.bottom-left')
 call s:tmux_map('<leader>t.', '.bottom-right')
 let g:leader_map['t'] = { 'name' : '+tmux+coc'}
-
-" ======== coc ======== 
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
-" Give more space for displaying messages.
-set cmdheight=2
-" Some servers have issues with backup files, see #649.
-set nobackup
-set nowritebackup
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <M-space> to trigger completion.
-inoremap <silent><expr> <M-space> coc#refresh()
-
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nnoremap <silent> <localleader>p <Plug>(coc-diagnostic-prev)
-nnoremap <silent> <localleader>n <Plug>(coc-diagnostic-next)
-" Mappings for CoCList, Show all diagnostics.
-nnoremap <silent><nowait> <localleader>cd  :<C-u>CocList diagnostics<cr>
-
-" GoTo code navigation.
-nnoremap <silent> <localleader>g <Plug>(coc-definition)
-nnoremap <silent> <localleader>d <Plug>(coc-type-definition)
-nnoremap <silent> <localleader>i <Plug>(coc-implementation)
-nnoremap <silent> <localleader>r <Plug>(coc-references)
-" Symbol renaming.
-nnoremap <localleader>r <Plug>(coc-rename)
-" Formatting selected code.
-xmap <localleader>f  <Plug>(coc-format-selected)
-vnoremap <localleader>f  <Plug>(coc-format-selected)
-nnoremap <localleader>f :call CocAction('format')<CR>
-
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
-" Use K to show documentation in preview window.
-nnoremap <silent> <localleader>t :call <SID>show_documentation()<CR>
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <localleader>aa  <Plug>(coc-codeaction-selected)
-nnoremap <localleader>aa  <Plug>(coc-codeaction-selected)
-" Remap keys for applying codeAction to the current buffer.
-nnoremap <localleader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nnoremap <localleader>af  <Plug>(coc-fix-current)
-
-" Manage extensions.
-nnoremap <silent><nowait> <localleader>ce  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent><nowait> <localleader>cc  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent><nowait> <localleader>co  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent><nowait> <localleader>cs  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent><nowait> <localleader>cj  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent><nowait> <localleader>ck  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent><nowait> <localleader>cp  :<C-u>CocListResume<CR>
-
-nnoremap <silent> <leader>tt :<C-u>CocList todolist<CR>
-nnoremap <silent> <leader>tc :<C-u>CocCommand todolist.create<CR>
-nnoremap <silent> <leader>te :<C-u>CocCommand todolist.export<CR>
-nnoremap <silent> <leader>tq :<C-u>CocCommand todolist.closeNotice<CR>
-nnoremap <silent> <leader>tQ :<C-u>CocCommand todolist.clear<CR>
-
-nnoremap <silent> <leader><space> :CocCommand explorer --width 50<CR>
-map <C-b> :CocCommand explorer --width 50<CR>
-
-autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
-
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " ======== git ========
 " $ blamer.nvim
@@ -697,10 +589,6 @@ nnoremap <leader>ee :lua require("telescope-config").search_dotfiles()<CR>
 nnoremap <leader>ft :TmuxJumpFile<CR>
 
 
-" ======= nvim-telescope.nvim =======
-lua require("telescope-config")
-" ======= treesitter
-" lua require("treesitter-config")
 
 function CopyLine(line) abort
   let l:win = winnr()
@@ -725,3 +613,5 @@ function CopyDiff(line) abort
   let l:targetline = getline(l:line)
   exec l:win . 'wincmd w' | norm p
 endfunction
+
+autocmd FileType purescript nnoremap <silent> <buffer> <localleader>f :!purs-tidy format-in-place %<CR>

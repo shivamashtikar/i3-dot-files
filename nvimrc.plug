@@ -18,10 +18,20 @@ Plug 'salcode/vim-interactive-rebase-reverse'
 Plug 'rhysd/git-messenger.vim'
 Plug 'APZelos/blamer.nvim' " A git blame plugin for (neo)vim inspired by VS Code's GitLens plugin.
 
-"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'onsails/lspkind-nvim'
 " Plug 'windwp/nvim-ts-autotag'
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vmchale/dhall-vim'
 Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
 Plug 'LnL7/vim-nix'
@@ -56,7 +66,7 @@ Plug 'aserebryakov/vim-todo-lists'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'ryanoasis/vim-devicons'
+" Plug 'ryanoasis/vim-devicons'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'Rigellute/shades-of-purple.vim'
 Plug 'kyoz/purify', { 'rtp': 'vim' }
@@ -65,6 +75,9 @@ Plug 'lifepillar/vim-gruvbox8'
 Plug 'crusoexia/vim-monokai'
 Plug 'rakr/vim-one'
 " Plug 'joshdick/onedark.vim'
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+" Plug 'nvim-lualine/lualine.nvim'
 
 Plug 'shivamashtikar/tmuxjump.vim'
 
