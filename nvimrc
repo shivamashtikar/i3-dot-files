@@ -202,6 +202,9 @@ lua require('init')
 nnoremap <leader><space> :NvimTreeToggle<CR>
 
 " ======== utilities ========
+" #TODO : make plugin for global replace
+" :cfdo %s/Sam/Bob/gc | update
+"
 " Shift + u for redo
 noremap <S-u> <C-r>
 
@@ -623,3 +626,5 @@ function CopyDiff(line) abort
 endfunction
 
 autocmd FileType purescript nnoremap <silent> <buffer> <localleader>f :!purs-tidy format-in-place %<CR>
+
+
