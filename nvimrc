@@ -23,7 +23,7 @@ lua require'colorizer'.setup()
 hi Comment cterm=italic
 
 function SwitchTheme(isLight) abort
-  let g:airline_theme='one'
+  " let g:airline_theme='one'
   colorscheme one
   if a:isLight
     set background=light " for the light version
@@ -197,7 +197,8 @@ lua require("telescope-config")
 lua require("treesitter-config")
 " ================= neovim LSP =======================
 lua require('lsp-config')
-lua require('nvim-tree').setup ()
+lua require('init')
+
 nnoremap <leader><space> :NvimTreeToggle<CR>
 
 " ======== utilities ========
@@ -268,33 +269,31 @@ augroup END
 
 " ======== session ========
 "
-let g:sessions_dir = '~/vim-sessions'
-function LoadSessionHash()
-  let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
-  exec ':source ' . g:sessions_dir . '/' . s:sessionFile
-endfunction
-nnoremap <Leader>sq :call LoadSessionHash()<CR>
+" let g:sessions_dir = '.'
+" function LoadSessionHash()
+"   let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
+"   exec ':source ' . g:sessions_dir . '/' . s:sessionFile
+" endfunction
+" nnoremap <Leader>sq :call LoadSessionHash()<CR>
 
 function SaveSessionHash()
-  let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
-  exec ':Obsession ' . g:sessions_dir . '/' . s:sessionFile
+  exec ':Obsession ' . getcwd() . '/' . 'Session.vim'
 endfunction
-nnoremap <Leader>sh :call SaveSessionHash()<CR>
+nnoremap <Leader>ss :call SaveSessionHash()<CR>
 
 let g:leader_map['s'] = {'name':'+Session',
   \ 's' : 'Save Session',
-  \ 'l' : 'Load Session',
   \ 't' : 'Toggle Session' }
-exec 'nnoremap <Leader>ss :Obsession ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
-exec 'nnoremap <Leader>sl :so ' . g:sessions_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+" exec 'nnoremap <Leader>ss :Obsession ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+" exec 'nnoremap <Leader>sl :so ' . g:sessions_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 nnoremap <Leader>st :Obsession<CR>
 
 " ======== airline ======== 
-let g:airline#extensions#obsession#enabled = 1
-let g:airline#extensions#obsession#indicator_text = "{ॐ}"
-let g:airline#extensions#tabline#enabled = 1 " Enable the list of buffers
-let g:airline#extensions#tabline#fnamemod = ':t' " Show just the filename
-let g:airline_section_z = ''
+" let g:airline#extensions#obsession#enabled = 1
+" let g:airline#extensions#obsession#indicator_text = "{ॐ }"
+" let g:airline#extensions#tabline#enabled = 1 " Enable the list of buffers
+" let g:airline#extensions#tabline#fnamemod = ':t' " Show just the filename
+" let g:airline_section_z = ''
 
 " ======== startify ======== 
 let g:startify_change_to_dir = 0
@@ -305,7 +304,8 @@ let g:startify_lists = [
           \ { 'type': 'bookmarks' , 'header': ['   Bookmarks'                    ] } ,
           \ ]
 let g:startify_change_to_vcs_root = 1
-let g:startify_session_dir = g:sessions_dir
+" let g:startify_session_dir = g:sessions_dir
+let g:startify_session_autoload = 1
 let g:startify_session_before_save = [
   \ 'echo "Cleaning up before saving.."',
   \ 'silent! NERDTreeTabsClose'
@@ -348,6 +348,14 @@ let g:fzf_branch_actions = {
       \   'keymap': 'ctrl-f',
       \   'required': ['branch'],
       \   'confirm': v:false,
+      \ },
+      \ 'rebase':{
+      \   'prompt': 'Rebase> ',
+      \   'execute': 'echo system("{git} -C {cwd} pull origin --rebase {branch}")',
+      \   'multiple': v:false,
+      \   'keymap': 'ctrl-r',
+      \   'required': ['branch'],
+      \   'confirm': v:true,
       \ },
       \}
 let g:git_messenger_include_diff = 'current'
@@ -432,7 +440,7 @@ let g:leader_map['g'] = {
     \ 'f' : [ ':GV!'                          , 'GV file commit'                 ] ,
     \ 'g' : [ ':GV'                           , 'GV commits'                 ] ,
     \ 'o' : [':GBranches' , 'Checkout branch' ] ,
-    \ 's' : [':!git commit --ammend --no-edit'             , 'ammend commit'         ] ,
+    \ 's' : [':!git commit --amend --no-edit'             , 'ammend commit'         ] ,
     \ 't' : [':GTags' , 'Checkout tags' ] ,
     \ },
   \ 'd' : [':Gdiffsplit'                    , 'diff split'                  ] ,

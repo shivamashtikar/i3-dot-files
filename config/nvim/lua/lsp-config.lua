@@ -28,7 +28,7 @@ local on_attach  = function(client, bufnr)
     buf_set_keymap('n', '<localleader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
     buf_set_keymap('n', '<localleader>t', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
     buf_set_keymap('n', '<localleader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    buf_set_keymap('n', '<localleader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+    buf_set_keymap('n', '<localleader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     buf_set_keymap('n', '<localleader>gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
     buf_set_keymap('n', '<localleader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
     buf_set_keymap('n', '<localleader>[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
@@ -49,7 +49,7 @@ capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
 -- Use a loop t conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'tsserver', 'purescriptls', 'eslint', 'hie', 'bashls', 'sumneko_lua', 'vimls' }
+local servers = { 'tsserver', 'eslint', 'hie', 'bashls', 'sumneko_lua', 'vimls' }
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
         capabilities = capabilities,
@@ -60,6 +60,19 @@ for _, lsp in ipairs(servers) do
     }
 end
 
+nvim_lsp['purescriptls'].setup{
+  capabilities = capabilities,
+  on_attach = on_attach,
+  flags = {
+      debounce_text_changes = 150,
+  },
+  settings = {
+    purescript = {
+      addSpagoSources = true,
+      addNpmPath = true
+    }
+  }
+}
 
 --
 -- Null-ls

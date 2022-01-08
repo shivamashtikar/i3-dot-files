@@ -64,8 +64,8 @@ Plug 'romainl/vim-qf'
 Plug 'mtth/scratch.vim'
 Plug 'aserebryakov/vim-todo-lists'
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 " Plug 'ryanoasis/vim-devicons'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'Rigellute/shades-of-purple.vim'
@@ -77,7 +77,8 @@ Plug 'rakr/vim-one'
 " Plug 'joshdick/onedark.vim'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
-" Plug 'nvim-lualine/lualine.nvim'
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'akinsho/bufferline.nvim'
 
 Plug 'shivamashtikar/tmuxjump.vim'
 
