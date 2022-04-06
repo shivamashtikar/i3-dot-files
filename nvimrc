@@ -59,7 +59,7 @@ map <M-j> <C-w>j
 map <M-k> <C-w>k
 map <M-l> <C-w>l
 
-nnoremap <C-g> J
+nnoremap <C-f> J
 nnoremap J <c-d>zz
 nnoremap K <c-u>zz
 
@@ -386,7 +386,7 @@ function PrevAction() abort
     exe ':cp'
   catch
     ConflictMarkerPrevHunk
-    GitGutterPrevHunk
+    Gitsigns prev_hunk
   endtry
 endfunction
 
@@ -395,7 +395,7 @@ function NextAction() abort
     exe ':cn'
   catch
       ConflictMarkerNextHunk
-      GitGutterNextHunk
+      Gitsigns next_hunk
   endtry
 endfunction
 
@@ -424,8 +424,7 @@ function GSquash() abort
 endfunction
 let g:leader_map['g'] = {
   \ 'name':'+git',
-  \ 'a' : ['<Plug>(GitGutterStageHunk)' , 'stage hunk'     ] ,
-  \ 'A' : [':Git add %'              , 'add current'     ] ,
+  \ 'a' : [':Gitsigns stage_hunk' , 'stage hunk'     ] ,
   \ 'b' : {
     \ 'name' : '+Branches',
     \ 'b' : [':GBranches' , 'Checkout branch' ] ,
@@ -446,11 +445,10 @@ let g:leader_map['g'] = {
     \ 's' : [':!git commit --amend --no-edit'             , 'ammend commit'         ] ,
     \ 't' : [':GTags' , 'Checkout tags' ] ,
     \ },
-  \ 'd' : [':Gdiffsplit'                    , 'diff split'                  ] ,
-  \ 'D' : [':Git diff'                      , 'diff'                        ] ,
-  \ 'f' : [':GitGutterFold'                 , 'fold unchanged lines'        ] ,
+  \ 'd' : [':Gitsigns diffthis'                      , 'diff'                        ] ,
+  \ 'D' : [':Gdiffsplit'                    , 'diff split'                  ] ,
   \ 'g' : [':Git'                           , 'Git '                        ] ,
-  \ 'h' : ['<Plug>(GitGutterPreviewHunk)'   , 'preview hunk'                ] ,
+  \ 'h' : [':Gitsigns preview_hunk'   , 'preview hunk'                ] ,
   \ 'l' : [':Git log --stat'                , 'logs'                        ] ,
   \ 'L' : [':Git log --stat -p'             , 'logs with changes'           ] ,
   \ 'p' : {
@@ -463,15 +461,22 @@ let g:leader_map['g'] = {
     \ },
   \ 's' : {
     \ 'name' : '+Scommands',
+    \ 'a' : [':Gitsigns stage_hunk' , 'stage hunk'     ] ,
+    \ 'b' : [':Gitsigns stage_buffer'              , 'stage buffer'     ] ,
     \ 'h' : [':Telescope git_stash'       , 'git stash list' ] ,
+    \ 'r' : [':Gitsigns reset_buffer'      , 'reset buffer'                   ] ,
     \ 's' : [':Telescope git_status'       , 'git status'     ] ,
+    \ 'u' : [':Gitsigns undo_stage_hunk'      , 'undo staged hunk'                   ] ,
     \ },
   \ 't' : {
     \ 'name' : '+Gutter',
-    \ 's' : [':GitGutterSignsToggle'          , 'toggle signs'                ] ,
-    \ 'h' : [':GitGutterLineHighlightsToggle' , 'highlight hunks'             ] ,
+    \ 'd' : [':Gitsigns toggle_deleted' , 'toggle deleted hunks'             ] ,
+    \ 'n' : [':Gitsigns toggle_numhl' , 'toggle num highlight'             ] ,
+    \ 'l' : [':Gitsigns toggle_current_line_blame' , 'toggle num highlight'             ] ,
+    \ 's' : [':Gitsigns toggle_signs'          , 'toggle signs'                ] ,
+    \ 'h' : [':Gitsigns toggle_linehl' , 'highlight hunks'             ] ,
     \ },
-  \ 'u' : ['<Plug>(GitGutterUndoHunk)'      , 'undo hunk'                   ] ,
+  \ 'u' : [':Gitsigns reset_hunk'      , 'reset hunk'                   ] ,
   \ '[' : [':diffget //2 | diffupdate'      , 'hunk from the target parent' ] ,
   \ ']' : [':diffget //3 | diffupdate'      , 'hunk from the merge parent'  ] ,
   \ 'i' : {
