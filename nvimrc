@@ -342,7 +342,6 @@ call s:tmux_map('<leader>t.', '.bottom-right')
 let g:leader_map['t'] = { 'name' : '+tmux+coc'}
 
 " ======== git ========
-" $ blamer.nvim
 let g:fzf_branch_actions = {
       \ 'diff': {
       \   'prompt': 'Diff> ',
@@ -362,10 +361,6 @@ let g:fzf_branch_actions = {
       \ },
       \}
 let g:git_messenger_include_diff = 'current'
-let g:blamer_enabled = 1
-let g:blamer_show_in_visual_modes = 0
-let g:blamer_show_in_insert_modes = 0
-" let g:blamer_prefix = ' | '
 
 " $ conflict-marker.vim
 " disable the default highlight group
@@ -449,8 +444,8 @@ let g:leader_map['g'] = {
   \ 'D' : [':Gdiffsplit'                    , 'diff split'                  ] ,
   \ 'g' : [':Git'                           , 'Git '                        ] ,
   \ 'h' : [':Gitsigns preview_hunk'   , 'preview hunk'                ] ,
-  \ 'l' : [':Git log --stat'                , 'logs'                        ] ,
-  \ 'L' : [':Git log --stat -p'             , 'logs with changes'           ] ,
+  \ 'l' : [':Gclog'                , 'logs'                        ] ,
+  \ 'L' : [':Git log --stat'             , 'logs with changes'           ] ,
   \ 'p' : {
     \ 'name' : '+Pcommands',
     \ 'f' : [':Git fetch'                      , 'push'                        ] ,
