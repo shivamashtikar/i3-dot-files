@@ -628,3 +628,7 @@ endfunction
 autocmd FileType purescript nnoremap <silent> <buffer> <localleader>f :!purs-tidy format-in-place %<CR>
 
 
+" ========= vim-board =================
+"
+let BoardPath = '~/.nvim/after/vim-board'
+nmap <leader>n <Plug>(BoardMenu)

@@ -77,6 +77,7 @@ Plug 'rakr/vim-one'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'azabiong/vim-board'
 Plug 'akinsho/bufferline.nvim'
 
 Plug 'shivamashtikar/tmuxjump.vim'
