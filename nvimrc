@@ -460,7 +460,7 @@ let g:leader_map['g'] = {
     \ 'b' : [':Gitsigns stage_buffer'              , 'stage buffer'     ] ,
     \ 'h' : [':Telescope git_stash'       , 'git stash list' ] ,
     \ 'r' : [':Gitsigns reset_buffer'      , 'reset buffer'                   ] ,
-    \ 's' : [':Telescope git_status'       , 'git status'     ] ,
+    \ 's' : [':Git stash'       , 'stash'     ] ,
     \ 'u' : [':Gitsigns undo_stage_hunk'      , 'undo staged hunk'                   ] ,
     \ },
   \ 't' : {
