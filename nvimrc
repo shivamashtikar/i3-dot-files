@@ -398,9 +398,9 @@ nnoremap <C-n> :call NextAction()<CR>
 nnoremap <C-p> :call PrevAction()<CR>
 
 nnoremap <leader>giq :call GSquash()<CR>
-nnoremap <leader>gin :exe "Git push --set-upstream origin ". fugitive#head()<CR>
-nnoremap <leader>gig :exe "Git reset --hard origin/". fugitive#head()<CR>
-nnoremap <leader>gij :exe "normal! a" . matchstr(fugitive#head(), 'PICAF-\_[0-9]*'). " "<CR>a
+nnoremap <leader>gin :exe "Git push --set-upstream origin ". fugitive#Head()<CR>
+nnoremap <leader>gig :exe "Git reset --hard origin/". fugitive#Head()<CR>
+nnoremap <leader>gij :exe "normal! a" . matchstr(fugitive#Head(), 'PICAF-\_[0-9]*'). " "<CR>a
 nnoremap <leader>gpr :Git pull --rebase origin/
 nnoremap <leader>gpm :Git pull --merge origin/
 
@@ -440,8 +440,11 @@ let g:leader_map['g'] = {
     \ 's' : [':!git commit --amend --no-edit'             , 'ammend commit'         ] ,
     \ 't' : [':GTags' , 'Checkout tags' ] ,
     \ },
-  \ 'd' : [':Gitsigns diffthis'                      , 'diff'                        ] ,
-  \ 'D' : [':Gdiffsplit'                    , 'diff split'                  ] ,
+  \ 'd' : {
+    \ 'name' : '+Diff',
+    \ 'd' : [':tab Git diff'                      , 'diff all'                        ] ,
+    \ 't' : [':Gitsigns diffthis'                      , 'diff this'                        ] ,
+    \ },
   \ 'g' : [':Git'                           , 'Git '                        ] ,
   \ 'h' : [':Gitsigns preview_hunk'   , 'preview hunk'                ] ,
   \ 'l' : [':Gclog'                , 'logs'                        ] ,
@@ -530,7 +533,7 @@ nnoremap <leader>fqsa :SaveListAdd<SPace>
 command! ClearQuickfixList cexpr []
 
 function PFiles() abort
-  if fugitive#head() == ''
+  if fugitive#Head() == ''
     Files
   else
     GFiles
