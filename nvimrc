@@ -143,7 +143,7 @@ filetype plugin indent on " For plug-ins to load correctly.
 set modelines=0 " Turn off modelines
 set linebreak "Avoid wrapping a line in the middle of a word
 set colorcolumn=80
-set formatoptions=tcqrn1
+set formatoptions=cqrn1
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
@@ -381,7 +381,7 @@ function PrevAction() abort
     exe ':cp'
   catch
     ConflictMarkerPrevHunk
-    Gitsigns prev_hunk
+    :silent! Gitsigns prev_hunk
   endtry
 endfunction
 
@@ -390,7 +390,7 @@ function NextAction() abort
     exe ':cn'
   catch
       ConflictMarkerNextHunk
-      Gitsigns next_hunk
+      :silent! Gitsigns next_hunk
   endtry
 endfunction
 
@@ -517,6 +517,7 @@ nnoremap <leader>fS :FindAll<SPace>
 nnoremap <leader>fJ :exe "FindAll ". expand('<cword>') <CR>
 nnoremap <leader>fqel :Doline<SPace>
 nnoremap <leader>fqef :Dofile<SPace>
+nnoremap <leader>fqc :ClearQuickfixList<cr>
 nnoremap <leader>fqd :Reject<SPace>
 nnoremap <leader>fqll :LoadList<SPace>
 nnoremap <leader>fqla :LoadListAdd<SPace>
@@ -525,6 +526,8 @@ nnoremap <leader>fqq :FindList<SPace>
 nnoremap <leader>fqr :Restore<CR>
 nnoremap <leader>fqss :SaveList<SPace>
 nnoremap <leader>fqsa :SaveListAdd<SPace>
+
+command! ClearQuickfixList cexpr []
 
 function PFiles() abort
   if fugitive#head() == ''
@@ -536,7 +539,8 @@ endfunction
 " nnoremap <leader>fS :lua require("telescope-config").live_grep_all()<CR>
 " nnoremap <leader>fJ :lua require("telescope-config").grep_string_all()<CR>
 " nnoremap <leader>ff :lua require("telescope-config").project_files()<CR>
-nnoremap <leader>ff :call PFiles()<CR>
+" nnoremap <leader>ff :call PFiles()<CR>
+nnoremap <leader>ff :GFiles<CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-h': 'split',
@@ -547,7 +551,8 @@ let g:leader_map['r'] = [':Ranger'  , 'Ranger']
 let g:leader_map['f'] = {
   \ 'name' : '+file'      ,
   \ 'f' : 'Project files' ,
-  \ 'F' : [':Files'          , 'Files'              ] ,
+  \ 'e' : [':GFiles?'     , 'Modified Files'         ] ,
+  \ 'F' : [':Files'       , 'Files'                  ] ,
   \ 'g' : [':Rg'          , 'Live Grep'              ] ,
   \ 'h' : [':Helptags'    , 'help tags'              ] ,
   \ 'l' : [':Lines'       , 'Find in current buffer' ] ,
@@ -567,7 +572,7 @@ let g:leader_map['f'] = {
       \ 'name' : '+Save',
       \ },
     \ },
-  \ 't' : [':BTags'       , 'current buffer tags'    ] ,
+  \ 'b' : [':BTags'       , 'current buffer tags'    ] ,
   \ 'T' : [':Tags'        , 'project tags'           ] ,
   \ 'z' : [':FZF'         , 'FZF'                    ] ,
   \ }
@@ -598,6 +603,9 @@ nnoremap <leader>ee :lua require("telescope-config").search_dotfiles()<CR>
 " jump to file with position using filepath from sibling panes in tmux
 " Requires fzf
 nnoremap <leader>ft :TmuxJumpFile<CR>
+nnoremap <leader>; :TmuxJumpFirst<CR>
+autocmd FileType purescript nnoremap <leader>ft :TmuxJumpFile purs<CR>
+autocmd FileType purescript nnoremap <leader>; :TmuxJumpFirst purs<CR>
 
 
 
@@ -627,8 +635,22 @@ endfunction
 
 autocmd FileType purescript nnoremap <silent> <buffer> <localleader>f :!purs-tidy format-in-place %<CR>
 
+augroup abbreviation_ps
+  autocmd! FileType purescript
+  autocmd FileType purescript abbreviate fc flowConfig
+  autocmd FileType purescript abbreviate ispy import Debug.Trace (spy)
+augroup END
 
 " ========= vim-board =================
 "
 let BoardPath = '~/.nvim/after/vim-board'
 nmap <leader>n <Plug>(BoardMenu)
+
+
+" function! Execute() abort
+" lua << EOF 
+" vim.lsp.buf_request(0, 'workspace/executeCommand', 'purescript.addCompletionImport spy', function(err, method, resp)
+"   vim.cmd ('echo resp => '.. resp .. ' ; err => '.. err .. '; method => '.. method)
+"   end)
+" EOF
+" endfunction
