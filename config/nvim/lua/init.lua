@@ -51,3 +51,28 @@ require("bufferline").setup{
 require('gitsigns').setup{
   current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
 }
+
+require("trouble").setup {}
+
+local onedarkpro = require("onedarkpro")
+onedarkpro.setup({
+  hlgroups = {
+  },
+  filetype_hlgroups = {
+    purescript = {
+      purescriptModule = { fg = "${blue}" },
+      purescriptImport = { fg = "${blue}" },
+      purescriptImportAs = { fg = "${blue}" },
+      purescriptConstructor = { fg = "${red}" },
+      purescriptTypeVar = { fg = "${orange}" },
+      -- purescriptType = { fg = "${orange}" },
+      purescriptDelimiter = { fg = "${cyan}" },
+      MatchParen = { fg = "${blue}", bg = "${gray}" },
+    },
+    -- git = {
+    --   diffAdded = { fg = "${green}", bg= "#004000" }
+    -- }
+
+  }
+})
+onedarkpro.load()

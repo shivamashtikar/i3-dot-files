@@ -28,6 +28,7 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'onsails/lspkind-nvim'
+Plug 'folke/trouble.nvim'
 " Plug 'windwp/nvim-ts-autotag'
 
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -73,6 +74,8 @@ Plug 'kyoz/purify', { 'rtp': 'vim' }
 Plug 'lifepillar/vim-gruvbox8'
 Plug 'crusoexia/vim-monokai'
 Plug 'rakr/vim-one'
+Plug 'ful1e5/onedark.nvim'
+Plug 'olimorris/onedarkpro.nvim'
 " Plug 'joshdick/onedark.vim'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'

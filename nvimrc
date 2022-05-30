@@ -22,9 +22,17 @@ lua require'colorizer'.setup()
 
 hi Comment cterm=italic
 
+" ======= nvim-telescope.nvim =======
+lua require("telescope-config")
+" ======= treesitter
+lua require("treesitter-config")
+" ================= neovim LSP =======================
+lua require('lsp-config')
+lua require('init')
+
 function SwitchTheme(isLight) abort
   " let g:airline_theme='one'
-  colorscheme one
+  colorscheme onedarkpro
   if a:isLight
     set background=light " for the light version
   else
@@ -191,13 +199,6 @@ let g:carbon_now_sh_options =
   \ , 'fm': 'Source Code Pro'
   \ }
 
-" ======= nvim-telescope.nvim =======
-lua require("telescope-config")
-" ======= treesitter
-lua require("treesitter-config")
-" ================= neovim LSP =======================
-lua require('lsp-config')
-lua require('init')
 
 nnoremap <leader><space> :NvimTreeToggle<CR>
 
@@ -657,3 +658,11 @@ nmap <leader>n <Plug>(BoardMenu)
 "   end)
 " EOF
 " endfunction
+
+function! SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+nmap <leader>c  :call SynStack()<CR>
