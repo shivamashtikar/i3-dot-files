@@ -8,7 +8,7 @@ require('nvim-tree').setup {
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'onedark',
+    theme = 'onedark-nvim',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     disabled_filetypes = {},
@@ -54,25 +54,27 @@ require('gitsigns').setup{
 
 require("trouble").setup {}
 
-local onedarkpro = require("onedarkpro")
-onedarkpro.setup({
-  hlgroups = {
-  },
-  filetype_hlgroups = {
-    purescript = {
-      purescriptModule = { fg = "${blue}" },
-      purescriptImport = { fg = "${blue}" },
-      purescriptImportAs = { fg = "${blue}" },
-      purescriptConstructor = { fg = "${red}" },
-      purescriptTypeVar = { fg = "${orange}" },
-      -- purescriptType = { fg = "${orange}" },
-      purescriptDelimiter = { fg = "${cyan}" },
-      MatchParen = { fg = "${blue}", bg = "${gray}" },
-    },
-    -- git = {
-    --   diffAdded = { fg = "${green}", bg= "#004000" }
-    -- }
+-- local onedarkpro = require("onedarkpro")
+-- onedarkpro.setup({
+--   hlgroups = {
+--   },
+--   filetype_hlgroups = {
+--     purescript = {
+--       purescriptModule = { fg = "${blue}" },
+--       purescriptImport = { fg = "${blue}" },
+--       purescriptImportAs = { fg = "${blue}" },
+--       purescriptConstructor = { fg = "${red}" },
+--       purescriptTypeVar = { fg = "${orange}" },
+--       -- purescriptType = { fg = "${orange}" },
+--       purescriptDelimiter = { fg = "${cyan}" },
+--       MatchParen = { fg = "${blue}", bg = "${gray}" },
+--     },
+--     options = {
+--       -- cursorline = false, -- Use cursorline highlighting?
+--     }
 
-  }
-})
-onedarkpro.load()
+--   }
+-- })
+-- onedarkpro.load()
+--
+require("onedark").setup({})

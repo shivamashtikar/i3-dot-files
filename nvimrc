@@ -32,7 +32,7 @@ lua require('init')
 
 function SwitchTheme(isLight) abort
   " let g:airline_theme='one'
-  colorscheme onedarkpro
+  colorscheme onedark
   if a:isLight
     set background=light " for the light version
   else
@@ -666,3 +666,22 @@ function! SynStack()
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
 nmap <leader>c  :call SynStack()<CR>
+
+    " -- purescript
+    " purescriptModule = { fg = c.blue0 },
+    " purescriptModuleKeyword = { fg = c.purple0},
+    " purescriptWhere = { fg = c.purple0},
+    " purescriptImport = { fg = c.blue0 },
+    " purescriptImportAs = { fg = c.blue0 },
+    " purescriptConstructor = { fg = c.red0 },
+    " purescriptTypeVar = { fg = c.orange0 },
+    " purescriptType = { fg = c.yellow1},
+    " purescriptStructure = { fg = c.purple0},
+    " purescriptOperator = { fg = c.cyan0},
+    " purescriptOperatorType = { fg = c.cyan0},
+    " purescriptAsKeyword = { fg = c.purple0},
+    " purescriptImportKeyword = { fg = c.purple0},
+    " purescriptImportParams = { fg = c.cyan0 },
+    " purescriptDelimiter = { fg = c.cyan0 },
+    " MatchParen = { fg = c.cyan0, bg = c.bg_visual, style = Styles.Bold },
+
