@@ -203,8 +203,6 @@ let g:carbon_now_sh_options =
 nnoremap <leader><space> :NvimTreeToggle<CR>
 
 " ======== utilities ========
-" #TODO : make plugin for global replace
-" :cfdo %s/Sam/Bob/gc | update
 "
 " Shift + u for redo
 noremap <S-u> <C-r>
@@ -218,9 +216,14 @@ nnoremap <silent><leader>ui :source ~/.nvimrc.plug \| :PlugInstall<CR>
 nnoremap <leader><TAB> :b#<CR>
 nnoremap <leader>ua :argadd <c-r>=fnameescape(expand('%:p:h'))<cr>/*<C-d>
 
+" session
+nnoremap <Leader>us :exec ':Obsession ' . getcwd() . '/' . 'Session.vim'<CR>
+nnoremap <Leader>ut :Obsession<CR>
+
 let g:leader_map['u'] = {
-  \ 'name':'+git'                       ,
+  \ 'name':'+Utilities'                       ,
   \ 'a': 'Open file with partern'                 ,
+  \ 'b' : [':let &background =  &background == "dark" ? "light" : "dark" ', 'Background color toggle'],
   \ 'c': [':Colors'      , 'ColorScheme'     ] ,
   \ 'd': 'Insert date time'             ,
   \ 'f' : [':Filetypes'        , 'file types'      ] ,
@@ -228,7 +231,8 @@ let g:leader_map['u'] = {
   \ 'm': 'Modify registers'             ,
   \ 'r': 'Replace word'                 ,
   \ 'u' : [':Commands'        , 'Commands'        ] ,
-  \ 'b' : [':let &background =  &background == "dark" ? "light" : "dark" ', 'Background color toggle']
+  \ 's' : 'Save Session',
+  \ 't' : 'Toggle Session'
   \}
 nnoremap Y y$
 
@@ -271,26 +275,6 @@ augroup HoogleMaps
   autocmd FileType haskell nnoremap <buffer> <localleader>hh :Hoogle <C-r><C-w><CR>
 augroup END
 
-" ======== session ========
-"
-" let g:sessions_dir = '.'
-" function LoadSessionHash()
-"   let s:sessionFile = system('pwd | md5sum | cut -f1 -d" " | xargs -I{} echo {}".vim"')
-"   exec ':source ' . g:sessions_dir . '/' . s:sessionFile
-" endfunction
-" nnoremap <Leader>sq :call LoadSessionHash()<CR>
-
-function SaveSessionHash()
-  exec ':Obsession ' . getcwd() . '/' . 'Session.vim'
-endfunction
-nnoremap <Leader>ss :call SaveSessionHash()<CR>
-
-let g:leader_map['s'] = {'name':'+Session',
-  \ 's' : 'Save Session',
-  \ 't' : 'Toggle Session' }
-" exec 'nnoremap <Leader>ss :Obsession ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
-" exec 'nnoremap <Leader>sl :so ' . g:sessions_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
-nnoremap <Leader>st :Obsession<CR>
 
 " ======== airline ======== 
 " let g:airline#extensions#obsession#enabled = 1
@@ -667,21 +651,24 @@ function! SynStack()
 endfunc
 nmap <leader>c  :call SynStack()<CR>
 
-    " -- purescript
-    " purescriptModule = { fg = c.blue0 },
-    " purescriptModuleKeyword = { fg = c.purple0},
-    " purescriptWhere = { fg = c.purple0},
-    " purescriptImport = { fg = c.blue0 },
-    " purescriptImportAs = { fg = c.blue0 },
-    " purescriptConstructor = { fg = c.red0 },
-    " purescriptTypeVar = { fg = c.orange0 },
-    " purescriptType = { fg = c.yellow1},
-    " purescriptStructure = { fg = c.purple0},
-    " purescriptOperator = { fg = c.cyan0},
-    " purescriptOperatorType = { fg = c.cyan0},
-    " purescriptAsKeyword = { fg = c.purple0},
-    " purescriptImportKeyword = { fg = c.purple0},
-    " purescriptImportParams = { fg = c.cyan0 },
-    " purescriptDelimiter = { fg = c.cyan0 },
-    " MatchParen = { fg = c.cyan0, bg = c.bg_visual, style = Styles.Bold },
 
+"===================== nvim-spectre ===========================
+"
+let g:leader_map['s'] = {'name':'+Spectre',
+  \ 'c' : 'input replace cmd',
+  \ 'm' : 'chage result view mode',
+  \ 'o' : 'Option menu',
+  \ 'p' : 'Search in current file',
+  \ 'q' : 'Send to QuickFix',
+  \ 'r' : 'Replace',
+  \ 's' : 'Open',
+  \ 'v' : 'Open Visual',
+  \ 'w' : 'Search current word',
+  \}
+nnoremap <leader>ss <cmd>lua require('spectre').open()<CR>
+
+"search current word
+nnoremap <leader>sw <cmd>lua require('spectre').open_visual({select_word=true})<CR>
+vnoremap <leader>sv <cmd>lua require('spectre').open_visual()<CR>
+"  search in current file
+nnoremap <leader>sp viw:lua require('spectre').open_file_search()<cr>
