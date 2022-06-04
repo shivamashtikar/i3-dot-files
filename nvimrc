@@ -184,6 +184,7 @@ set incsearch " Enable incremental search
 set ignorecase " Include matching uppercase words with lowercase search term
 set smartcase " Include only uppercase words with uppercase search term
 set viminfo='100,<9999,s100 " Store info from no more than 100 files at a time, 9999 lines of text, 100kb of data. Useful for copying large amounts of data between files.
+" set completeopt=menu,menuone,noselect
 
 
 let g:webdevicons_enable = 1

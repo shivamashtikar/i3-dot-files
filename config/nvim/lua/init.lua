@@ -77,7 +77,14 @@ require("trouble").setup {}
 -- })
 -- onedarkpro.load()
 --
-require("onedark").setup({})
+require("onedark").setup({
+  -- Overwrite the highlight groups
+  overrides = function(c)
+    return {
+      MatchParen = { fg = c.cyan0, bg = c.bg_visual, style = "bold "}
+    }
+  end
+})
 
 require('spectre').setup({
   live_update = true, -- auto excute search again when you write any file in vim
