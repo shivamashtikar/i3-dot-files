@@ -225,13 +225,12 @@ let g:leader_map['u'] = {
   \ 'name':'+Utilities'                       ,
   \ 'a': 'Open file with partern'                 ,
   \ 'b' : [':let &background =  &background == "dark" ? "light" : "dark" ', 'Background color toggle'],
-  \ 'c': [':Colors'      , 'ColorScheme'     ] ,
+  \ 'c': [':FzfLua colorschemes'      , 'ColorScheme'     ] ,
   \ 'd': 'Insert date time'             ,
-  \ 'f' : [':Filetypes'        , 'file types'      ] ,
-  \ 'h' : [':Telescope command_history' , 'Command history' ] ,
+  \ 'f' : [':FzfLua filetypes'        , 'file types'      ] ,
   \ 'm': 'Modify registers'             ,
   \ 'r': 'Replace word'                 ,
-  \ 'u' : [':Commands'        , 'Commands'        ] ,
+  \ 'u' : [':FzfLua commands'        , 'Commands'        ] ,
   \ 's' : 'Save Session',
   \ 't' : 'Toggle Session'
   \}
@@ -408,7 +407,7 @@ let g:leader_map['g'] = {
   \ 'a' : [':Gitsigns stage_hunk' , 'stage hunk'     ] ,
   \ 'b' : {
     \ 'name' : '+Branches',
-    \ 'b' : [':GBranches' , 'Checkout branch' ] ,
+    \ 'b' : [':FzfLua git_branches' , 'Checkout branch' ] ,
     \ 'f' : [':GBranches diff'                , 'Diff branch'                 ] ,
     \ 'm' : [':GBranches merge'               , 'Merge branch'                ] ,
     \ 'n' : [':GBranches create'       , 'Create branch'  ] ,
@@ -417,12 +416,12 @@ let g:leader_map['g'] = {
   \ 'B' : [':Git blame'              , 'blame'           ] ,
   \ 'c' : {
     \ 'name' : '+Ccommands',
-    \ 'a' : [':Commits'  , 'branch commits' ] ,
-    \ 'b' : [':BCommits' , 'buffer commits' ] ,
+    \ 'a' : [':FzfLua git_commits'  , 'branch commits' ] ,
+    \ 'b' : [':FzfLua git_bcommits' , 'buffer commits' ] ,
     \ 'c' : [':Git commit'             , 'commit'         ] ,
     \ 'f' : [ ':GV!'                          , 'GV file commit'                 ] ,
     \ 'g' : [ ':GV'                           , 'GV commits'                 ] ,
-    \ 'o' : [':GBranches' , 'Checkout branch' ] ,
+    \ 'o' : [':FzfLua git_branches' , 'Checkout branch' ] ,
     \ 's' : [':!git commit --amend --no-edit'             , 'ammend commit'         ] ,
     \ 't' : [':GTags' , 'Checkout tags' ] ,
     \ },
@@ -447,7 +446,7 @@ let g:leader_map['g'] = {
     \ 'name' : '+Scommands',
     \ 'a' : [':Gitsigns stage_hunk' , 'stage hunk'     ] ,
     \ 'b' : [':Gitsigns stage_buffer'              , 'stage buffer'     ] ,
-    \ 'h' : [':Telescope git_stash'       , 'git stash list' ] ,
+    \ 'h' : [':FzfLua git_stash'       , 'git stash list' ] ,
     \ 'r' : [':Gitsigns reset_buffer'      , 'reset buffer'                   ] ,
     \ 's' : [':Git stash'       , 'stash'     ] ,
     \ 'u' : [':Gitsigns undo_stage_hunk'      , 'undo staged hunk'                   ] ,
@@ -500,10 +499,11 @@ command -nargs=1 FindList call FindList(<f-args>)
 """ Uncomment following if you want to see search result in floating window
 " ======== file ======== 
 let g:ranger_map_keys = 0
-nnoremap <leader>fs :Find<SPace>
-nnoremap <leader>fj :exe "Find ". expand('<cword>') <CR>
-nnoremap <leader>fS :FindAll<SPace>
-nnoremap <leader>fJ :exe "FindAll ". expand('<cword>') <CR>
+
+let g:rg_grep_all = '--column --line-number --no-heading --fixed-strings --no-ignore --ignore-case --hidden --follow --glob "!.git/*" --color "always"' 
+nnoremap <leader>fG :lua require("fzf-lua").live_grep({ rg_opts = vim.g.rg_grep_all })<CR>
+nnoremap <leader>fC :lua require("fzf-lua").grep_cword({ rg_opts = vim.g.rg_grep_all })<CR>
+nnoremap <leader>fS :lua require("fzf-lua").grep({ rg_opts = vim.g.rg_grep_all })<CR>
 nnoremap <leader>fqel :Doline<SPace>
 nnoremap <leader>fqef :Dofile<SPace>
 nnoremap <leader>fqc :ClearQuickfixList<cr>
@@ -525,30 +525,35 @@ function PFiles() abort
     GFiles
   endif
 endfunction
-" nnoremap <leader>fS :lua require("telescope-config").live_grep_all()<CR>
-" nnoremap <leader>fJ :lua require("telescope-config").grep_string_all()<CR>
-" nnoremap <leader>ff :lua require("telescope-config").project_files()<CR>
-" nnoremap <leader>ff :call PFiles()<CR>
-nnoremap <leader>ff :GFiles<CR>
+
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-h': 'split',
   \ 'ctrl-v': 'vsplit' }
-let g:leader_map['o'] = [':Buffers' , 'Show Open buffers']
-let g:leader_map['p'] = [':Windows' , 'Show Open Windows']
+let g:leader_map['o'] = [':FzfLua buffers' , 'Show Open buffers']
+let g:leader_map['p'] = [':FzfLua tabs' , 'Show Open Windows']
 let g:leader_map['r'] = [':Ranger'  , 'Ranger']
 let g:leader_map['f'] = {
   \ 'name' : '+file'      ,
-  \ 'f' : 'Project files' ,
-  \ 'e' : [':GFiles?'     , 'Modified Files'         ] ,
-  \ 'F' : [':Files'       , 'Files'                  ] ,
-  \ 'g' : [':Rg'          , 'Live Grep'              ] ,
-  \ 'h' : [':Helptags'    , 'help tags'              ] ,
-  \ 'l' : [':Lines'       , 'Find in current buffer' ] ,
-  \ 'm' : [':Marks'       , 'marks'                  ] ,
+  \ 'b' : [':FzfLua btags'       , 'current buffer tags'    ] ,
+  \ 'c' : [':FzfLua grep_cword'       , 'grep_cword' ] ,
+  \ 'C' :  'Grep cword all' ,
+  \ 'e' : [':FzfLua git_status'     , 'Modified Files'         ] ,
+  \ 'f' : [':FzfLua git_files'     , 'Project files'         ] ,
+  \ 'F' : [':FzfLua files'       , 'Files'                  ] ,
+  \ 'g' : [':FzfLua live_grep'          , 'Live Grep'              ] ,
+  \ 'G' : 'Live Grep all',
+  \ 'h' : {
+    \ 'name' : '+H',
+    \ 'c' : [':FzfLua command_history'    , 'command history'              ] ,
+    \ 'h' : [':FzfLua help_tags '    , 'help tags'              ] ,
+    \ 's' : [':FzfLua search_history'    , 'search history'              ] ,
+    \ 'f' : [':FzfLua oldfiles'     , 'Previously open files'  ] ,
+    \ },
+  \ 'j' : [':FzfLua jumps'       , 'Jumps' ] ,
+  \ 'l' : [':FzfLua lines'       , 'Find in current buffer' ] ,
+  \ 'm' : [':FzfLua marks'       , 'marks'                  ] ,
   \ 'M' : [':Maps'        , 'normal maps'            ] ,
-  \ 'o' : [':History'     , 'Previously open files'  ] ,
-  \ 'p' : [':Files'       , 'files'                  ] ,
   \ 'q' : {
     \ 'name' : '+QuickFix',
     \ 'e' : {
@@ -561,9 +566,10 @@ let g:leader_map['f'] = {
       \ 'name' : '+Save',
       \ },
     \ },
-  \ 'b' : [':BTags'       , 'current buffer tags'    ] ,
-  \ 'T' : [':Tags'        , 'project tags'           ] ,
-  \ 'z' : [':FZF'         , 'FZF'                    ] ,
+  \ 'r' : [':FzfLua resume'     , 'Resume last fzf cmd'  ] ,
+  \ 's' : [':FzfLua grep'       , 'Find'    ] ,
+  \ 'T' : [':FzfLua tags'        , 'project tags'           ] ,
+  \ 'z' : [':FzfLua'         , 'FZF'                    ] ,
   \ }
 
 "" Uncomment following if you want to see search result in floating window

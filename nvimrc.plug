@@ -7,6 +7,7 @@ Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
 Plug 'francoiscabrol/ranger.vim'
 
 Plug 'stsewd/fzf-checkout.vim'

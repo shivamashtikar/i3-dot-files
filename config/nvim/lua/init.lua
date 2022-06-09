@@ -117,3 +117,16 @@ require('spectre').setup({
     -- you can put your mapping here it only use normal mode
   },
 })
+
+require('fzf-lua').setup{
+  winopts = {
+    fullscreen = true,
+  },
+  fzf_opts = {
+    ['--layout'] = "default",
+  },
+  files = {
+    rg_opts = "--color=never --files --hidden --follow --no-ignore -g '!.git'",
+  }
+}
+
