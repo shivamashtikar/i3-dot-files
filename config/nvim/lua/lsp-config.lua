@@ -48,7 +48,7 @@ capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
 -- Use a loop t conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'tsserver', 'eslint', 'hie', 'bashls', 'sumneko_lua', 'vimls' , 'rust_analyzer'}
+local servers = { 'tsserver', 'hie', 'bashls', 'sumneko_lua', 'vimls' , 'rust_analyzer'}
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
         capabilities = capabilities,
@@ -79,8 +79,9 @@ nvim_lsp['purescriptls'].setup{
 require("null-ls").setup({
     sources = {
         require("null-ls").builtins.formatting.stylua,
-        -- require("null-ls").builtins.diagnostics.eslint,
-        -- require("null-ls").builtins.completion.spell,
+        require("null-ls").builtins.diagnostics.eslint,
+        require("null-ls").builtins.completion.spell,
+        require('null-ls').builtins.formatting.prettier
     },
 })
 

@@ -130,3 +130,5 @@ require('fzf-lua').setup{
   }
 }
 
+
+require("nvim-lsp-installer").setup {}

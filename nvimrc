@@ -71,6 +71,9 @@ nnoremap <C-f> J
 nnoremap J <c-d>zz
 nnoremap K <c-u>zz
 
+" alt+backpace to delete word
+inoremap <M-BS> <C-w>
+
 nnoremap ; :
 nnoremap : ;
 
@@ -150,7 +153,7 @@ filetype off " Helps force plug-ins to load correctly when it is turned back on 
 filetype plugin indent on " For plug-ins to load correctly.
 set modelines=0 " Turn off modelines
 set linebreak "Avoid wrapping a line in the middle of a word
-set colorcolumn=80
+set colorcolumn=100
 set formatoptions=cqrn1
 set tabstop=2
 set shiftwidth=2
@@ -185,6 +188,8 @@ set ignorecase " Include matching uppercase words with lowercase search term
 set smartcase " Include only uppercase words with uppercase search term
 set viminfo='100,<9999,s100 " Store info from no more than 100 files at a time, 9999 lines of text, 100kb of data. Useful for copying large amounts of data between files.
 " set completeopt=menu,menuone,noselect
+" omit a dir from all searches to perform globally
+set wildignore+=**/node_modules/**
 
 
 let g:webdevicons_enable = 1
@@ -232,7 +237,9 @@ let g:leader_map['u'] = {
   \ 'r': 'Replace word'                 ,
   \ 'u' : [':FzfLua commands'        , 'Commands'        ] ,
   \ 's' : 'Save Session',
-  \ 't' : 'Toggle Session'
+  \ 't' : 'Toggle Session',
+  \ 'w' : [':exec ":set foldlevel=0" | AnyFoldActivate'        , 'Activate Fold'        ] ,
+  \ 'W' : [':exec ":set foldlevel=99"'        , 'UnFold all'        ] ,
   \}
 nnoremap Y y$
 
@@ -500,7 +507,7 @@ command -nargs=1 FindList call FindList(<f-args>)
 " ======== file ======== 
 let g:ranger_map_keys = 0
 
-let g:rg_grep_all = '--column --line-number --no-heading --fixed-strings --no-ignore --ignore-case --hidden --follow --glob "!.git/*" --color "always"' 
+let g:rg_grep_all = '--column --line-number --no-heading --fixed-strings --no-ignore --ignore-case --hidden --follow --glob "!.git/*" -g "!node_modules" --color "always"' 
 nnoremap <leader>fG :lua require("fzf-lua").live_grep({ rg_opts = vim.g.rg_grep_all })<CR>
 nnoremap <leader>fC :lua require("fzf-lua").grep_cword({ rg_opts = vim.g.rg_grep_all })<CR>
 nnoremap <leader>fS :lua require("fzf-lua").grep({ rg_opts = vim.g.rg_grep_all })<CR>

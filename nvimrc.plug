@@ -73,6 +73,7 @@ Plug 'norcalli/nvim-colorizer.lua'
 Plug 'Rigellute/shades-of-purple.vim'
 Plug 'kyoz/purify', { 'rtp': 'vim' }
 
+Plug 'pseewald/vim-anyfold'
 Plug 'lifepillar/vim-gruvbox8'
 Plug 'crusoexia/vim-monokai'
 Plug 'ful1e5/onedark.nvim'
