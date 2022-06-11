@@ -12,11 +12,13 @@ Plug 'francoiscabrol/ranger.vim'
 
 Plug 'stsewd/fzf-checkout.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'TimUntersberger/neogit'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'junegunn/gv.vim'
 Plug 'rhysd/conflict-marker.vim'
 Plug 'salcode/vim-interactive-rebase-reverse'
 Plug 'rhysd/git-messenger.vim'
+Plug 'sindrets/diffview.nvim'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'jose-elias-alvarez/null-ls.nvim'
