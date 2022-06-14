@@ -96,13 +96,6 @@ nnoremap <leader>= :wincmd =<cr>
 " automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
 
-" ======== splits ======== 
-" Shortcut split opening
-nnoremap <leader>h :split<Space>
-nnoremap <leader>v :vsplit<Space>
-let g:leader_map['h'] = 'Horizontal split'
-let g:leader_map['v'] = 'Vertical slit'
-
 " Fix splitting
 set splitbelow splitright
 
@@ -238,9 +231,12 @@ let g:leader_map['u'] = {
   \ 'u' : [':FzfLua commands'                                              , 'Commands' ] ,
   \ 's' : 'Save Session'                                                   ,
   \ 't' : 'Toggle Session'                                                 ,
-  \ 'w' : [':exec ":set foldlevel=0" | AnyFoldActivate'                    , 'Activate Fold' ] ,
-  \ 'W' : [':exec ":set foldlevel=99"'                                     , 'UnFold all'    ] ,
+  \ 'h' : [':split'                                                        , 'Horizontal split' ] ,
+  \ 'v' : [':vsplit'                                                       , 'vertical split'   ] ,
+  \ 'w' : [':exec ":set foldlevel=0" | AnyFoldActivate'                    , 'Activate Fold'    ] ,
+  \ 'W' : [':exec ":set foldlevel=99"'                                     , 'UnFold all'       ] ,
   \}
+
 nnoremap Y y$
 
 " Moving text
@@ -248,8 +244,8 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 inoremap <C-k> <esc>:m .-2<CR>==i
 inoremap <C-j> <esc>:m .+1<CR>==i
-nnoremap <leader>k :m .-2<CR>==
-nnoremap <leader>j :m .+1<CR>==
+" nnoremap <leader>k :m .-2<CR>==
+" nnoremap <leader>j :m .+1<CR>==
 
 nnoremap <leader>` ysiw`
 
@@ -664,7 +660,6 @@ function! SynStack()
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
-nmap <leader>c  :call SynStack()<CR>
 
 
 "===================== nvim-spectre ===========================
