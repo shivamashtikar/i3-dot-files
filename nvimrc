@@ -506,7 +506,7 @@ let g:ranger_map_keys = 0
 
 let g:rg_grep_all = '--column --line-number --no-heading --fixed-strings --no-ignore --ignore-case --hidden --follow --glob "!.git/*" -g "!node_modules" --color "always"' 
 nnoremap <leader>fG :lua require("fzf-lua").live_grep({ rg_opts = vim.g.rg_grep_all })<CR>
-nnoremap <leader>fC :lua require("fzf-lua").grep_cword({ rg_opts = vim.g.rg_grep_all })<CR>
+nnoremap <leader>fJ :lua require("fzf-lua").grep_cword({ rg_opts = vim.g.rg_grep_all })<CR>
 nnoremap <leader>fS :lua require("fzf-lua").grep({ rg_opts = vim.g.rg_grep_all })<CR>
 nnoremap <leader>fqel :Doline<SPace>
 nnoremap <leader>fqef :Dofile<SPace>
@@ -540,8 +540,7 @@ let g:leader_map['r'] = [':Ranger'  , 'Ranger']
 let g:leader_map['f'] = {
   \ 'name' : '+file'            ,
   \ 'b' : [':FzfLua btags'      , 'current buffer tags' ] ,
-  \ 'c' : [':FzfLua grep_cword' , 'grep_cword'          ] ,
-  \ 'C' :  'Grep cword all'     ,
+  \ 'c' : [':FzfLua jumps'             , 'Jumps'                  ] ,
   \ 'e' : [':FzfLua git_status' , 'Modified Files' ] ,
   \ 'f' : [':FzfLua git_files'  , 'Project files'  ] ,
   \ 'F' : [':FzfLua files'      , 'Files'          ] ,
@@ -554,7 +553,8 @@ let g:leader_map['f'] = {
     \ 's' : [':FzfLua search_history'  , 'search history'        ] ,
     \ 'f' : [':FzfLua oldfiles'        , 'Previously open files' ] ,
     \ }                                ,
-  \ 'j' : [':FzfLua jumps'             , 'Jumps'                  ] ,
+  \ 'j' : [':FzfLua grep_cword' , 'grep_cword'          ] ,
+  \ 'J' :  'Grep cword all'     ,
   \ 'l' : [':FzfLua lines'             , 'Find in current buffer' ] ,
   \ 'm' : [':FzfLua marks'             , 'marks'                  ] ,
   \ 'M' : [':Maps'                     , 'normal maps'            ] ,
@@ -682,3 +682,7 @@ nnoremap <leader>sw <cmd>lua require('spectre').open_visual({select_word=true})<
 vnoremap <leader>sv <cmd>lua require('spectre').open_visual()<CR>
 "  search in current file
 nnoremap <leader>sp viw:lua require('spectre').open_file_search()<cr>
+
+" hard time
+" let g:hardtime_default_on = 1
+" let g:hardtime_ignore_buffer_patterns = [ "CustomPatt[ae]rn", "NERD.*", "NvimTree*", "Neogit*", "fugitive" ]

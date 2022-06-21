@@ -17,7 +17,12 @@ require('lualine').setup {
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {'filename'},
+    lualine_c = { {
+      'filename' ,
+      file_status = true , -- displays file status (readonly status, modified status)
+      path = 1 -- 0 = just filename, 1 = relative path, 2 = absolute path
+      }
+    },
     lualine_x = {'encoding', 'fileformat', 'filetype'},
     lualine_y = {'progress'},
     lualine_z = {'location'}
@@ -121,6 +126,12 @@ require('spectre').setup({
 require('fzf-lua').setup{
   winopts = {
     fullscreen = true,
+    preview = {
+      vertical = 'up:60%',      -- up|down:size
+      flip_columns   = 100,             -- #cols to switch to horizontal on flex
+      horizontal     = 'right:50%',     -- right|left:size
+      layout = "vertical"
+    },
   },
   fzf_opts = {
     ['--layout'] = "default",

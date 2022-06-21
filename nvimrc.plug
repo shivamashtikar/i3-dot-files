@@ -84,7 +84,8 @@ Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'azabiong/vim-board'
 Plug 'akinsho/bufferline.nvim'
-Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+" Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+" Plug 'takac/vim-hardtime'
 
 Plug 'shivamashtikar/tmuxjump.vim'
 
