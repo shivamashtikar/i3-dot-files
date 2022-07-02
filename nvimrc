@@ -101,12 +101,38 @@ set splitbelow splitright
 
 " ======== quit ======== 
 " Alias write and quit to Q
+nnoremap <leader>qc :ClearQuickfixList<cr>
+nnoremap <leader>qfd :Reject<SPace>
+nnoremap <leader>qfll :LoadList<SPace>
+nnoremap <leader>qfel :Doline<SPace>
+nnoremap <leader>qfef :Dofile<SPace>
+nnoremap <leader>qfla :LoadListAdd<SPace>
+nnoremap <leader>qfk :Keep<space>
+nnoremap <leader>qfq :FindList<SPace>
+nnoremap <leader>qfr :Restore<CR>
+nnoremap <leader>qfss :SaveList<SPace>
+nnoremap <leader>qfsa :SaveListAdd<SPace>
+command! ClearQuickfixList cexpr []
+
 let g:leader_map['q'] = {
   \ 'name' : '+quit',
   \ 'a' : [':qa'     , 'Quit all window'    ] ,
+  \ 'u' : [':Bclose!' , 'Quit buffer unsaved'        ] ,
   \ 'w' : [':q'      , 'Quit window'        ] ,
   \ 'q' : [':Bclose' , 'Quit buffer'        ] ,
   \ 'o' : ['<C-w>o'  , 'Close other window' ] ,
+  \ 'f' : {
+    \ 'name' : '+QuickFix',
+    \ 'e' : {
+      \ 'name' : '+Execute',
+      \ },
+    \ 'l' : {
+      \ 'name' : '+Load',
+      \ },
+    \ 's' : {
+      \ 'name' : '+Save'    ,
+      \ }                   ,
+    \ }                     ,
   \ }
 
 nnoremap <leader>w :up<CR>
@@ -433,8 +459,8 @@ let g:leader_map['g'] = {
     \ 'd' : [':tab Git diff'        , 'diff all'  ] ,
     \ 't' : [':Gitsigns diffthis'   , 'diff this' ] ,
     \ }                             ,
-  \ 'g' : [':Neogit'                   , 'Git '              ] ,
-  \ 'G' : [':Git'               , 'Git '              ] ,
+  \ 'g' : [':Git'               , 'Git '              ] ,
+  \ 'G' : [':Neogit'                   , 'Git '              ] ,
   \ 'h' : [':Gitsigns preview_hunk' , 'preview hunk'      ] ,
   \ 'l' : [':Gclog'                 , 'logs'              ] ,
   \ 'L' : [':Git log --stat'        , 'logs with changes' ] ,
@@ -508,19 +534,6 @@ let g:rg_grep_all = '--column --line-number --no-heading --fixed-strings --no-ig
 nnoremap <leader>fG :lua require("fzf-lua").live_grep({ rg_opts = vim.g.rg_grep_all })<CR>
 nnoremap <leader>fJ :lua require("fzf-lua").grep_cword({ rg_opts = vim.g.rg_grep_all })<CR>
 nnoremap <leader>fS :lua require("fzf-lua").grep({ rg_opts = vim.g.rg_grep_all })<CR>
-nnoremap <leader>fqel :Doline<SPace>
-nnoremap <leader>fqef :Dofile<SPace>
-nnoremap <leader>fqc :ClearQuickfixList<cr>
-nnoremap <leader>fqd :Reject<SPace>
-nnoremap <leader>fqll :LoadList<SPace>
-nnoremap <leader>fqla :LoadListAdd<SPace>
-nnoremap <leader>fqk :Keep<space>
-nnoremap <leader>fqq :FindList<SPace>
-nnoremap <leader>fqr :Restore<CR>
-nnoremap <leader>fqss :SaveList<SPace>
-nnoremap <leader>fqsa :SaveListAdd<SPace>
-
-command! ClearQuickfixList cexpr []
 
 function PFiles() abort
   if fugitive#Head() == ''
@@ -558,18 +571,6 @@ let g:leader_map['f'] = {
   \ 'l' : [':FzfLua lines'             , 'Find in current buffer' ] ,
   \ 'm' : [':FzfLua marks'             , 'marks'                  ] ,
   \ 'M' : [':Maps'                     , 'normal maps'            ] ,
-  \ 'q' : {
-    \ 'name' : '+QuickFix',
-    \ 'e' : {
-      \ 'name' : '+Execute',
-      \ },
-    \ 'l' : {
-      \ 'name' : '+Load',
-      \ },
-    \ 's' : {
-      \ 'name' : '+Save'    ,
-      \ }                   ,
-    \ }                     ,
   \ 'r' : [':FzfLua resume' , 'Resume last fzf cmd' ] ,
   \ 's' : [':FzfLua grep'   , 'Find'                ] ,
   \ 'T' : [':FzfLua tags'   , 'project tags'        ] ,

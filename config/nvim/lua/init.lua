@@ -1,6 +1,7 @@
 
 require('nvim-tree').setup {
   git = {
+    enable = false,
     ignore = false
   }
 }
@@ -130,6 +131,7 @@ require('fzf-lua').setup{
       vertical = 'up:60%',      -- up|down:size
       flip_columns   = 100,             -- #cols to switch to horizontal on flex
       horizontal     = 'right:50%',     -- right|left:size
+      hidden         = 'hidden',      -- hidden|nohidden
       layout = "vertical"
     },
   },
