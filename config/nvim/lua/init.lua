@@ -84,6 +84,7 @@ require("trouble").setup {}
 -- onedarkpro.load()
 --
 require("onedark").setup({
+   comment_style = "italic",
   -- Overwrite the highlight groups
   overrides = function(c)
     return {
