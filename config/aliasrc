@@ -5,7 +5,11 @@ alias vim=nvim
 
 
 
-export DATA=$HOME
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  export DATA=$HOME
+else
+  export DATA=/run/media/shivam/Data
+fi
 
 alias data='cd $DATA'
 alias shrinkpdf='/home/shivam/.scripts/shrinkpdf.sh'
