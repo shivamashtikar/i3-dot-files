@@ -614,9 +614,10 @@ function CopyLine(line) abort
    wincmd w | exec a:line | exec 'norm yy' | exec l:win . 'wincmd w' | norm p
 endfunction
 
-function CopyPara(line,nlineBelow)
+function CopyPara(start,end)
   let l:win = winnr()
-   wincmd w | exec a:line | exec 'norm y'. a:nlineBelow .'j'| exec l:win . 'wincmd w' | norm p
+  let l:nlineBelow = a:end - a:start
+   wincmd w | exec a:start | exec 'norm y'. l:nlineBelow .'j' | exec l:win . 'wincmd w' | norm p
 endfunction
 
 command -nargs=1 CLine call CopyLine(<args>)
