@@ -48,7 +48,7 @@ Plug 'leafgarland/typescript-vim'
 
 Plug 'rbgrouleff/bclose.vim'
 Plug 'liuchengxu/vim-which-key'
-Plug 'tpope/vim-surround'
+Plug 'kylechui/nvim-surround'
 Plug 'tpope/vim-abolish'
 Plug 'jiangmiao/auto-pairs'
 Plug 'godlygeek/tabular' "useful to line up text.

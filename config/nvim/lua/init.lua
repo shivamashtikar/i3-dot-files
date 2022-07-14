@@ -150,3 +150,5 @@ require("neogit").setup {
     diffview = true
   }
 }
+
+require("nvim-surround").setup()
