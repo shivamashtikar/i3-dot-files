@@ -37,8 +37,8 @@ local on_attach  = function(client, bufnr)
     buf_set_keymap('v', '<localleader>F', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
     -- Disable Autoformat
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
+    client.server_capabilities.document_formatting = false
+    client.server_capabilities.document_range_formatting = false
 end
 
 
