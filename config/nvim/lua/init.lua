@@ -1,5 +1,6 @@
 
 require('nvim-tree').setup {
+  reload_on_bufenter = true,
   git = {
     enable = false,
     ignore = false
@@ -22,7 +23,8 @@ require('lualine').setup {
       'filename' ,
       file_status = true , -- displays file status (readonly status, modified status)
       path = 1 -- 0 = just filename, 1 = relative path, 2 = absolute path
-      }
+      }, 
+      { 'lsp_progress' }
     },
     lualine_x = {'encoding', 'fileformat', 'filetype'},
     lualine_y = {'progress'},
