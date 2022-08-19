@@ -201,3 +201,5 @@ alias getpass=~/.scripts/passmenu
 authssh(){
   eval "$(ssh-agent -s)" && ssh-add
 }
+
+alias ytdb="youtube-dl -f bestvideo+bestaudio"
