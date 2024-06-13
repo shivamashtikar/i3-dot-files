@@ -165,3 +165,11 @@ fi
 if [[ -s /usr/lib/jvm/default/bin ]]; then
   export PATH=${PATH}:/usr/lib/jvm/default/bin
 fi
+
+if [ -e /home/shivam/.nix-profile/etc/profile.d/nix.sh ]; then . /home/shivam/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+if [ -e keychain ]; 
+then 
+  keychain ~/.ssh/id_rsa
+  . ~/.keychain/${HOST}-sh
+fi
