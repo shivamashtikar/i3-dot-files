@@ -173,3 +173,17 @@ then
   keychain ~/.ssh/id_rsa
   . ~/.keychain/${HOST}-sh
 fi
+
+if [ -f /usr/share/fzf/shell/key-bindings.zsh ]; then 
+  source /usr/share/fzf/shell/key-bindings.zsh
+fi
+
+# Added by helper-cli
+
+he() {
+  local command
+  command=$(h -e)
+  if [[ -n "$command" ]]; then
+    print -z "$command"
+  fi
+}

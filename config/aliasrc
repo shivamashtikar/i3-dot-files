@@ -11,6 +11,12 @@ else
   export DATA=$HOME
 fi
 
+# if [[ "$OSTYPE" == "darwin"* ]]; then
+#   export DATA=$HOME
+# else
+#   export DATA=/run/media/shivam/Data
+# fi
+
 alias data='cd $DATA'
 alias shrinkpdf='/home/shivam/.scripts/shrinkpdf.sh'
 alias yl='youtube-dl --output "$HOME/Videos/%(title)s.%(ext)s" -f 18'
